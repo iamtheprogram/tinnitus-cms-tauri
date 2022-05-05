@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { app, BrowserWindow, ipcMain, shell, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, dialog, autoUpdater } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 import * as fs from 'fs';
@@ -176,3 +176,10 @@ ipcMain.handle('dialog-songs', async (event) => {
         return files;
     }
 });
+
+//Subscribe auto-updater to server
+if (process.env.NODE_ENV === 'production') {
+    autoUpdater.setFeedURL({
+        url: `https://tinnitus-cms-updater.vercel.app/update/${process.platform}/${app.getVersion()}`,
+    });
+}
