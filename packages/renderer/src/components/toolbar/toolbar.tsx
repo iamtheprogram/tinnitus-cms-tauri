@@ -38,6 +38,8 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
         //Activate loading screen
         try {
             if (props.item !== undefined && props.itemId !== undefined) {
+                //Show loading screen
+                window.appendLoading();
                 //Make an array with all filenames under the album
                 const filesToDelete = [];
                 for (const song of props.item.songs) {
@@ -46,6 +48,7 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
                 filesToDelete.push(`artwork.${props.item.extension}`);
                 //Delete album from storage and database
                 await deleteAlbum(props.itemId, { album: props.itemId, files: filesToDelete });
+                window.removeLoading();
                 navigate('/album/view/0');
             }
         } catch (error: any) {
