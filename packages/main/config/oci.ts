@@ -16,6 +16,7 @@ let provider: common.ConfigFileAuthenticationDetailsProvider;
 let client: objectstorage.ObjectStorageClient;
 
 export function isKeyAvailable(): boolean {
+    //Check if required files are already available
     if (
         fs.existsSync(path.join(process.resourcesPath, 'app', 'resources', 'oci_api_key.pem')) &&
         fs.existsSync(path.join(process.resourcesPath, 'app', 'resources', 'config'))
@@ -27,11 +28,11 @@ export function isKeyAvailable(): boolean {
 }
 
 export async function createResources(key: string, config: string): Promise<void> {
+    //Create required files received from object storage
     try {
         fs.writeFileSync(path.join(process.resourcesPath, 'app', 'resources', 'oci_api_key.pem'), key);
         fs.writeFileSync(path.join(process.resourcesPath, 'app', 'resources', 'config'), config);
     } catch (error: any) {
-        // dialog.showErrorBox('Could not create configuration for storage', error.message);
         throw error;
     }
 }
@@ -59,7 +60,6 @@ export function initProvider(): void {
             authenticationDetailsProvider: provider,
         });
     } catch (error: any) {
-        // dialog.showErrorBox('Error', error.message);
         throw error;
     }
 }
@@ -87,7 +87,6 @@ function copyFiles(): void {
             `\nkey_file=${ociDefaultLocation}/oci_api_key.pem\n`,
         );
     } catch (error: any) {
-        // dialog.showErrorBox('Could not copy configuration', error.message);
         throw error;
     }
 }
