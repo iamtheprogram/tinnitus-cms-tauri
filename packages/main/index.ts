@@ -178,8 +178,9 @@ ipcMain.handle('dialog-songs', async (event) => {
 });
 
 //Subscribe auto-updater to server
-if (process.env.NODE_ENV === 'production') {
-    autoUpdater.setFeedURL({
-        url: `https://tinnitus-cms-updater.vercel.app/update/${process.platform}/${app.getVersion()}`,
-    });
-}
+//! This will throw an error if the the application is not signed
+// if (process.env.NODE_ENV === 'production') {
+//     autoUpdater.setFeedURL({
+//         url: `https://tinnitus-cms-updater.vercel.app/update/${process.platform}/${app.getVersion()}`,
+//     });
+// }
