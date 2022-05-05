@@ -1,0 +1,116 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+
+.audio-player
+    display: flex
+    flex-direction: column
+    width: 410px
+    margin-left: 10px
+    margin-top: 20px
+    overflow: hidden
+
+.controls
+    display: flex
+    flex-direction: row
+    height: 50px
+    align-items: center
+    border-radius: 20px
+    padding: 7px
+    width: calc( 100% - 16px )
+    background: colors.$player
+    box-shadow: custom.$player-shadow
+
+.time-duration
+    display: flex
+    align-items: center
+    color: colors.$playerItem
+    margin-left: 10px
+
+    p
+        font-size: 12px
+
+.song-name-section
+    display: flex
+    width: 100%
+    white-space: nowrap
+    position: relative
+    color: black
+    margin-left: 5px
+    margin-top: 10px
+    text-overflow: hidden
+
+    p
+        position: relative
+        margin: 0px
+        animation: move-name 120s linear infinite
+
+.player-button
+    display: flex
+    justify-content: center
+    align-items: center
+    border: 0px
+    min-width: 32px
+    min-height: 32px
+    margin-left: 5px
+    cursor: pointer
+    padding: 0px
+    background-color: colors.$playerItem
+
+    img
+        width: 16px
+        height: 16px
+
+.timeline
+    display: flex
+    align-items: center
+    width: 55%
+    height: .5em
+    background-color: #e5e5e5
+    border-radius: 5px
+    margin-left: 1rem
+
+    .slider
+        height: .5em
+        background-color: colors.$playerItem
+        border-radius: 5px
+
+    .thumb
+        border-radius: 50%
+        width: 16px
+        height: 16px
+        background-color: colors.$playerItem
+
+        &:hover
+            background-color: #00baba
+            cursor: pointer
+
+.player-btn-bounce
+    animation: bounce 0.3s alternate
+    animation-timing-function: ease-in-out
+
+@keyframes bounce
+    0%
+        transform: scale(1.05)
+
+    20%
+        transform: scale(1.1)
+
+    40%
+        transform: scale(1.15)
+
+    60%
+        transform: scale(1.1)
+
+    80%
+        transform: scale(1.05)
+
+    100%
+        transform: scale(1.0)
+
+@keyframes move-name
+    0%
+        transform: translateX(0px)
+    50%
+        transform: translateX(500px)
+    100%
+        transform: translateX(-100px)

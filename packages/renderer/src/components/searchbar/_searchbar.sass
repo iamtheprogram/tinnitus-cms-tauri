@@ -1,0 +1,97 @@
+@use '../../styles/custom'
+@use '../../styles/colors'
+
+.SearchGroup
+	display: flex
+	width: 100%
+	margin-bottom: 20px
+
+.searchbar-div
+	display: flex
+	flex-direction: column
+	position: relative
+	width: 90%
+
+.SearchBar
+	min-height: 40px
+	border-radius: 5px
+	border: 1px solid black
+	padding-left: 10px
+	width: calc( 100% - 13px )
+
+#searchbar-results
+	z-index: 1
+	position: absolute
+	display: none
+	flex-direction: column
+	top: 45px
+	width: 100%
+	background-color: white
+	border: 1px solid colors.$borderSearch
+
+	&:last-child
+		border-bottom: 0px
+
+.searchbar-result-item
+	display: flex
+	position: relative
+	align-items: center
+	width: calc(100% - 20px)
+	color: black
+	cursor: pointer
+	padding: 10px
+	border-bottom: 0.5px solid colors.$borderSearch
+
+	img
+		width: 78px
+		height: 78px
+
+	&:hover
+		background-color: #cecece
+
+	.album-name
+		margin-left: 10px
+		margin-bottom: 50px
+
+	.album-upload-date
+		position: absolute
+		right: 20px
+		bottom: 0px
+
+.SearchButton
+	@include custom.btnStyle($width: 70px, $height: 45px)
+	@include custom.flexCenter($direction: row)
+	margin-left: 10px
+	border-radius: 8px
+	cursor: pointer
+
+.SearchIcon
+	width: 32px
+	height: 32px
+
+.ListOk
+	width: 70px
+	height: 37px
+	background-color: colors.$btn
+	position: absolute
+	right: 95px
+	bottom: 10px
+	font-size: 14px
+	color: white
+	border: 1px solid colors.$border
+	border-radius: 5px
+	cursor: pointer
+
+.ListCancel
+	width: 80px
+	height: 37px
+	background-color: colors.$btn
+	position: absolute
+	bottom: 10px
+	right: 10px
+	text-align: center
+	font-size: 14px
+	color: white
+	border: 1px solid colors.$border
+	border-radius: 5px
+	cursor: pointer

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "*": ["packages/renderer/src/*"],
+      "@src/*": ["packages/renderer/src/*"],
+	  "@components/*": ["packages/renderer/src/components/*"],
+	  "@utils/*": ["packages/renderer/src/utils/*"],
+	  "@icons/*": ["packages/renderer/src/icons/*"],
+	  "@store/*": ["packages/renderer/src/store/*"],
+      "@pages/*": ["packages/renderer/src/pages/*"],
+      "@services/*": ["packages/renderer/src/services/*"],
+      "@config/*": ["packages/renderer/src/config/*"]
+    }
+  }
+}

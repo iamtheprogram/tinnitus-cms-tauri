@@ -1,0 +1,29 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+
+.upload-section
+  display: flex
+  flex-direction: column
+  width: calc(100% - 300px - 80px)
+  padding: 40px
+  margin-left: 300px
+  overflow: auto
+
+  .invalid-table
+    margin-top: 5px
+
+.upload-album
+  display: flex
+  width: 100%
+
+.upload-btn-album
+  text-align: center
+  width: 100px
+  height: 40px
+  border: 1px solid colors.$border
+  background: colors.$btn
+  color: white
+  font-size: 14px
+  margin-left: 50%
+  margin-top: 5%
+  border-radius: 7px

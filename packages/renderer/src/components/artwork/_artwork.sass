@@ -1,0 +1,42 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+
+.upload-album-artwork-div
+  display: flex
+  flex-direction: column
+
+  .invalid-thumbnail
+    margin-top: 10px
+    margin-left: 15px
+    
+.upload-album-artwork
+  position: relative
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 400px
+  height: 400px
+  background: colors.$albumArtwork
+  border: 2px solid #fcac00
+  box-shadow: custom.$boxshadow
+  margin-left: 1rem
+
+  .plus-body
+    position: absolute
+    right: -24px
+    bottom: -24px
+    width: 42px
+    height: 42px
+    cursor: pointer
+
+  .plus
+    width: 32px
+    height: 32px
+
+  .input-plus
+    display: none
+
+  img
+    width: 400px
+    height: 400px
+    object-fit: cover

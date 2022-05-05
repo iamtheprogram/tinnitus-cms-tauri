@@ -1,0 +1,46 @@
+@use './colors'
+
+@mixin btnStyle($width, $height, $prop: padding, $val: 0)
+	width: $width
+	height: $height
+	color: white
+	font-size: 14px
+	border: 1px solid colors.$border
+	background-color: colors.$btn
+	border-radius: 5px
+	#{$prop}: $val
+
+@mixin flexCenter($direction)
+	display: flex
+	justify-content: center
+	align-items: center
+	flex-direction: $direction
+
+@mixin shadow()
+	box-shadow: 3px 3px 30px #4a96e2
+	-webkit-box-shadow: 3px 3px 30px #4a96e2
+
+@mixin pageSize()
+	width: 100vw
+	height: 100vh
+
+@mixin fullView()
+	width: 100%
+	height: 100%
+
+@mixin margins($top, $bottom, $left, $right)
+	margin-top: $top
+	margin-bottom: $bottom
+	margin-left: $left
+	margin-right: $right
+
+@mixin paddings($top, $bottom, $left, $right)
+	padding-top: $top
+	padding-bottom: $bottom
+	padding-left: $left
+	padding-right: $right
+
+$boxshadow: -3px 5px 4px -1px rgba(0,0,0,0.66)
+$player-shadow: -1px 5px 5px -1px rgba(0,0,0,0.66)
+
+

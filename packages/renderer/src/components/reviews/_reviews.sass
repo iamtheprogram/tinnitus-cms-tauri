@@ -1,0 +1,207 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+
+.review-container
+	display: flex
+	flex-direction: column
+	justify-content: center
+	align-items: center
+	width: 100%
+	color: black
+	padding: 1rem
+
+.review-toolbar
+	display: flex
+	align-items: center
+	width: calc(80% - 10px)
+	height: 50px
+	padding: 5px
+	border-radius: 7px
+	background: colors.$toolbar
+
+	.label
+		margin-left: 20px
+
+	.dropdown
+		background: colors.$btn
+		margin-left: 10px
+
+	.checkbox-div
+		display: flex
+		align-items: center
+		width: 10%
+		margin-left: 20px
+		margin-right: 10px
+
+		.label
+			margin-left: 5px
+
+	img
+		width: 32px
+		height: 32px
+		cursor: pointer
+		margin-right: 10px
+
+	button
+		margin: 0px
+		border: 0px
+		width: 100px
+		height: 40px
+		background: colors.$btn
+		color: colors.$menuItem
+		font-size: 18px
+		border-radius: 7px
+		cursor: pointer
+
+.review-list
+	width: 100%
+	overflow-x: hidden
+
+.review-item
+	display: flex
+	flex-direction: column
+	width: calc(100% - 10px)
+	padding: 10px
+
+	.header
+		display: flex
+		width: 100%
+
+	.section
+		display: flex
+		width: 100%
+		padding: 5px
+
+/* width */
+::-webkit-scrollbar
+	width: 5px
+
+/* Track */
+::-webkit-scrollbar-track
+	background: grey
+
+/* Handle */
+::-webkit-scrollbar-thumb
+	background: aqua
+
+.Fback
+	display: flex
+	flex-direction: column
+	justify-content: flex-start
+	align-items: center
+	padding: 10px
+	width: 90%
+	min-height: 20%
+	// border-radius: 10px
+	background-color: rgb(250, 244, 233)
+	margin-top: 1%
+	margin-left: 5%
+	box-shadow: -2px 3px 4px -1px rgba(0,0,0,0.66)
+
+.FbackHeader
+	display: flex
+	justify-content: space-between
+	align-items: flex-start
+	width: 100%
+	height: 40%
+
+.DeleteFback
+	width: 32px
+	height: 32px
+	margin-left: 10px
+	&:hover
+		opacity: 0.6
+
+.FbackMail
+	color: dimgray
+	font-size: 17px
+
+.FbackTextDiv
+	overflow-y: auto
+	width: 100%
+
+.FbackText
+	color: black
+	font-size: 14px
+	margin-left: 15px
+	word-wrap: break-word
+	max-width: 95%
+	text-align: justify
+
+.FbackDate
+	color: rgb(156, 156, 156)
+	font-size: 12px
+	margin-top: 21px
+	margin-left: 10px
+
+.FbackModal
+	@include custom.flexCenter($direction: row)
+	top: 50%
+	left: 50%
+	right: auto
+	bottom: auto
+	margin-right: -50%
+	transform: translate(50%, 50%)
+	overflow: hidden
+	background-color: aqua
+
+.ModalBtn
+	margin-right: 1%
+	font-size: 14px
+
+	&:hover
+		transform: scale(1)
+		opacity: 0.5
+
+.NoFeedbacks
+	@include custom.flexCenter($direction: row)
+	color: black
+	font-size: 20px
+	font-weight: 300
+
+.FeedbackToolbar
+	display: flex
+	align-items: center
+	height: 30px
+	width: 90%
+	margin-left: 60px
+	padding: 10px
+	border: 1px solid colors.$border
+	border-radius: 8px
+	background-color: colors.$toolbar
+
+.FbackToolbarMonth
+	width: 115px
+
+.FbackToolbarYear
+	width: 80px
+
+.FbackToolbarBtnDisplay
+	@include custom.flexCenter($direction: row)
+	width: 70px
+	height: 35px
+	font-size: 14px
+	margin-left: 20px
+	border-radius: 3px
+	background-color: colors.$btn
+	color: white
+
+	&:hover
+		opacity: 0.6
+
+.FbackToolbarBtnSelect
+	@include custom.flexCenter($direction: row)
+	width: 140px
+	height: 35px
+	font-size: 14px
+	margin-left: 5px
+	border-radius: 3px
+	padding: 0px
+
+	&:hover
+		opacity: 0.6
+
+.FbackPlaceholder
+	@include custom.flexCenter($direction: row)
+	width: 100%
+	height: 100%

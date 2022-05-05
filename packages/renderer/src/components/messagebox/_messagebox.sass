@@ -1,0 +1,15 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+
+.BtnOk
+  @include custom.flexCenter($direction: row)
+  @include custom.btnStyle($width: 70px, $height: 30px, $prop: position, $val: absolute)
+  font-size: 14px
+  right: 10px
+  bottom: 10px
+  cursor: pointer
+
+.MessageHeader
+  border-bottom: 1px solid colors.$border
+  width: 100%
+  height: 25px

@@ -1,0 +1,44 @@
+@use '../../styles/colors'
+
+.ToolbarContainer
+	display: flex
+	justify-content: flex-start
+	align-items: center
+	border-radius: 8px
+	border: 1px solid colors.$border
+	background-color: colors.$toolbar
+	width: calc(100% - 10px)
+	margin-bottom: 20px
+	height: 50px
+	padding-left: 10px
+
+.toolbar-action
+	display: flex
+	justify-content: center
+	align-items: center
+	color: black
+	cursor: pointer
+	margin-right: 30px
+
+.ActionIcon
+	width: 32px
+	height: 32px
+	margin-right: 5px
+
+.TitleDiv
+	display: flex
+	justify-content: center
+	align-items: center
+	background-color: colors.$section
+	border-right: 2px solid colors.$border
+	height: 100%
+	border-radius: 7px
+	border-bottom-right-radius: 0px
+	border-top-right-radius: 0px
+
+.TitleSelected
+	margin: 0px
+	color: aqua
+	font-weight: 400
+	margin-right: 10px
+	margin-left: 5px

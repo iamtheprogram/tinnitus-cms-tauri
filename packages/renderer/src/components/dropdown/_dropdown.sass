@@ -1,0 +1,45 @@
+@use '../../styles/colors'
+
+.dropdown
+	position: relative
+	display: flex
+	justify-content: center
+	align-items: center
+	height: 10px
+	background: colors.$dropdown
+	border-radius: 5px
+	color: colors.$menuItem
+	padding: 1rem
+	cursor: pointer
+
+	img
+		width: 12px
+		height: 12px
+		margin-left: 10px
+
+	ul
+		position: absolute
+		display: flex
+		flex-direction: column
+		margin: 0px
+		overflow-y: hidden
+		overflow-x: hidden
+		transition: height .5s ease
+		color: colors.$menuItem
+		background: colors.$dropdown
+		left: 0px
+		min-width: 150px
+		height: 0px
+		top: calc( 100% + 2px )
+		z-index: 1
+		margin: 0px
+		padding: 0px
+
+		li
+			margin-top: 5px
+			padding: 10px
+			cursor: pointer
+			width: 100%
+
+			&:hover
+				background: #3B4F74
