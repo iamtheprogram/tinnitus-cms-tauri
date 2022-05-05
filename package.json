@@ -2,13 +2,13 @@
     "name": "vite-react-electron",
     "productName": "Tinnitus CMS",
     "private": true,
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Content Management System application for Tinnitus Sounds",
     "author": "Tinnitus Sounds",
     "main": "dist/main/index.cjs",
     "scripts": {
         "dev": "node scripts/watch.mjs",
-        "build": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && electron-builder"
+        "build": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && electron-builder -mwl"
     },
     "engines": {
         "node": ">=14.17.0"
