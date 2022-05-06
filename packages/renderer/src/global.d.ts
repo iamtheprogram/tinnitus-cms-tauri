@@ -15,6 +15,8 @@ declare global {
             openDialogArtowrk: () => Promise<any>;
             openDialogSongs: () => Promise<any>;
             showErrorMessage: (message: string) => void;
+            showMessagBox: (message: string, title: string) => void;
+            showQuestionBox: (message: string, title: string) => Promise<boolean>;
         };
     }
 }

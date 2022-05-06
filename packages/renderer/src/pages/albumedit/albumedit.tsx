@@ -41,6 +41,7 @@ const AlbumEdit: React.FC = () => {
 
     async function fetchAlbumData(): Promise<void> {
         try {
+            window.appendLoading();
             const docRef = await getDoc(doc(db, 'albums', id as string));
             albumData.current = docRef.data() as AlbumInfo;
             albumData.current.artwork = `${prereq}${id}/artwork.${albumData.current.extension}`;
@@ -54,6 +55,7 @@ const AlbumEdit: React.FC = () => {
             };
             //Done fetching data
             setLoaded(true);
+            window.removeLoading();
         } catch (error) {
             console.log(error);
         }

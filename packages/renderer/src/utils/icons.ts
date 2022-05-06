@@ -33,6 +33,8 @@ import Likes from '@src/icons/likes.png';
 import Reviews from '@src/icons/feedbacks.png';
 import Play from '@src/icons/play.png';
 import Pause from '@src/icons/pause.png';
+import Previous from '@src/icons/previous.png';
+import Next from '@src/icons/next.png';
 
 export const Icons = {
     HomeIcon: Home,
@@ -63,6 +65,8 @@ export const Icons = {
     Reviews: Reviews,
     Play: Play,
     Pause: Pause,
+    Previous: Previous,
+    Next: Next,
 };
 
 export const ToolbarIcons = {

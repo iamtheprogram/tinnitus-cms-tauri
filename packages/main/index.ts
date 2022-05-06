@@ -64,7 +64,14 @@ async function createWindow() {
 app.whenReady().then(createWindow);
 
 app.on('ready', () => {
-    //
+    if (process.env.NODE_ENV === 'development') {
+        dialog.showMessageBox({
+            type: 'warning',
+            title: 'Tinnitus CMS',
+            message: 'Tinnitus CMS is running in development mode.\n\nPlease use the production build of Tinnitus CMS.',
+            buttons: ['OK'],
+        });
+    }
 });
 
 app.on('window-all-closed', () => {
@@ -111,6 +118,30 @@ ipcMain.handle('init-provider', () => {
 
 ipcMain.handle('show-error-message', (event, message: string) => {
     dialog.showErrorBox('Error', message);
+});
+
+ipcMain.handle('show-message-box', (event, message: string, title: string) => {
+    dialog.showMessageBox({
+        type: 'info',
+        title: title,
+        message: message,
+        buttons: ['OK'],
+    });
+});
+
+ipcMain.handle('show-question-box', async (event, message: string, title: string) => {
+    const retVal = await dialog.showMessageBox({
+        type: 'question',
+        title: title,
+        message: title,
+        buttons: ['Cancel', 'Yes'],
+    });
+    //Check if the user clicked on the "Yes" button
+    if (retVal.response === 1) {
+        return true;
+    } else {
+        return false;
+    }
 });
 
 ipcMain.handle('upload-song', async (event, id: string, song: UploadAlbumSong): Promise<string> => {

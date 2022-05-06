@@ -48,6 +48,7 @@ const AlbumView: React.FC = () => {
 
     async function fetchAlbumData(id: string): Promise<void> {
         try {
+            window.appendLoading();
             //Fetch all album data
             const docRef = doc(collection(db, 'albums'), id);
             const docRes = await getDoc(docRef);
@@ -65,6 +66,7 @@ const AlbumView: React.FC = () => {
     async function getSongUrl(song: SongData): Promise<void> {
         try {
             playerRef.current.setSong(`${prereq}${id}/${song.name}.${song.extension}`);
+            window.removeLoading();
         } catch (error) {
             console.log(error);
         }
