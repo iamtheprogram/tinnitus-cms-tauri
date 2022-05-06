@@ -8,6 +8,10 @@ const Sidebar: React.FC = () => {
 
     return (
         <div className="sidebar">
+            <div className="sidebar-navigate">
+                <img src={Icons.Previous} onClick={(): void => navigate(-1)} />
+                <img src={Icons.Next} onClick={(): void => navigate(1)} />
+            </div>
             <div className="sidebar-logo">
                 <img src={Icons.LogoIcon} />
                 <p>Tinnitus CMS Menu</p>
