@@ -50,7 +50,7 @@ const Login: React.FC = () => {
                 //Get config from db
                 await fetchConfig();
                 //Get config files
-                await getConfigFromStorage();
+                // await getConfigFromStorage();
                 //Init OCI client provider
                 await window.electron.initProvider();
                 window.removeLoading();
@@ -59,10 +59,10 @@ const Login: React.FC = () => {
                 navigate('/');
             } catch (error: any) {
                 //Handle error and display message
-                window.electron.showErrorMessage(error.message);
                 setAdmin('');
                 setPassw('');
                 window.removeLoading();
+                window.electron.showErrorMessage(error.message);
             }
         } else {
             /*Do nothing*/
