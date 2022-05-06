@@ -26,7 +26,9 @@ contextBridge.exposeInMainWorld('electron', {
     initProvider: () => ipcRenderer.invoke('init-provider'),
     openDialogArtowrk: () => ipcRenderer.invoke('dialog-artwork'),
     openDialogSongs: () => ipcRenderer.invoke('dialog-songs'),
-    showErrorMessage: (message: string) => ipcRenderer.send('show-error-message', message),
+    showErrorMessage: (message: string) => ipcRenderer.invoke('show-error-message', message),
+    showMessagBox: (message: string, title: string) => ipcRenderer.invoke('show-message-box', message, title),
+    showQuestionBox: (message: string, title: string) => ipcRenderer.invoke('show-question-box', message, title),
 });
 
 // `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
