@@ -1,8 +1,7 @@
 import { db } from '@src/config/firebase';
-import { AlbumFormData, SongData } from '@src/types/album';
-import { invoke } from '@tauri-apps/api';
+import { AlbumFormData, SongData, AlbumCategory } from '@src/types/album';
 import axios from 'axios';
-import { arrayUnion, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion, deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export async function uploadAlbumInfo(id: string, info: AlbumFormData, tableData: SongData[]): Promise<string> {
     try {
@@ -93,6 +92,50 @@ export async function deleteAlbum(
         //     return { result: true, message: 'Album deleted' };
         // }
         return { result: true, message: 'Album deleted' };
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function addAlbumCategory(category: AlbumCategory): Promise<void> {
+    try {
+        await updateDoc(doc(db, 'misc', 'albums'), {
+            categories: arrayUnion(category),
+        });
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function editAlbumCategory(category: AlbumCategory): Promise<void> {
+    try {
+        const albums = await getDoc(doc(db, 'misc', 'albums'));
+        const categories = albums.data()!.categories;
+        for (let i = 0; i < categories.length; i++) {
+            if (categories[i].id === category.id) {
+                categories[i] = category;
+            }
+        }
+        await updateDoc(doc(db, 'misc', 'albums'), {
+            categories: categories,
+        });
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function deleteAlbumCategory(category: AlbumCategory): Promise<void> {
+    try {
+        const albums = await getDoc(doc(db, 'misc', 'albums'));
+        const categories = albums.data()!.categories;
+        for (let i = 0; i < categories.length; i++) {
+            if (categories[i].id === category.id) {
+                categories.splice(i, 1);
+            }
+        }
+        await updateDoc(doc(db, 'misc', 'albums'), {
+            categories: categories,
+        });
     } catch (error) {
         throw error;
     }

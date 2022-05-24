@@ -9,7 +9,12 @@ export type ResdataState = {
 
 export type GeneralState = {
     auth: any;
-    categories: Array<string>;
+    categories: Array<{
+        name: string;
+        id: string;
+        description: string;
+        color: string;
+    }>;
 };
 
 export type OciState = {

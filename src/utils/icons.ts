@@ -35,6 +35,8 @@ import Play from '@src/icons/play.png';
 import Pause from '@src/icons/pause.png';
 import Previous from '@src/icons/previous.png';
 import Next from '@src/icons/next.png';
+import Categories from '@src/icons/categories.png';
+import Palette from '@src/icons/palette.png';
 
 export const Icons = {
     HomeIcon: Home,
@@ -67,6 +69,7 @@ export const Icons = {
     Pause: Pause,
     Previous: Previous,
     Next: Next,
+    Palette: Palette,
 };
 
 export const ToolbarIcons = {
@@ -78,4 +81,5 @@ export const ToolbarIcons = {
     ChartIcon: Chart,
     ZoominIcon: ZoomIn,
     ZoomoutIcon: ZoomOut,
+    Categories: Categories,
 };

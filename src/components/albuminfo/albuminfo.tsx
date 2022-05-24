@@ -1,7 +1,6 @@
 import React from 'react';
 import { AlbumInfo } from '@src/types/album';
 import { Icons } from '@src/utils/icons';
-import ReactTooltip from 'react-tooltip';
 import { parseTags } from '@utils/helpers';
 
 type AlbumInfoProps = {
