@@ -4,7 +4,7 @@ import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'rea
 import { InputGroup, FormControl } from 'react-bootstrap';
 import Dropdown from '@components/dropdown/dropdown';
 import { getDurationFormat, parseTags } from '@utils/helpers';
-import { AlbumFormData } from '@src/types/album';
+import { AlbumCategory, AlbumFormData } from '@src/types/album';
 import { useSelector } from 'react-redux';
 
 type FormProps = {
@@ -13,13 +13,13 @@ type FormProps = {
 };
 
 const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
-    const categories = useSelector<any>((state) => state.generalReducer.categories) as string[];
+    const categories = useSelector<any>((state) => state.generalReducer.categories) as AlbumCategory[];
     const [name, setName] = useState('');
     const [nameinvalid, setNameInvalid] = useState('');
     const [description, setDescription] = useState('');
     const [descInvalid, setDescInvalid] = useState('');
     const [notification, setNotification] = useState('');
-    const [category, setCategory] = useState(categories[0]);
+    const [category, setCategory] = useState(categories[0].name);
     const [tags, setTags] = useState('');
     const [length, setLength] = useState('');
 
@@ -56,7 +56,7 @@ const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
             setTags('');
             setLength('');
             setNotification('');
-            setCategory(categories[0]);
+            setCategory(categories[0].name);
         },
 
         getInputValidation: async (): Promise<boolean> => {
@@ -105,7 +105,8 @@ const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
     }));
 
     function onCategoryChange(value: string): void {
-        setCategory(value);
+        const temp = categories.find((c) => c.name === value);
+        setCategory(temp!.name);
     }
 
     function calculateTotalLength(songs: Array<string>): number {
@@ -140,7 +141,7 @@ const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
             <div className="category">
                 <p>Category</p>
                 <Dropdown
-                    items={categories}
+                    items={categories.map((c) => c.name)}
                     className="dropdown-margin"
                     onChange={onCategoryChange}
                     current={category}

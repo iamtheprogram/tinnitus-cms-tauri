@@ -1,7 +1,7 @@
 import { Icons } from '@src/utils/icons';
 import React, { useState, useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
 import Dropdown from '@components/dropdown/dropdown';
-import { SongData } from '@src/types/album';
+import { AlbumCategory, SongData } from '@src/types/album';
 import ReactTooltip from 'react-tooltip';
 import { getDurationFormat } from '@utils/helpers';
 import { CombinedStates } from '@store/reducers/custom';
@@ -17,7 +17,7 @@ type TableProps = {
 };
 
 export const Table = forwardRef((props: TableProps, ref: any) => {
-    const categories = useSelector<CombinedStates>((state) => state.generalReducer.categories) as any;
+    const categories = useSelector<CombinedStates>((state) => state.generalReducer.categories) as AlbumCategory[];
     const [invalid, setInvalid] = useState('');
     const table = useRef(null);
     const [tableData, setTableData] = useState(Array<SongData>());
@@ -149,7 +149,7 @@ export const Table = forwardRef((props: TableProps, ref: any) => {
             return (
                 <Dropdown
                     id={`row-category-${id}`}
-                    items={categories.name}
+                    items={categories.map((x) => x.name)}
                     className="dropdown-category"
                     onChange={onCategoryChange}
                     current={tableData[id].category}
