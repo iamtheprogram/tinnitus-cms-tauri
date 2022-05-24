@@ -1,5 +1,5 @@
 import Sidebar from '@components/sidebar/sidebar';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Icons, ToolbarIcons } from '@src/utils/icons';
 import { useSelector } from 'react-redux';
 import { CombinedStates } from '@store/reducers/custom';
@@ -30,9 +30,11 @@ const AlbumCategories: React.FC = () => {
     const [colorPicker, setColorPicker] = useState(false);
     const [color, setColor] = useState('#FFFFFF');
     const [type, setType] = useState('Add');
-    const [currentIt, setCurrentIt] = useState(0);
+    const currentIt = useRef(0);
+    const [inputDisabled, setInputDisabled] = useState(false);
 
     function onPlusClick(): void {
+        setInputDisabled(false);
         setType('Add');
         setAddCategoryModal(true);
     }
@@ -55,7 +57,8 @@ const AlbumCategories: React.FC = () => {
         setName(categories[it].name);
         setDescription(categories[it].description);
         setColor(categories[it].color);
-        setCurrentIt(it);
+        currentIt.current = it;
+        setInputDisabled(true);
         setType('Edit');
         setAddCategoryModal(true);
     }
@@ -81,7 +84,7 @@ const AlbumCategories: React.FC = () => {
             try {
                 const data = {
                     name: name,
-                    id: type === 'Add' ? uuid() : categories[currentIt].id,
+                    id: type === 'Add' ? uuid() : categories[currentIt.current].id,
                     color: color,
                     description: description,
                 };
@@ -98,7 +101,7 @@ const AlbumCategories: React.FC = () => {
                 } else if (type === 'Edit') {
                     await editAlbumCategory(data);
                     const temp = categories.map((x: any) => x);
-                    temp[currentIt] = data;
+                    temp[currentIt.current] = data;
                     dispatch({
                         type: 'general/categories',
                         payload: temp,
@@ -192,8 +195,8 @@ const AlbumCategories: React.FC = () => {
                     <InputGroup hasValidation className="input-group input-group-area">
                         <InputGroup.Text className="label">Name</InputGroup.Text>
                         <FormControl
-                            disabled
                             className="input"
+                            disabled={inputDisabled}
                             required
                             value={name}
                             onChange={(event: any): void => {
