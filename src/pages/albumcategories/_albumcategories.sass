@@ -1,0 +1,191 @@
+@use '../../styles/colors'
+
+.categories-section
+    display: flex
+    flex-direction: column
+    width: calc(100% - 300px - 40px)
+    padding: 20px
+    margin-left: 320px
+    overflow: auto
+    font-family: sans-serif
+
+    .categories-header
+        color: black
+
+    .table-section
+        position: relative
+        padding: 10px
+        width: calc(100% - 20px)
+
+        .plus-body
+            position: absolute
+            right: -5px
+            bottom: -4px
+            width: 32px
+            height: 32px
+            cursor: pointer
+
+        .plus
+            width: 32px
+            height: 32px
+
+        .input-plus
+            display: none
+
+        .table
+            width: 100%
+            color: white
+            background: colors.$table
+            border-spacing: 0
+            border: 1px solid colors.$border
+            margin-top: 50px
+
+        td, th
+            margin: 0
+            padding: 10px
+            border: 1px solid colors.$border
+            border-left: 0
+            border-bottom: none
+
+            &:last-child
+                border-right: none
+                padding: 0px
+
+        th
+            img
+                width: 32px
+                height: 32px
+
+        td
+            text-align: center
+            vertical-align: middle
+            padding: 10px
+
+            img
+                width: 28px
+                height: 28px
+                cursor: pointer
+
+            .color-table-btn
+                height: 28px
+                cursor: pointer
+                border-radius: 6px
+                border: 1px solid colors.$border
+
+.color-picker-table
+    z-index: -5
+    position: absolute
+    bottom: -20px
+    left: 100px
+
+@keyframes row-highlight
+    0%
+        opacity: 0
+        background: #FFFFFF
+    100%
+        opacity: 1.0
+        background: colors.$table
+
+.table-loading-anim
+    animation: loading-rotate 2s linear infinite
+
+.categories-modal-form
+    display: flex
+    flex-direction: column
+    width: 97%
+    margin-top: 30px
+    padding: 10px
+
+    .input-group
+        display: flex
+        align-items: center
+        margin-bottom: 20px
+        font-family: sans-serif
+
+        .label
+            font-size: 13px
+
+        .input
+            width: 95%
+            height: 20px
+            font-size: 15px
+            margin-top: 10px
+            border: none
+            border: 1px solid colors.$border
+            transition: box-shadow 0.2s ease-in
+
+    .input-description
+        width: 95%
+        min-height: 100px
+        max-height: 100px
+        margin-top: 10px
+        overflow: auto
+        font-size: 15px
+        transition: box-shadow 0.2s ease-in
+        border: 1px solid colors.$border
+
+    .input-group-area
+        flex-direction: column
+        align-items: normal
+
+    .invalid-input
+        font-size: 13px
+        color: red
+        margin: 0px
+        margin-top: 5px
+        font-weight: 500
+
+    .color-group
+        position: relative
+        display: flex
+        margin-bottom: 20px
+        align-items: center
+
+        .label
+            font-size: 13px
+
+        .color-picker
+            z-index: 2
+            position: absolute
+            top: -40px
+            left: 100px
+
+.color-picker-btn
+    width: 32px
+    height: 32px
+    background: white
+    margin-left: 20px
+    cursor: pointer
+    border-radius: 50%
+    -webkit-box-shadow: 0px 1px 10px 5px rgba(0,255,255,0.25)
+    box-shadow: 0px 1px 10px 5px rgba(0,255,255,0.25)
+    transition: box-shadow 0.2s ease-in
+
+    &:hover
+        -webkit-box-shadow: 0px 1px 16px 5px rgba(0,255,255,0.6)
+        box-shadow: 0px 1px 16px 5px rgba(0,255,255,0.6)
+
+.category-add-btn
+    display: flex
+    align-items: center
+    justify-content: center
+    position: fixed
+    text-align: center
+    width: 80px
+    height: 30px
+    border: 1px solid colors.$border
+    background: colors.$btn
+    color: white
+    font-size: 12px
+    margin-left: 110px
+    border-radius: 7px
+    bottom: 14px
+
+.category-close-btn
+    @extend .category-add-btn
+    margin-left: 200px
+
+.form-control:focus
+    outline: 0
+    -webkit-box-shadow: 0px 1px 13px 5px rgba(0,255,255,0.48)
+    box-shadow: 0px 1px 13px 5px rgba(0,255,255,0.48)
