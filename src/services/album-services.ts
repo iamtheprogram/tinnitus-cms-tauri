@@ -124,6 +124,23 @@ export async function editAlbumCategory(category: AlbumCategory): Promise<void> 
     }
 }
 
+export async function deleteAlbumCategory(category: AlbumCategory): Promise<void> {
+    try {
+        const albums = await getDoc(doc(db, 'misc', 'albums'));
+        const categories = albums.data()!.categories;
+        for (let i = 0; i < categories.length; i++) {
+            if (categories[i].id === category.id) {
+                categories.splice(i, 1);
+            }
+        }
+        await updateDoc(doc(db, 'misc', 'albums'), {
+            categories: categories,
+        });
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function getAlbumReviews(id: string, date: Date): Promise<any[]> {
     try {
         return [];

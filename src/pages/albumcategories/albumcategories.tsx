@@ -10,7 +10,7 @@ import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { dialog } from '@tauri-apps/api';
 import { useDispatch } from 'react-redux';
-import { addAlbumCategory, editAlbumCategory } from '@services/album-services';
+import { addAlbumCategory, deleteAlbumCategory, editAlbumCategory } from '@services/album-services';
 
 type AlbumCategory = {
     name: string;
@@ -97,7 +97,7 @@ const AlbumCategories: React.FC = () => {
                         payload: temp,
                     });
                     dialog.message('Category added successfully!');
-                    setAddCategoryModal(false);
+                    onModalClose();
                 } else if (type === 'Edit') {
                     await editAlbumCategory(data);
                     const temp = categories.map((x: any) => x);
@@ -107,7 +107,7 @@ const AlbumCategories: React.FC = () => {
                         payload: temp,
                     });
                     dialog.message('Category edited successfully!');
-                    setAddCategoryModal(false);
+                    onModalClose();
                 }
             } catch (error: any) {
                 onModalClose();
@@ -118,7 +118,13 @@ const AlbumCategories: React.FC = () => {
 
     async function onCategoryDelete(it: number): Promise<void> {
         try {
-            dialog.ask('Are you sure you want to delete this category?');
+            await deleteAlbumCategory(categories[it]);
+            const temp = categories.map((x: any) => x);
+            temp.splice(it, 1);
+            dispatch({
+                type: 'general/categories',
+                payload: temp,
+            });
         } catch (error: any) {
             dialog.message(error.message);
         }
