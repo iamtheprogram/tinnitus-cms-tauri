@@ -58,6 +58,10 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
         }
     }
 
+    function onCategoriesClick(): void {
+        navigate('/album/categories');
+    }
+
     return (
         <div className={props.container + ' ToolbarContainer '}>
             <ReactTooltip place="top" type="dark" effect="float" delayShow={500} />
@@ -76,6 +80,10 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
             <div className="toolbar-action" onClick={onReviewClick}>
                 <img src={ToolbarIcons.Reviews} className="ActionIcon" />
                 <p>Reviews</p>
+            </div>
+            <div className="toolbar-action" onClick={onCategoriesClick}>
+                <img src={ToolbarIcons.Categories} className="ActionIcon" />
+                <p>Categories</p>
             </div>
         </div>
     );

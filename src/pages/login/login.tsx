@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { InputGroup, FormControl, Button, Form } from 'react-bootstrap';
-import logo from '@icons/logo.png';
+import logo from '@src/icons/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { app, db } from '@config/firebase';

@@ -130,7 +130,7 @@ const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
                     className="input"
                     required
                     value={name}
-                    onChange={(event): void => {
+                    onChange={(event: any): void => {
                         setName(event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1));
                         setNameInvalid('');
                     }}

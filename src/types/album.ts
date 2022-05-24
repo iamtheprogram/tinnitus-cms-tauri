@@ -43,3 +43,10 @@ export type ReviewData = {
     comment: string;
     date: Date;
 };
+
+export type AlbumCategory = {
+    name: string;
+    id: string;
+    description: string;
+    color: string;
+};

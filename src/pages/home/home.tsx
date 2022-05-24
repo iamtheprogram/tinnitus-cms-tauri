@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import logoIcon from '@icons/logo.png';
+import logoIcon from '@src/icons/logo.png';
 import { Icons } from '@utils/icons';
 import { getAuth } from 'firebase/auth';
 import { app } from '@src/config/firebase';
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
                         }
                     >
                         <img src={Icons['AudioIcon']} className="ButtonIcon" />
-                        <p>Albums</p>
+                        Albums
                     </Button>
                     <Button
                         // eslint-disable-next-line max-len
