@@ -52,15 +52,26 @@
     cursor: pointer
     margin-bottom: 10px
 
-    &:hover
-            opacity: 0.5
-
     p
         margin-left: 10px
 
     img
         width: 32px
         height: 32px
+
+.sidebar-submenu
+    display: none
+    transition: height 1.5s ease
+
+    ul
+        margin-top: 0px
+        margin-bottom: 0px
+        p
+            margin-bottom: 26px
+            cursor: pointer
+
+            &:hover
+                opacity: 0.5
 
 .sidebar-copyright
     position: fixed
