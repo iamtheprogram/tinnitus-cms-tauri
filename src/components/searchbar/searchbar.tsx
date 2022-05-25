@@ -205,21 +205,12 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                     ))}
                 </div>
             </div>
-            <Button
-                // data-tip="Cauta"
-                className="SearchButton"
-                onClick={onSearchBtnClick}
-            >
+            <Button className="SearchButton" onClick={onSearchBtnClick}>
                 <img src={Icons['MagnifierIcon']} className="SearchIcon"></img>
             </Button>
-            <Button
-                // data-tip="Lista video"
-                className="SearchButton"
-                style={{ marginLeft: '5px' }}
-                onClick={getListOfResources}
-            >
+            {/* <Button className="SearchButton" style={{ marginLeft: '5px' }} onClick={getListOfResources}>
                 <img src={Icons['ListIcon']} className="SearchIcon"></img>
-            </Button>
+            </Button> */}
             <Modal style={dialogStyles} isOpen={dialogOpen} ariaHideApp={false}>
                 <MessageBox setIsOpen={setDialogOpen} message={message} />
             </Modal>
