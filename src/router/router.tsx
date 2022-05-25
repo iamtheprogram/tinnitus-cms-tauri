@@ -8,6 +8,7 @@ import Welcome from '@pages/home/home';
 import AlbumEdit from '@pages/albumedit/albumedit';
 import AlbumReviews from '@pages/albumreview/albumreview';
 import AlbumCategories from '@pages/albumcategories/albumcategories';
+import AlbumList from '@pages/albumlist/albumlist';
 
 const Router: React.FC = () => {
     return (
@@ -15,6 +16,7 @@ const Router: React.FC = () => {
             <Routes>
                 <Route path={routes.HOME} element={<Welcome />} />
                 <Route path={routes.LOGIN} element={<Login />} />
+                <Route path={routes.ALBUM_LIST} element={<AlbumList />} />
                 <Route path={routes.ALBUM_VIEW} element={<AlbumView />} />
                 <Route path={routes.ALBUM_CREATE} element={<AlbumCreate />} />
                 <Route path={routes.ALBUM_EDIT} element={<AlbumEdit />} />

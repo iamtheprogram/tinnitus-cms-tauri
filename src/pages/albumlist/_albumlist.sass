@@ -1,0 +1,36 @@
+@use '../../styles/colors'
+
+.albums-table
+    width: 100%
+    .table
+        width: 100%
+        color: white
+        background: colors.$table
+        border-spacing: 0
+        border: 1px solid colors.$border
+        margin-top: 50px
+
+        tr
+            cursor: pointer
+
+        td, th
+            margin: 0
+            padding: 10px
+            border: 1px solid colors.$border
+            border-left: 0
+            border-bottom: none
+
+            &:last-child
+                border-right: none
+                padding: 0px
+
+        td
+            text-align: center
+            vertical-align: middle
+            padding: 10px
+
+            img
+                border: 1px solid colors.$border
+                border-radius: 2px
+                width: 64px
+                height: 64px

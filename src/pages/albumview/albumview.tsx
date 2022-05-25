@@ -75,64 +75,43 @@ const AlbumView: React.FC = () => {
     }
 
     function displayPage(): JSX.Element {
-        if (id === '0') {
+        if (dataFetched && albumData !== undefined) {
             return (
-                <div className="page">
+                <div className="page" id="page-album-view">
                     <Sidebar />
                     <div className="section-album" ref={container}>
                         <div className="SearchBarDiv">
                             <SearchBar type="album" ref={searchbarRef} />
                         </div>
                         <Container>
-                            <div className="section-no-content">
-                                <p>Please select an album to see more information or create a new one.</p>
-                                <button className="btn-create-album" onClick={(): void => navigate('/album/create')}>
-                                    Create
-                                </button>
+                            <Toolbar itemId={id as string} item={albumData} />
+                            <div className="section-album-content">
+                                <div>
+                                    <Artwork type="view" img={albumData.artwork} />
+                                    <Player ref={playerRef} />
+                                </div>
+                                <AlbumInfoView data={albumData} />
                             </div>
+                            <Table
+                                type="view"
+                                headers={[
+                                    'Name',
+                                    'Position',
+                                    'Length',
+                                    'Category',
+                                    <img src={Icons.Views} />,
+                                    <img src={Icons.Likes} />,
+                                    <img src={Icons.Favorites} />,
+                                ]}
+                                data={albumData.songs}
+                                onRowSelected={getSongUrl}
+                            />
                         </Container>
                     </div>
                 </div>
             );
         } else {
-            if (dataFetched && albumData !== undefined) {
-                return (
-                    <div className="page" id="page-album-view">
-                        <Sidebar />
-                        <div className="section-album" ref={container}>
-                            <div className="SearchBarDiv">
-                                <SearchBar type="album" ref={searchbarRef} />
-                            </div>
-                            <Container>
-                                <Toolbar itemId={id as string} item={albumData} />
-                                <div className="section-album-content">
-                                    <div>
-                                        <Artwork type="view" img={albumData.artwork} />
-                                        <Player ref={playerRef} />
-                                    </div>
-                                    <AlbumInfoView data={albumData} />
-                                </div>
-                                <Table
-                                    type="view"
-                                    headers={[
-                                        'Name',
-                                        'Position',
-                                        'Length',
-                                        'Category',
-                                        <img src={Icons.Views} />,
-                                        <img src={Icons.Likes} />,
-                                        <img src={Icons.Favorites} />,
-                                    ]}
-                                    data={albumData.songs}
-                                    onRowSelected={getSongUrl}
-                                />
-                            </Container>
-                        </div>
-                    </div>
-                );
-            } else {
-                return <div className="page"></div>;
-            }
+            return <div className="page"></div>;
         }
     }
 
