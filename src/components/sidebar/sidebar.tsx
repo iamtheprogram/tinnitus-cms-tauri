@@ -76,17 +76,18 @@ const Sidebar: React.FC = () => {
                     <img src={Icons.StatisticsIcon} />
                     <p>Statistics and reports</p>
                 </div>
-                <div
+                <a
                     className="sidebar-menu-item"
-                    onClick={(): Window => window.open('https://www.youtube.com/channel/UCIygYFvZg8xH3S05mS7xzNg')!}
+                    href="https://www.youtube.com/channel/UCIygYFvZg8xH3S05mS7xzNg"
+                    target="_blank"
                 >
                     <img src={Icons.ChannelIcon} />
-                    <p>YouTube channel</p>
-                </div>
-                <div className="sidebar-menu-item" onClick={(): Window => window.open('https://www.earsbuzzing.com')!}>
+                    <p style={{ color: '#00ffff' }}>YouTube channel</p>
+                </a>
+                <a className="sidebar-menu-item" href="https://www.earsbuzzing.com" target="_blank">
                     <img src={Icons.EarsbuzzingSite} />
-                    <p>Ears Buzzing site</p>
-                </div>
+                    <p style={{ color: '#00ffff' }}>Ears Buzzing site</p>
+                </a>
                 <div className="sidebar-menu-item" /**onClick={(): void => navigate('/tutorial')}**/>
                     <img src={Icons.Tutorial} />
                     <p>Tutorial</p>
