@@ -1,8 +1,18 @@
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 // import storage from 'redux-persist/lib/storage';
 import sessionStorage from 'redux-persist/lib/storage/session';
-import { rootReducer } from './index';
+import { albumReducer } from './reducers/album';
+import { generalReducer } from './reducers/general';
+import { ociReducer } from './reducers/oci';
+import { resdataReducer } from './reducers/resdata';
+
+export const rootReducer = combineReducers({
+    ociReducer: ociReducer,
+    resdataReducer: resdataReducer,
+    generalReducer: generalReducer,
+    albumReducer: albumReducer,
+});
 
 const persistConfig = {
     key: 'root',

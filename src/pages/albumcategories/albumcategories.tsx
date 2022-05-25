@@ -89,7 +89,7 @@ const AlbumCategories: React.FC = () => {
                     description: description,
                 };
                 if (type === 'Add') {
-                    await addAlbumCategory(data);
+                    await addAlbumCategory(data, 'albums');
                     const temp = categories.map((x: any) => x);
                     temp.push(data);
                     dispatch({
@@ -99,7 +99,7 @@ const AlbumCategories: React.FC = () => {
                     dialog.message('Category added successfully!');
                     onModalClose();
                 } else if (type === 'Edit') {
-                    await editAlbumCategory(data);
+                    await editAlbumCategory(data, 'albums');
                     const temp = categories.map((x: any) => x);
                     temp[currentIt.current] = data;
                     dispatch({
@@ -118,7 +118,7 @@ const AlbumCategories: React.FC = () => {
 
     async function onCategoryDelete(it: number): Promise<void> {
         try {
-            await deleteAlbumCategory(categories[it]);
+            await deleteAlbumCategory(categories[it], 'albums');
             const temp = categories.map((x: any) => x);
             temp.splice(it, 1);
             dispatch({

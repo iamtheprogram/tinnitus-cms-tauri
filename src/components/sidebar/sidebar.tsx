@@ -66,7 +66,8 @@ const Sidebar: React.FC = () => {
                                 <p>View presets</p>
                                 <p>Upload sample</p>
                                 <p>Upload preset</p>
-                                <p>Categories</p>
+                                <p>Categories samples</p>
+                                <p>Categories presets</p>
                             </li>
                         </ul>
                     </div>

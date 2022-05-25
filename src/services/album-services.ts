@@ -1,7 +1,17 @@
 import { db } from '@src/config/firebase';
 import { AlbumFormData, SongData, AlbumCategory, AlbumInfo } from '@src/types/album';
 import axios from 'axios';
-import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import {
+    arrayUnion,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    increment,
+    setDoc,
+    updateDoc,
+} from 'firebase/firestore';
 
 export async function getAlbums(): Promise<AlbumInfo[]> {
     try {
@@ -114,26 +124,27 @@ export async function deleteAlbum(
     }
 }
 
-export async function addAlbumCategory(category: AlbumCategory): Promise<void> {
+export async function addAlbumCategory(category: AlbumCategory, path: string): Promise<void> {
     try {
-        await updateDoc(doc(db, 'misc', 'albums'), {
+        await updateDoc(doc(db, 'misc', path), {
             categories: arrayUnion(category),
+            total: increment(1),
         });
     } catch (error) {
         throw error;
     }
 }
 
-export async function editAlbumCategory(category: AlbumCategory): Promise<void> {
+export async function editAlbumCategory(category: AlbumCategory, path: string): Promise<void> {
     try {
-        const albums = await getDoc(doc(db, 'misc', 'albums'));
+        const albums = await getDoc(doc(db, 'misc', path));
         const categories = albums.data()!.categories;
         for (let i = 0; i < categories.length; i++) {
             if (categories[i].id === category.id) {
                 categories[i] = category;
             }
         }
-        await updateDoc(doc(db, 'misc', 'albums'), {
+        await updateDoc(doc(db, 'misc', path), {
             categories: categories,
         });
     } catch (error) {
@@ -141,17 +152,18 @@ export async function editAlbumCategory(category: AlbumCategory): Promise<void> 
     }
 }
 
-export async function deleteAlbumCategory(category: AlbumCategory): Promise<void> {
+export async function deleteAlbumCategory(category: AlbumCategory, path: string): Promise<void> {
     try {
-        const albums = await getDoc(doc(db, 'misc', 'albums'));
+        const albums = await getDoc(doc(db, 'misc', path));
         const categories = albums.data()!.categories;
         for (let i = 0; i < categories.length; i++) {
             if (categories[i].id === category.id) {
                 categories.splice(i, 1);
             }
         }
-        await updateDoc(doc(db, 'misc', 'albums'), {
+        await updateDoc(doc(db, 'misc', path), {
             categories: categories,
+            total: increment(-1),
         });
     } catch (error) {
         throw error;

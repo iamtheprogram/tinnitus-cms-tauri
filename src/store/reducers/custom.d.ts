@@ -17,6 +17,33 @@ export type GeneralState = {
     }>;
 };
 
+export type AlbumState = {
+    categories: Array<{
+        name: string;
+        id: string;
+        description: string;
+        color: string;
+    }>;
+};
+
+export type SampleState = {
+    categories: Array<{
+        name: string;
+        id: string;
+        description: string;
+        color: string;
+    }>;
+};
+
+export type PresetState = {
+    categories: Array<{
+        name: string;
+        id: string;
+        description: string;
+        color: string;
+    }>;
+};
+
 export type OciState = {
     config: { prereq: string };
 };

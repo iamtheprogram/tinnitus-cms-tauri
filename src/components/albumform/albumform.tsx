@@ -128,6 +128,7 @@ const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
             <InputGroup hasValidation className="input-group">
                 <InputGroup.Text className="label">Name</InputGroup.Text>
                 <FormControl
+                    disabled={props.type === 'edit' ? true : false}
                     className="input"
                     required
                     value={name}

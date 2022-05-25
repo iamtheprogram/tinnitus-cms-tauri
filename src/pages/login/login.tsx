@@ -114,6 +114,19 @@ const Login: React.FC = () => {
         }
     }
 
+    async function fetchCategories(): Promise<void> {
+        try {
+            const docSnap = await getDoc(doc(db, 'misc', 'albums'));
+            const albumsConfig = docSnap.data()!;
+            dispatch({
+                type: 'general/categories',
+                payload: albumsConfig.categories,
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
     return (
         <div className="PageLogin">
             <img src={logo} className="LogoLogin" />
