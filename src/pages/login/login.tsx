@@ -102,12 +102,7 @@ const Login: React.FC = () => {
                 },
             });
             //Store albums configuration data and misc
-            docSnap = await getDoc(doc(db, 'misc', 'albums'));
-            const albumsConfig = docSnap.data()!;
-            dispatch({
-                type: 'general/categories',
-                payload: albumsConfig.categories,
-            });
+            await fetchCategories();
         } catch (error) {
             console.log(error);
             throw error;
@@ -116,11 +111,23 @@ const Login: React.FC = () => {
 
     async function fetchCategories(): Promise<void> {
         try {
-            const docSnap = await getDoc(doc(db, 'misc', 'albums'));
-            const albumsConfig = docSnap.data()!;
+            let docSnap = await getDoc(doc(db, 'misc', 'albums'));
+            let data = docSnap.data()!;
             dispatch({
-                type: 'general/categories',
-                payload: albumsConfig.categories,
+                type: 'album/categories',
+                payload: data.categories,
+            });
+            docSnap = await getDoc(doc(db, 'misc', 'samples'));
+            data = docSnap.data()!;
+            dispatch({
+                type: 'sample/categories',
+                payload: data.categories,
+            });
+            docSnap = await getDoc(doc(db, 'misc', 'presets'));
+            data = docSnap.data()!;
+            dispatch({
+                type: 'preset/categories',
+                payload: data.categories,
             });
         } catch (error) {
             throw error;

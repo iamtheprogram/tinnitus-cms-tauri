@@ -21,7 +21,7 @@ type AlbumCategory = {
 
 const AlbumCategories: React.FC = () => {
     const dispatch = useDispatch();
-    const categories = useSelector<CombinedStates>((state) => state.generalReducer.categories) as AlbumCategory[];
+    const categories = useSelector<CombinedStates>((state) => state.albumReducer.categories) as AlbumCategory[];
     const [addCategoryModal, setAddCategoryModal] = useState(false);
     const [name, setName] = useState('');
     const [nameInvalid, setNameInvalid] = useState('');

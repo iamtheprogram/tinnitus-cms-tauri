@@ -13,7 +13,7 @@ type FormProps = {
 };
 
 const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
-    const categories = useSelector<any>((state) => state.generalReducer.categories) as AlbumCategory[];
+    const categories = useSelector<any>((state) => state.albumReducer.categories) as AlbumCategory[];
     const [name, setName] = useState('');
     const [nameinvalid, setNameInvalid] = useState('');
     const [description, setDescription] = useState('');

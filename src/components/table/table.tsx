@@ -17,7 +17,7 @@ type TableProps = {
 };
 
 export const Table = forwardRef((props: TableProps, ref: any) => {
-    const categories = useSelector<CombinedStates>((state) => state.generalReducer.categories) as AlbumCategory[];
+    const categories = useSelector<CombinedStates>((state) => state.albumReducer.categories) as AlbumCategory[];
     const [invalid, setInvalid] = useState('');
     const table = useRef(null);
     const [tableData, setTableData] = useState(Array<SongData>());
