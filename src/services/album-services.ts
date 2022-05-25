@@ -1,7 +1,18 @@
 import { db } from '@src/config/firebase';
-import { AlbumFormData, SongData, AlbumCategory } from '@src/types/album';
+import { AlbumFormData, SongData, AlbumCategory, AlbumInfo } from '@src/types/album';
 import axios from 'axios';
-import { arrayUnion, deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+
+export async function getAlbums(): Promise<AlbumInfo[]> {
+    try {
+        const ref = collection(db, 'albums');
+        const q = await getDocs(ref);
+        const albums = q.docs.map((d) => d.data() as AlbumInfo);
+        return albums;
+    } catch (error) {
+        throw error;
+    }
+}
 
 export async function uploadAlbumInfo(id: string, info: AlbumFormData, tableData: SongData[]): Promise<string> {
     try {

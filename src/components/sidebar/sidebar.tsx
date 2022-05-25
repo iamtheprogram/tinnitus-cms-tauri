@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
                     <div className="sidebar-submenu" id="sidebar-submenu-albums">
                         <ul>
                             <li>
-                                <p onClick={(): void => navigate('/album/view/0')}>View albums</p>
+                                <p onClick={(): void => navigate(routes.ALBUM_LIST)}>View albums</p>
                                 <p onClick={(): void => navigate('/album/create')}>Upload album</p>
                                 <p onClick={(): void => navigate('/album/categories')}>Categories</p>
                             </li>
