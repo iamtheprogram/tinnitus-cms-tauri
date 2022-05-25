@@ -18,6 +18,7 @@ const AlbumList: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
     const searchbarRef = useRef<any>(null);
     const [albums, setAlbums] = React.useState<AlbumInfo[]>([]);
+    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (auth) {
@@ -33,6 +34,10 @@ const AlbumList: React.FC = () => {
             appendLoading();
             const albums = await getAlbums();
             albums.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+            //Add cover art paths
+            albums.forEach((album) => {
+                album.artwork = `${prereq}${album.id}/artwork.${album.extension}`;
+            });
             setAlbums(albums);
             //Loading is done
             removeLoading();
@@ -46,24 +51,28 @@ const AlbumList: React.FC = () => {
         if (albums.length === 0) {
             return (
                 <Container>
-                    <div className="section-album-content">
-                        <p>No album data</p>
+                    <div className="section-no-content">
+                        <p>You have no albums uploaded. Click below to add your first album</p>
+                        <button className="btn-create-album" onClick={(): void => navigate('/album/create')}>
+                            Create
+                        </button>
                     </div>
                 </Container>
             );
         } else {
             return (
-                <Container>
-                    <div className="section-album-content">
-                        <ul>
-                            {albums.map((album: AlbumInfo) => (
-                                <li key={album.id}>
-                                    <a href={`/album/${album.id}`}>{album.name}</a>
-                                </li>
-                            ))}
-                        </ul>
+                <>
+                    <div className="SearchBarDiv">
+                        <SearchBar type="album" ref={searchbarRef} />
                     </div>
-                </Container>
+                    <Container>
+                        <div className="section-album-content">
+                            <div className="albums-table">
+                                <AlbumsTable albums={albums} />
+                            </div>
+                        </div>
+                    </Container>
+                </>
             );
         }
     }
@@ -71,18 +80,69 @@ const AlbumList: React.FC = () => {
     return (
         <div className="page">
             <Sidebar />
-            <div className="section-album">
-                <div className="SearchBarDiv">
-                    <SearchBar type="album" ref={searchbarRef} />
-                </div>
-                {displayAlbums()}
-            </div>
+            <div className="section-album">{displayAlbums()}</div>
         </div>
     );
 };
 
-const AlbumsTable: React.FC = () => {
-    return <div></div>;
+type AlbumTableProps = {
+    albums: AlbumInfo[];
+};
+
+const AlbumsTable: React.FC<AlbumTableProps> = (props: AlbumTableProps) => {
+    const navigate = useNavigate();
+
+    function onAlbumClick(id: string): void {
+        navigate(`/album/view/${id}`);
+    }
+
+    return (
+        <table className="table" id="albums-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cover</th>
+                    <th>Name</th>
+                    <th>Created</th>
+                    <th>Songs</th>
+                    <th>Duration</th>
+                    <th>Likes</th>
+                    <th>Reviews</th>
+                </tr>
+            </thead>
+            <tbody>
+                {props.albums !== undefined &&
+                    props.albums.map((row: AlbumInfo, i: number) => {
+                        return (
+                            <tr key={`${i}`} id={`${i}`} onClick={(): void => onAlbumClick(row.id)}>
+                                <td>{i + 1}</td>
+                                <td>
+                                    <img src={row.artwork} alt="albums-cover" />
+                                </td>
+                                <td>
+                                    <p>{row.name}</p>
+                                </td>
+                                <td>
+                                    <p>{row.upload_date.toDate().toDateString()}</p>
+                                </td>
+                                <td>
+                                    <p>{row.songs.length}</p>
+                                </td>
+                                <td>
+                                    <p>{row.length}</p>
+                                </td>
+                                <td>
+                                    <p>{row.likes}</p>
+                                </td>
+                                <td>
+                                    <p>{row.reviews}</p>
+                                </td>
+                            </tr>
+                        );
+                    })}
+            </tbody>
+        </table>
+    );
 };
 
 export default AlbumList;

@@ -5,9 +5,15 @@ import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, update
 
 export async function getAlbums(): Promise<AlbumInfo[]> {
     try {
+        const albums = new Array<AlbumInfo>();
         const ref = collection(db, 'albums');
         const q = await getDocs(ref);
-        const albums = q.docs.map((d) => d.data() as AlbumInfo);
+        const docs = q.docs;
+        for (const doc of docs) {
+            const album = doc.data() as AlbumInfo;
+            album.id = doc.id;
+            albums.push(album);
+        }
         return albums;
     } catch (error) {
         throw error;
