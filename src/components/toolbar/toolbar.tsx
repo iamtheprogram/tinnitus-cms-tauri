@@ -48,7 +48,7 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
                         files: filesToDelete,
                     });
                     removeLoading();
-                    navigate('/album/view/0');
+                    navigate(routes.ALBUM_LIST);
                 }
             } catch (error: any) {
                 //Set message and notify user about occured error

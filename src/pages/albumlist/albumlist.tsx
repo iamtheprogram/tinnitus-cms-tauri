@@ -11,6 +11,7 @@ import Sidebar from '@components/sidebar/sidebar';
 import { AlbumInfo } from '@src/types/album';
 import { getAlbums } from '@services/album-services';
 import { Container } from 'react-bootstrap';
+import { Icons } from '@src/utils/icons';
 
 const AlbumList: React.FC = () => {
     const auth = useSelector<CombinedStates>((state) => state.generalReducer.auth) as any;
@@ -106,8 +107,15 @@ const AlbumsTable: React.FC<AlbumTableProps> = (props: AlbumTableProps) => {
                     <th>Created</th>
                     <th>Songs</th>
                     <th>Duration</th>
-                    <th>Likes</th>
-                    <th>Reviews</th>
+                    <th>
+                        <img src={Icons.Likes} />
+                    </th>
+                    <th>
+                        <img src={Icons.Favorites} />
+                    </th>
+                    <th>
+                        <img src={Icons.Reviews} />
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -133,6 +141,9 @@ const AlbumsTable: React.FC<AlbumTableProps> = (props: AlbumTableProps) => {
                                 </td>
                                 <td>
                                     <p>{row.likes}</p>
+                                </td>
+                                <td>
+                                    <p>{row.favorites}</p>
                                 </td>
                                 <td>
                                     <p>{row.reviews}</p>
