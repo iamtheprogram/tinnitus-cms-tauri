@@ -9,12 +9,6 @@ export type ResdataState = {
 
 export type GeneralState = {
     auth: any;
-    categories: Array<{
-        name: string;
-        id: string;
-        description: string;
-        color: string;
-    }>;
 };
 
 export type AlbumState = {
@@ -53,6 +47,9 @@ export type CombinedStates = {
     resdataReducer: ResdataState;
     progressReducer: ProgState;
     generalReducer: GeneralState;
+    albumReducer: AlbumState;
+    sampleReducer: SampleState;
+    presetReducer: PresetState;
 };
 
 export type action = {

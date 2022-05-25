@@ -1,5 +1,3 @@
-import { DefaultRequestSigner, HttpRequest } from 'oci-common';
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class Err {
     code: number;
