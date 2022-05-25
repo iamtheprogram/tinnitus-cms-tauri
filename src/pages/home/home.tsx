@@ -33,12 +33,7 @@ const Home: React.FC = () => {
             </div>
             <div className={'GridActions GridMove'}>
                 <ButtonGroup vertical className="ButtonGroup">
-                    <Button
-                        className="GridButton GridButtonText"
-                        onClick={(): void =>
-                            goToRoute(routes.ALBUM_VIEW.slice(0, routes.ALBUM_VIEW.lastIndexOf(':')) + '0')
-                        }
-                    >
+                    <Button className="GridButton GridButtonText" onClick={(): void => goToRoute(routes.ALBUM_LIST)}>
                         <img src={Icons['AudioIcon']} className="ButtonIcon" />
                         Albums
                     </Button>
