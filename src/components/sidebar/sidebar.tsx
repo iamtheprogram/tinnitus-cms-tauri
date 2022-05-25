@@ -10,10 +10,10 @@ const Sidebar: React.FC = () => {
         const submenu = document.getElementById(menu);
 
         if (submenu) {
-            if (submenu.style.display === 'block') {
+            if (submenu.style.display === 'flex') {
                 submenu.style.display = 'none';
             } else {
-                submenu.style.display = 'block';
+                submenu.style.display = 'flex';
             }
         }
     }
