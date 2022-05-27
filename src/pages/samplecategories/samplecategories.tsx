@@ -9,7 +9,7 @@ import { InputGroup, FormControl } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { dialog } from '@tauri-apps/api';
-import { addAlbumCategory, deleteAlbumCategory, editAlbumCategory } from '@services/album-services';
+import { addCategory, editCategory, deleteCategory } from '@services/general-services';
 
 type SampleCategory = {
     name: string;
@@ -88,7 +88,7 @@ const SampleCategories: React.FC = () => {
                     description: description,
                 };
                 if (type === 'Add') {
-                    await addAlbumCategory(data, 'samples');
+                    await addCategory(data, 'samples');
                     const temp = categories.map((x: any) => x);
                     temp.push(data);
                     dispatch({
@@ -98,7 +98,7 @@ const SampleCategories: React.FC = () => {
                     dialog.message('Category added successfully!');
                     onModalClose();
                 } else if (type === 'Edit') {
-                    await editAlbumCategory(data, 'samples');
+                    await editCategory(data, 'samples');
                     const temp = categories.map((x: any) => x);
                     temp[currentIt.current] = data;
                     dispatch({
@@ -117,7 +117,7 @@ const SampleCategories: React.FC = () => {
 
     async function onCategoryDelete(it: number): Promise<void> {
         try {
-            await deleteAlbumCategory(categories[it], 'samples');
+            await deleteCategory(categories[it], 'samples');
             const temp = categories.map((x: any) => x);
             temp.splice(it, 1);
             dispatch({
