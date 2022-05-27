@@ -10,6 +10,7 @@ import AlbumReviews from '@pages/albumreview/albumreview';
 import AlbumCategories from '@pages/albumcategories/albumcategories';
 import AlbumList from '@pages/albumlist/albumlist';
 import SampleCategories from '@pages/samplecategories/samplecategories';
+import PresetCategories from '@pages/presetcategories/presetcategories';
 
 const Router: React.FC = () => {
     return (
@@ -24,6 +25,7 @@ const Router: React.FC = () => {
                 <Route path={routes.ALBUM_REVIEWS} element={<AlbumReviews />} />
                 <Route path={routes.ALBUM_CATEGORIES} element={<AlbumCategories />} />
                 <Route path={routes.SAMPLE_CATEGORIES} element={<SampleCategories />} />
+                <Route path={routes.PRESET_CATEGORIES} element={<PresetCategories />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </HashRouter>

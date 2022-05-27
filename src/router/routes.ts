@@ -8,4 +8,5 @@ export const routes = {
     ALBUM_REVIEWS: '/album/reviews/:id',
     ALBUM_CATEGORIES: '/album/categories',
     SAMPLE_CATEGORIES: '/generator/sample/categories',
+    PRESET_CATEGORIES: '/generator/preset/categories',
 };
