@@ -1,7 +1,7 @@
 import Sidebar from '@components/sidebar/sidebar';
 import React, { useRef, useState } from 'react';
 import { Icons, ToolbarIcons } from '@src/utils/icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CombinedStates } from '@store/reducers/custom';
 import Modal from 'react-modal';
 import { categoryStyles } from '@src/styles/styles';
@@ -9,7 +9,6 @@ import { InputGroup, FormControl } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { dialog } from '@tauri-apps/api';
-import { useDispatch } from 'react-redux';
 import { addAlbumCategory, deleteAlbumCategory, editAlbumCategory } from '@services/album-services';
 
 type AlbumCategory = {
@@ -93,7 +92,7 @@ const AlbumCategories: React.FC = () => {
                     const temp = categories.map((x: any) => x);
                     temp.push(data);
                     dispatch({
-                        type: 'general/categories',
+                        type: 'album/categories',
                         payload: temp,
                     });
                     dialog.message('Category added successfully!');
@@ -103,7 +102,7 @@ const AlbumCategories: React.FC = () => {
                     const temp = categories.map((x: any) => x);
                     temp[currentIt.current] = data;
                     dispatch({
-                        type: 'general/categories',
+                        type: 'album/categories',
                         payload: temp,
                     });
                     dialog.message('Category edited successfully!');
@@ -122,7 +121,7 @@ const AlbumCategories: React.FC = () => {
             const temp = categories.map((x: any) => x);
             temp.splice(it, 1);
             dispatch({
-                type: 'general/categories',
+                type: 'album/categories',
                 payload: temp,
             });
         } catch (error: any) {

@@ -101,7 +101,7 @@ const Login: React.FC = () => {
                     prereq: ociConfig.oci_prereq,
                 },
             });
-            //Store albums configuration data and misc
+            //Storeconfiguration data and misc
             await fetchCategories();
         } catch (error) {
             console.log(error);

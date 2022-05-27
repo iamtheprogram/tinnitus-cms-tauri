@@ -43,8 +43,8 @@ const Sidebar: React.FC = () => {
                         <ul>
                             <li>
                                 <p onClick={(): void => navigate(routes.ALBUM_LIST)}>View albums</p>
-                                <p onClick={(): void => navigate('/album/create')}>Upload album</p>
-                                <p onClick={(): void => navigate('/album/categories')}>Categories</p>
+                                <p onClick={(): void => navigate(routes.ALBUM_CREATE)}>Upload album</p>
+                                <p onClick={(): void => navigate(routes.ALBUM_CATEGORIES)}>Categories</p>
                             </li>
                         </ul>
                     </div>
@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
                                 <p>View presets</p>
                                 <p>Upload sample</p>
                                 <p>Upload preset</p>
-                                <p>Categories samples</p>
+                                <p onClick={(): void => navigate(routes.SAMPLE_CATEGORIES)}>Categories samples</p>
                                 <p>Categories presets</p>
                             </li>
                         </ul>
