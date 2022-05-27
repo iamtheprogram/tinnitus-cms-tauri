@@ -4,7 +4,7 @@ const initialState: SampleState = {
     categories: [],
 };
 
-export function albumReducer(state: SampleState = initialState, action: action): SampleState {
+export function sampleReducer(state: SampleState = initialState, action: action): SampleState {
     const payload = action.payload;
     switch (action.type) {
         case 'sample/categories':

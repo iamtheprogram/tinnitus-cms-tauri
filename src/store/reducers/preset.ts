@@ -4,7 +4,7 @@ const initialState: PresetState = {
     categories: [],
 };
 
-export function albumReducer(state: PresetState = initialState, action: action): PresetState {
+export function presetReducer(state: PresetState = initialState, action: action): PresetState {
     const payload = action.payload;
     switch (action.type) {
         case 'preset/categories':

@@ -5,13 +5,17 @@ import sessionStorage from 'redux-persist/lib/storage/session';
 import { albumReducer } from './reducers/album';
 import { generalReducer } from './reducers/general';
 import { ociReducer } from './reducers/oci';
+import { presetReducer } from './reducers/preset';
 import { resdataReducer } from './reducers/resdata';
+import { sampleReducer } from './reducers/sample';
 
 export const rootReducer = combineReducers({
     ociReducer: ociReducer,
     resdataReducer: resdataReducer,
     generalReducer: generalReducer,
     albumReducer: albumReducer,
+    sampleReducer: sampleReducer,
+    presetReducer: presetReducer,
 });
 
 const persistConfig = {
