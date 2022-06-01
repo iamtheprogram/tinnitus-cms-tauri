@@ -6,7 +6,6 @@ export async function addCategory(category: Category, path: string): Promise<voi
     try {
         await updateDoc(doc(db, 'misc', path), {
             categories: arrayUnion(category),
-            total: increment(1),
         });
     } catch (error) {
         throw error;
