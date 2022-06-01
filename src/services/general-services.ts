@@ -40,7 +40,7 @@ export async function deleteCategory(category: Category, path: string): Promise<
         }
         await updateDoc(doc(db, 'misc', path), {
             categories: categories,
-            total: increment(-1),
+            deleted_categories: arrayUnion(category.id),
         });
     } catch (error) {
         throw error;
