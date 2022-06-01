@@ -10,6 +10,7 @@ import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { dialog } from '@tauri-apps/api';
 import { addCategory, editCategory, deleteCategory } from '@services/general-services';
+import Artwork from '@components/artwork/artwork';
 
 type AlbumCategory = {
     name: string;
@@ -31,10 +32,13 @@ const AlbumCategories: React.FC = () => {
     const [type, setType] = useState('Add');
     const currentIt = useRef(0);
     const [inputDisabled, setInputDisabled] = useState(false);
+    const [modalType, setModalType] = useState('create');
+    const artworkRef = useRef<any>(null);
 
     function onPlusClick(): void {
         setInputDisabled(false);
         setType('Add');
+        setModalType('create');
         setAddCategoryModal(true);
     }
 
@@ -59,12 +63,16 @@ const AlbumCategories: React.FC = () => {
         currentIt.current = it;
         setInputDisabled(true);
         setType('Edit');
+        setModalType('edit');
         setAddCategoryModal(true);
     }
 
     async function onAddCategory(): Promise<void> {
         let counter = 0;
 
+        if (artworkRef.current.getInputValidation() === false) {
+            counter++;
+        }
         if (name === '') {
             setNameInvalid('This field is mandatory');
             counter++;
@@ -196,51 +204,61 @@ const AlbumCategories: React.FC = () => {
             >
                 <p className="modal-title">Album categories</p>
                 <img src={Icons['CancelIcon']} className="cancel-icon" onClick={onModalClose} />
-                <div className="categories-modal-form">
-                    <InputGroup hasValidation className="input-group input-group-area">
-                        <InputGroup.Text className="label">Name</InputGroup.Text>
-                        <FormControl
-                            className="input"
-                            disabled={inputDisabled}
-                            required
-                            value={name}
-                            onChange={(event: any): void => {
-                                setName(event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1));
-                                setNameInvalid('');
-                            }}
+                <div className="categories-wrapper">
+                    <div className="category-image-div">
+                        <Artwork
+                            ref={artworkRef}
+                            type={modalType}
+                            className="category-image"
+                            message="Please select an image for category"
                         />
-                        <p className="invalid-input invalid-name">{nameInvalid}</p>
-                    </InputGroup>
-                    <div className="color-group">
-                        <InputGroup.Text className="label">Color</InputGroup.Text>
-                        <div
-                            className="color-picker-btn"
-                            onClick={(): void => setColorPicker(!colorPicker)}
-                            style={{ background: color }}
-                        />
-                        {colorPicker && (
-                            <SketchPicker
-                                className="color-picker"
-                                color={color}
-                                onChange={onColorChange}
-                                width={'160px'}
-                            />
-                        )}
                     </div>
-                    <InputGroup hasValidation className="input-group input-group-area">
-                        <InputGroup.Text className="label">Description</InputGroup.Text>
-                        <FormControl
-                            className="input-description"
-                            required
-                            as="textarea"
-                            value={description}
-                            onChange={(event): void => {
-                                setDescription(event.target.value);
-                                setDescInvalid('');
-                            }}
-                        />
-                        <p className="invalid-input invalid-desc">{descInvalid}</p>
-                    </InputGroup>
+                    <div className="categories-modal-form">
+                        <InputGroup hasValidation className="input-group input-group-area">
+                            <InputGroup.Text className="label">Name</InputGroup.Text>
+                            <FormControl
+                                className="input"
+                                disabled={inputDisabled}
+                                required
+                                value={name}
+                                onChange={(event: any): void => {
+                                    setName(event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1));
+                                    setNameInvalid('');
+                                }}
+                            />
+                            <p className="invalid-input invalid-name">{nameInvalid}</p>
+                        </InputGroup>
+                        <div className="color-group">
+                            <InputGroup.Text className="label">Color</InputGroup.Text>
+                            <div
+                                className="color-picker-btn"
+                                onClick={(): void => setColorPicker(!colorPicker)}
+                                style={{ background: color }}
+                            />
+                            {colorPicker && (
+                                <SketchPicker
+                                    className="color-picker"
+                                    color={color}
+                                    onChange={onColorChange}
+                                    width={'160px'}
+                                />
+                            )}
+                        </div>
+                        <InputGroup hasValidation className="input-group input-group-area">
+                            <InputGroup.Text className="label">Description</InputGroup.Text>
+                            <FormControl
+                                className="input-description"
+                                required
+                                as="textarea"
+                                value={description}
+                                onChange={(event): void => {
+                                    setDescription(event.target.value);
+                                    setDescInvalid('');
+                                }}
+                            />
+                            <p className="invalid-input invalid-desc">{descInvalid}</p>
+                        </InputGroup>
+                    </div>
                     <button
                         className="category-add-btn"
                         onClick={(): void => {
