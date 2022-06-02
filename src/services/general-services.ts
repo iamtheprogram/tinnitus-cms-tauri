@@ -1,5 +1,5 @@
 import { db } from '@config/firebase';
-import { updateDoc, doc, arrayUnion, increment, getDoc } from 'firebase/firestore';
+import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore';
 import { Category } from '@src/types/general';
 
 export async function addCategory(category: Category, path: string): Promise<void> {
