@@ -1,3 +1,2 @@
-pub mod albums;
-pub mod object;
 pub mod provider;
+pub mod object_storage;

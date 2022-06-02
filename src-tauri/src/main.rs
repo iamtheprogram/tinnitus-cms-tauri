@@ -20,8 +20,7 @@ use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 //Project specific modules
 mod oci;
 mod utils;
-use oci::albums::*;
-use oci::object::OciObjectStorageServices;
+use oci::object_storage::*;
 use oci::provider::*;
 
 #[tauri::command]
@@ -57,7 +56,7 @@ async fn get_album_object(
     object_path: String,
     object_name: String,
 ) -> Result<String, String> {
-    let album_service = AlbumsService::new();
+    let album_service = ObjectStorage::new();
     let result = album_service
         .get_object(&bucket, &object_path, &object_name)
         .await;
@@ -131,10 +130,10 @@ async fn get_audio_files() -> (bool, Vec<SongData>) {
 }
 
 #[tauri::command]
-async fn upload_audio_file(name: String, path: String, file: String) -> (bool, String) {
+async fn upload_file(name: String, path: String, file: String) -> (bool, String) {
     let read_data = fs::read(Path::new(file.as_str())).unwrap();
     // let data = base64::encode(&read_data);
-    let oci_album_service = AlbumsService::new();
+    let oci_album_service = ObjectStorage::new();
     // let response: Result<String, Box<dyn std::error::Error + Send + Sync>>;
 
     // TODO: Feature to come in next release
@@ -161,7 +160,7 @@ async fn upload_audio_file(name: String, path: String, file: String) -> (bool, S
 
 #[tauri::command]
 async fn delete_album(album: String, files: Vec<String>) -> (bool, String) {
-    let oci_album_service = AlbumsService::new();
+    let oci_album_service = ObjectStorage::new();
     let mut response: Result<(), Box<dyn std::error::Error + Send + Sync>> = Ok(());
 
     for file in files {
@@ -231,7 +230,7 @@ fn main() {
             get_album_object,
             get_artwork,
             get_audio_files,
-            upload_audio_file,
+            upload_file,
             delete_album,
         ])
         .menu(menu)

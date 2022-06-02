@@ -1,10 +1,9 @@
 use crate::oci::provider::STORE;
-use crate::{oci::object::OciObjectStorageServices, utils::http_utils::HttpService};
-use async_trait::async_trait;
+use crate::{utils::http_utils::HttpService};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 #[allow(unused)]
-pub struct AlbumsService {
+pub struct ObjectStorage {
     user: String,
     tenancy: String,
     fingerprint: String,
@@ -31,13 +30,8 @@ impl SongData {
     }
 }
 
-impl Default for AlbumsService {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl AlbumsService {
+#[allow(unused)]
+impl ObjectStorage {
     pub fn new() -> Self {
         let user: String = STORE.get("user").unwrap().unwrap();
         let tenancy: String = STORE.get("tenancy").unwrap().unwrap();
@@ -52,18 +46,14 @@ impl AlbumsService {
             preauthreq,
         }
     }
-}
 
-#[allow(unused)]
-#[async_trait]
-impl OciObjectStorageServices for AlbumsService {
-    async fn get_object(
+    pub async fn get_object(
         &self,
         bucket: &str,
         object_path: &str,
         object_name: &str,
     ) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
-        let endpoint = format!("{}albums/{}", self.preauthreq, object_path,);
+        let endpoint = object_path.to_string();
         //Generate signed request for GET album
         let http_service = HttpService::new(endpoint);
         // http_service.generate_request_get()?;
@@ -77,23 +67,23 @@ impl OciObjectStorageServices for AlbumsService {
         Ok("OK".to_string())
     }
 
-    async fn put_object(
+    pub async fn put_object(
         &self,
         bucket: &str,
         object_path: &str,
         object_name: &str,
         data: Vec<u8>,
     ) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
-        let endpoint = format!("{}albums/{}", self.preauthreq, object_path,);
+        let endpoint = object_path.to_string();
         //Create http client to send request
         let client = Client::new();
         let response = client.put(endpoint).body(data).send().await?;
-        let response_text = format!("Album song {} uploaded successfully", object_name);
-
-        Ok(response_text)
+        println!("{}", response.status());
+        println!("{}", response.text().await?);
+        Ok("OK".to_string())
     }
 
-    async fn put_object_multipart(
+    pub async fn put_object_multipart(
         &self,
         bucket: &str,
         object_path: &str,
@@ -103,12 +93,12 @@ impl OciObjectStorageServices for AlbumsService {
         Ok("OK".to_string())
     }
 
-    async fn delete_object(
+    pub async fn delete_object(
         &self,
         bucket: &str,
         object_path: &str,
     ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-        let endpoint = format!("{}albums/{}", self.preauthreq, object_path,);
+        let endpoint = object_path.to_string();
         let client = Client::new();
         let response = client.delete(endpoint).send().await?;
 
@@ -174,6 +164,7 @@ impl OciObjectStorageServices for AlbumsService {
     ) -> Result<(), Box<dyn std::error::Error>> {
         todo!()
     }
+
 }
 
 // #[allow(unused)]
