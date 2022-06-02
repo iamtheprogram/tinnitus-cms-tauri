@@ -1,7 +1,8 @@
 import { action, PresetState } from './custom';
+import { Category } from '@src/types/general';
 
 const initialState: PresetState = {
-    categories: [],
+    categories: new Array<Category>(),
 };
 
 export function presetReducer(state: PresetState = initialState, action: action): PresetState {

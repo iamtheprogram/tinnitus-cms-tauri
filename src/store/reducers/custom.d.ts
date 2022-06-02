@@ -1,3 +1,5 @@
+import { Category } from '@src/types/general';
+
 export type ResdataState = {
     selected: string;
     info: { name: string; value: unknown }[];
@@ -12,30 +14,15 @@ export type GeneralState = {
 };
 
 export type AlbumState = {
-    categories: Array<{
-        name: string;
-        id: string;
-        description: string;
-        color: string;
-    }>;
+    categories: Category[];
 };
 
 export type SampleState = {
-    categories: Array<{
-        name: string;
-        id: string;
-        description: string;
-        color: string;
-    }>;
+    categories: Category[];
 };
 
 export type PresetState = {
-    categories: Array<{
-        name: string;
-        id: string;
-        description: string;
-        color: string;
-    }>;
+    categories: Category[];
 };
 
 export type OciState = {

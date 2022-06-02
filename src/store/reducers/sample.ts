@@ -1,7 +1,8 @@
 import { action, SampleState } from './custom';
+import { Category } from '@src/types/general';
 
 const initialState: SampleState = {
-    categories: [],
+    categories: new Array<Category>(),
 };
 
 export function sampleReducer(state: SampleState = initialState, action: action): SampleState {
