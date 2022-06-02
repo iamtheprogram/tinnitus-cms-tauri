@@ -1,7 +1,8 @@
 import { action, AlbumState } from './custom';
+import { Category } from '@src/types/general';
 
 const initialState: AlbumState = {
-    categories: [],
+    categories: new Array<Category>(),
 };
 
 export function albumReducer(state: AlbumState = initialState, action: action): AlbumState {
