@@ -12,6 +12,7 @@ import { AlbumInfo } from '@src/types/album';
 import { getAlbums } from '@services/album-services';
 import { Container } from 'react-bootstrap';
 import { Icons } from '@src/utils/icons';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
 const AlbumList: React.FC = () => {
     const auth = useSelector<CombinedStates>((state) => state.generalReducer.auth) as any;
@@ -19,7 +20,7 @@ const AlbumList: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
     const searchbarRef = useRef<any>(null);
     const [albums, setAlbums] = React.useState<AlbumInfo[]>([]);
-    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (auth) {
@@ -37,7 +38,7 @@ const AlbumList: React.FC = () => {
             albums.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             //Add cover art paths
             albums.forEach((album) => {
-                album.artwork = `${prereq}${album.id}/artwork.${album.extension}`;
+                album.artwork = createObjectStoragePath(preauthreq, ['albums', album.id, `artwork.${album.extension}`]);
             });
             setAlbums(albums);
             //Loading is done
@@ -51,18 +52,16 @@ const AlbumList: React.FC = () => {
     function displayAlbums(): JSX.Element {
         if (albums.length === 0) {
             return (
-                <Container>
-                    <div className="section-no-content">
-                        <p>You have no albums uploaded. Click below to add your first album</p>
-                        <button className="btn-create-album" onClick={(): void => navigate('/album/create')}>
-                            Create
-                        </button>
-                    </div>
-                </Container>
+                <div className="section-no-content">
+                    <p>You have no albums uploaded. Click below to add your first album</p>
+                    <button className="btn-create-album" onClick={(): void => navigate('/album/create')}>
+                        Create
+                    </button>
+                </div>
             );
         } else {
             return (
-                <>
+                <div className="section-album">
                     <div className="SearchBarDiv">
                         <SearchBar type="album" ref={searchbarRef} />
                     </div>
@@ -73,7 +72,7 @@ const AlbumList: React.FC = () => {
                             </div>
                         </div>
                     </Container>
-                </>
+                </div>
             );
         }
     }
@@ -81,7 +80,7 @@ const AlbumList: React.FC = () => {
     return (
         <div className="page">
             <Sidebar />
-            <div className="section-album">{displayAlbums()}</div>
+            {displayAlbums()}
         </div>
     );
 };

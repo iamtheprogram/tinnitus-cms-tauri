@@ -14,9 +14,15 @@ import { deleteAlbum, uploadAlbumInfo } from '@src/services/album-services';
 import axios from 'axios';
 import { SongData } from '@src/types/album';
 import { invoke } from '@tauri-apps/api';
+import { createObjectStoragePath } from '@src/utils/helpers';
+import { Category } from '@src/types/general';
+import { routes } from '@src/router/routes';
+import { Container } from 'react-bootstrap';
 
 const AlbumCreate: React.FC = () => {
     const navigate = useNavigate();
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const categories = useSelector<CombinedStates>((state) => state.albumReducer.categories) as Category[];
     const auth = useSelector<CombinedStates>((state) => state.generalReducer.auth) as any;
     const filesUploaded = useRef<any>([]);
     const tableRef = createRef<any>();
@@ -79,13 +85,19 @@ const AlbumCreate: React.FC = () => {
                         extension: song.extension,
                         filePath: song.file,
                     };
-                    const res = (await invoke('upload_audio_file', {
+                    const urlPath = createObjectStoragePath(preauthreq, [
+                        'albums',
+                        songToUpload.album,
+                        `${songToUpload.name}.${songToUpload.extension}`,
+                    ]);
+                    console.log(urlPath);
+                    const res = (await invoke('upload_file', {
                         name: song.name,
-                        path: `${songToUpload.album}/${songToUpload.name}.${songToUpload.extension}`,
+                        path: urlPath,
                         file: song.file,
                     })) as any;
                     if (res[0]) {
-                        updateProgress((progress += step), 'success', res[1]);
+                        updateProgress((progress += step), 'success', `Album song ${song.name} uploaded successfully`);
                     } else {
                         throw new Error(res[1]);
                     }
@@ -97,9 +109,14 @@ const AlbumCreate: React.FC = () => {
                     extension: artwork.split('.').pop(),
                     filePath: artwork,
                 };
-                let res = (await invoke('upload_audio_file', {
+                const urlPath = createObjectStoragePath(preauthreq, [
+                    'albums',
+                    artworkToUpload.album,
+                    `artwork.${artworkToUpload.extension}`,
+                ]);
+                let res = (await invoke('upload_file', {
                     name: 'cover art',
-                    path: `${artworkToUpload.album}/artwork.${artworkToUpload.extension}`,
+                    path: urlPath,
                     file: artworkToUpload.filePath,
                 })) as any;
                 if (res[0]) {
@@ -124,28 +141,45 @@ const AlbumCreate: React.FC = () => {
         }
     }
 
+    function displayContent(): JSX.Element {
+        if (categories.length > 0) {
+            return (
+                <div className="upload-section" ref={content}>
+                    {/* Album details */}
+                    <div className="upload-album">
+                        {/* Artwork */}
+                        <Artwork ref={artworkRef} type="create" />
+                        {/* General info */}
+                        <AlbumForm type={'create'} ref={formRef} />
+                    </div>
+                    {/* Table with songs */}
+                    <Table
+                        type="create"
+                        headers={['Position', 'Name', 'Duration', 'Category']}
+                        ref={tableRef}
+                        calculateDuration={calculateDuration}
+                    />
+                    <button className="upload-btn-album" onClick={onUpload}>
+                        Upload
+                    </button>
+                </div>
+            );
+        } else {
+            return (
+                <div className="section-no-content">
+                    <p>There are no categories available. Click below to add a category</p>
+                    <button className="goto-categories-btn" onClick={(): void => navigate(routes.ALBUM_CATEGORIES)}>
+                        Create
+                    </button>
+                </div>
+            );
+        }
+    }
+
     return (
         <div className="page" id="page-upload-create">
             <Sidebar />
-            <div className="upload-section" ref={content}>
-                {/* Album details */}
-                <div className="upload-album">
-                    {/* Artwork */}
-                    <Artwork ref={artworkRef} type="create" />
-                    {/* General info */}
-                    <AlbumForm type={'create'} ref={formRef} />
-                </div>
-                {/* Table with songs */}
-                <Table
-                    type="create"
-                    headers={['Position', 'Name', 'Duration', 'Category']}
-                    ref={tableRef}
-                    calculateDuration={calculateDuration}
-                />
-                <button className="upload-btn-album" onClick={onUpload}>
-                    Upload
-                </button>
-            </div>
+            {displayContent()}
             <ProgressbarUpload ref={progressbarRef} abort={onUploadCancelled} />
         </div>
     );

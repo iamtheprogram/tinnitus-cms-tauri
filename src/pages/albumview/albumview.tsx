@@ -17,6 +17,7 @@ import { Icons } from '@src/utils/icons';
 import { doc, getDoc, collection } from 'firebase/firestore';
 import Player from '@components/player/player';
 import { useLoading } from '@pages/loading/loading';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
 const AlbumView: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
@@ -28,7 +29,7 @@ const AlbumView: React.FC = () => {
     const searchbarRef = createRef<any>();
     const playerRef = createRef<any>();
     const container = useRef(null);
-    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (auth) {
@@ -55,7 +56,7 @@ const AlbumView: React.FC = () => {
             const docRef = doc(collection(db, 'albums'), id);
             const docRes = await getDoc(docRef);
             const data = docRes.data()!;
-            data.artwork = `${prereq}${id}/artwork.${data.extension}`;
+            data.artwork = createObjectStoragePath(preauthreq, ['albums', id, `artwork.${data.extension}`]);
             data.upload_date = data.upload_date.toDate().toDateString();
             setAlbumData(data);
             //Loading is done
@@ -68,7 +69,9 @@ const AlbumView: React.FC = () => {
 
     async function getSongUrl(song: SongData): Promise<void> {
         try {
-            playerRef.current.setSong(`${prereq}${id}/${song.name}.${song.extension}`);
+            playerRef.current.setSong(
+                createObjectStoragePath(preauthreq, ['albums', id!, `${song.name}.${song.extension}`]),
+            );
         } catch (error) {
             console.log(error);
         }

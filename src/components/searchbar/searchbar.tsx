@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Reslist from '../reslist/reslist';
 import { useSelector } from 'react-redux';
 import { CombinedStates } from '@store/reducers/custom';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
 type SearchProps = {
     type: string;
@@ -25,7 +26,7 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
     const [selected, setSelected] = useState({ name: '' });
     const [searchedAlbums, setSearchedAlbums] = useState<any[]>([]);
     const reslistRef = createRef<any>();
-    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (selected !== null && selected.name != searchVal) {
@@ -57,7 +58,11 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                     //Take all data now to avoid doing an additional request
                     for (const doc of docs) {
                         const data = doc.data();
-                        const arworkUrl = `${prereq}${doc.id}/artwork.${data.extension}`;
+                        const arworkUrl = createObjectStoragePath(preauthreq, [
+                            'albums',
+                            doc.id,
+                            `artwork.${data.extension}`,
+                        ]);
                         albums.push({
                             id: doc.id,
                             name: data.name,
@@ -93,27 +98,27 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
         }
     }
 
-    async function getListOfResources(): Promise<void> {
-        const albumsRef = collection(db, 'albums');
-        const docs = await getDocs(albumsRef);
-        const temp = [];
-        //Get all albums documents
-        for (const doc of docs.docs) {
-            const data = doc.data();
-            temp.push({
-                id: doc.id,
-                name: data.name,
-                artwork: `${prereq}${doc.id}/artwork.${data.extension}`,
-                upload_date: data.upload_date.toDate().toDateString(),
-                upload_sort: data.upload_date.toDate(),
-            });
-        }
-        //Sort elements by date
-        temp.sort(compareByDateDesc);
-        //Provide data to basic resource table
-        setTableElements(temp);
-        setTableOpen(true);
-    }
+    // async function getListOfResources(): Promise<void> {
+    //     const albumsRef = collection(db, 'albums');
+    //     const docs = await getDocs(albumsRef);
+    //     const temp = [];
+    //     //Get all albums documents
+    //     for (const doc of docs.docs) {
+    //         const data = doc.data();
+    //         temp.push({
+    //             id: doc.id,
+    //             name: data.name,
+    //             artwork: `${prereq}${doc.id}/artwork.${data.extension}`,
+    //             upload_date: data.upload_date.toDate().toDateString(),
+    //             upload_sort: data.upload_date.toDate(),
+    //         });
+    //     }
+    //     //Sort elements by date
+    //     temp.sort(compareByDateDesc);
+    //     //Provide data to basic resource table
+    //     setTableElements(temp);
+    //     setTableOpen(true);
+    // }
 
     function compareByDateDesc(a: any, b: any): number {
         if (a.upload_sort < b.upload_sort) {
@@ -182,7 +187,7 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                     autoComplete="off"
                     autoCapitalize="on"
                     autoCorrect="off"
-                    aria-label={`Nume ${props.type}`}
+                    aria-label={`${props.type}`}
                     aria-describedby="basic-addon2"
                     className="SearchBar"
                     value={searchVal}
