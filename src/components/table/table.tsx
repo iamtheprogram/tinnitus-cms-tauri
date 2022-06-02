@@ -1,12 +1,13 @@
 import { Icons } from '@src/utils/icons';
 import React, { useState, useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
 import Dropdown from '@components/dropdown/dropdown';
-import { AlbumCategory, SongData } from '@src/types/album';
+import { SongData } from '@src/types/album';
 import ReactTooltip from 'react-tooltip';
 import { getDurationFormat } from '@utils/helpers';
 import { CombinedStates } from '@store/reducers/custom';
 import { useSelector } from 'react-redux';
 import { invoke } from '@tauri-apps/api';
+import { Category } from '@src/types/general';
 
 type TableProps = {
     type: string;
@@ -17,7 +18,7 @@ type TableProps = {
 };
 
 export const Table = forwardRef((props: TableProps, ref: any) => {
-    const categories = useSelector<CombinedStates>((state) => state.albumReducer.categories) as AlbumCategory[];
+    const categories = useSelector<CombinedStates>((state) => state.albumReducer.categories) as Category[];
     const [invalid, setInvalid] = useState('');
     const table = useRef(null);
     const [tableData, setTableData] = useState(Array<SongData>());

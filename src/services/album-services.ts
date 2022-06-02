@@ -99,7 +99,7 @@ export async function deleteAlbum(
         await deleteDoc(doc(db, 'albums', id));
         //Temporary store in db the id of deleted album
         await updateDoc(doc(db, 'misc', 'albums'), {
-            deleted: arrayUnion(album.id),
+            deleted_albums: arrayUnion(album.id),
         });
         //! Does not work with pre-authenticated requests
         // const res = (await invoke('delete_album', { album: album.id, files: album.files })) as any;

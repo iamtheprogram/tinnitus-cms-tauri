@@ -4,8 +4,9 @@ import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'rea
 import { InputGroup, FormControl } from 'react-bootstrap';
 import Dropdown from '@components/dropdown/dropdown';
 import { getDurationFormat, parseTags } from '@utils/helpers';
-import { AlbumCategory, AlbumFormData } from '@src/types/album';
+import { AlbumFormData } from '@src/types/album';
 import { useSelector } from 'react-redux';
+import { Category } from '@src/types/general';
 
 type FormProps = {
     type: string;
@@ -13,7 +14,7 @@ type FormProps = {
 };
 
 const AlbumForm = forwardRef((props: FormProps, ref?: any) => {
-    const categories = useSelector<any>((state) => state.albumReducer.categories) as AlbumCategory[];
+    const categories = useSelector<any>((state) => state.albumReducer.categories) as Category[];
     const [name, setName] = useState('');
     const [nameinvalid, setNameInvalid] = useState('');
     const [description, setDescription] = useState('');
