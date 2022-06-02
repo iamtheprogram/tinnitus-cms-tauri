@@ -2,69 +2,80 @@
 @use './styles/colors'
 
 body
-  position: relative
-  color: white
-  margin: 0px
-  height: 100vh
-  font-family: sans-serif
-  display: flex
-  justify-content: center
-  align-items: center
-  margin: 0px
-  overflow: hidden
+    position: relative
+    color: white
+    margin: 0px
+    height: 100vh
+    font-family: sans-serif
+    display: flex
+    justify-content: center
+    align-items: center
+    margin: 0px
+    overflow: hidden
 
 #root
-  width: 100%
-  height: 100%
+    width: 100%
+    height: 100%
 
 .page
-  width: 100vw
-  height: 100vh
-  display: flex
+    width: 100vw
+    height: 100vh
+    display: flex
 
 button
-  background-color: white
-  padding: 10px 20px
-  border-radius: 10px
-  border: none
-  appearance: none
-  font-size: 1.3rem
-  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)
-  transition: transform ease-in 0.1s
-  cursor: pointer
+    background-color: white
+    padding: 10px 20px
+    border-radius: 10px
+    border: none
+    appearance: none
+    font-size: 1.3rem
+    box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)
+    transition: transform ease-in 0.1s
+    cursor: pointer
 
 li
-  list-style: none
+    list-style: none
 
 a
-  text-decoration: none
-  height: fit-content
-  width: fit-content
+    text-decoration: none
+    height: fit-content
+    width: fit-content
 
 a:hover
-  opacity: 1
-  text-decoration: none
+    opacity: 1
+    text-decoration: none
 
 .Hello
-  display: flex
-  justify-content: center
-  align-items: center
-  margin: 20px 0
+    display: flex
+    justify-content: center
+    align-items: center
+    margin: 20px 0
 
 .cancel-icon
-  position: absolute
-  top: 4px
-  right: 5px
-  width: 20px
-  height: 20px
-  cursor: pointer
+    position: absolute
+    top: 4px
+    right: 5px
+    width: 20px
+    height: 20px
+    cursor: pointer
 
 .ReactModal__Overlay
-  opacity: 0
-  transition: opacity 500ms ease-in-out
+    opacity: 0
+    transition: opacity 500ms ease-in-out
 
 .ReactModal__Overlay--after-open
-  opacity: 1
+    opacity: 1
 
 .ReactModal__Overlay--before-close
-  opacity: 0
+    opacity: 0
+
+.section-no-content
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    width: 100%
+    height: 100%
+    font-size: 18px
+    color: black
+    margin-left: 300px
