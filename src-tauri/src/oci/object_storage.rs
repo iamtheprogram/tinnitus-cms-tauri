@@ -62,7 +62,6 @@ impl ObjectStorage {
         let response = client.get(http_service.uri.to_string()).send().await?;
         // let response = client.execute(request).await?;
         let body = response.text().await?;
-        println!("{}", body);
 
         Ok("OK".to_string())
     }

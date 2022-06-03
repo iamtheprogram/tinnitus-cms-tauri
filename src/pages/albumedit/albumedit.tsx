@@ -13,13 +13,14 @@ import { AlbumInfo } from '@src/types/album';
 import { editAlbumData } from '@src/services/album-services';
 import { useLoading } from '@pages/loading/loading';
 import { dialog } from '@tauri-apps/api';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
 const AlbumEdit: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const auth = useSelector<CombinedStates>((state) => state.generalReducer.auth) as any;
-    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
     const tableRef = createRef<any>();
     const formRef = createRef<any>();
     const artworkRef = createRef<any>();
@@ -42,7 +43,11 @@ const AlbumEdit: React.FC = () => {
             appendLoading();
             const docRef = await getDoc(doc(db, 'albums', id as string));
             albumData.current = docRef.data() as AlbumInfo;
-            albumData.current.artwork = `${prereq}${id}/artwork.${albumData.current.extension}`;
+            albumData.current.artwork = createObjectStoragePath(preauthreq, [
+                'albums',
+                id!,
+                `artwork.${albumData.current.extension}`,
+            ]);
             formData.current = {
                 name: albumData.current.name,
                 description: albumData.current.description,

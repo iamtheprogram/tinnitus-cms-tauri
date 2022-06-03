@@ -8,20 +8,16 @@ import { categoryStyles } from '@src/styles/styles';
 import { InputGroup, FormControl } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
-import { dialog } from '@tauri-apps/api';
+import { dialog, invoke } from '@tauri-apps/api';
 import { addCategory, editCategory, deleteCategory } from '@services/general-services';
 import Artwork from '@components/artwork/artwork';
+import { Category } from '@src/types/general';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
-type SampleCategory = {
-    name: string;
-    id: string;
-    color: string;
-    description: string;
-};
-
-const SampleCategories: React.FC = () => {
+const PresetCategories: React.FC = () => {
     const dispatch = useDispatch();
-    const categories = useSelector<CombinedStates>((state) => state.sampleReducer.categories) as SampleCategory[];
+    const categories = useSelector<CombinedStates>((state) => state.sampleReducer.categories) as Category[];
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
     const [addCategoryModal, setAddCategoryModal] = useState(false);
     const [name, setName] = useState('');
     const [nameInvalid, setNameInvalid] = useState('');
@@ -34,6 +30,7 @@ const SampleCategories: React.FC = () => {
     const [inputDisabled, setInputDisabled] = useState(false);
     const [modalType, setModalType] = useState('create');
     const artworkRef = useRef<any>(null);
+    const [categoryImg, setCategoryImg] = useState('');
 
     function onPlusClick(): void {
         setInputDisabled(false);
@@ -63,15 +60,86 @@ const SampleCategories: React.FC = () => {
         currentIt.current = it;
         setInputDisabled(true);
         setType('Edit');
+        const preview = createObjectStoragePath(preauthreq, [
+            'samples',
+            'categories',
+            categories[it].id,
+            'preview.' + categories[it].extension,
+        ]);
+        setCategoryImg(preview);
         setModalType('edit');
         setAddCategoryModal(true);
+    }
+
+    async function addNewCategory(): Promise<void> {
+        try {
+            const file = artworkRef.current.getData() as string;
+            const data = {
+                name: name,
+                id: uuid(),
+                description: description,
+                color: color,
+                extension: file.split('.').pop() as string,
+            };
+            const urlPath = createObjectStoragePath(preauthreq, [
+                'samples',
+                'categories',
+                data.id,
+                `preview.${file.split('.').pop()}`,
+            ]);
+            const result = (await invoke('upload_file', {
+                name: 'cover art',
+                path: urlPath,
+                file: file,
+            })) as any;
+            if (result[0]) {
+                await addCategory(data, 'samples');
+                const temp = categories.map((x: any) => x);
+                temp.push(data);
+                dispatch({
+                    type: 'sample/categories',
+                    payload: temp,
+                });
+                dialog.message('Category added successfully!');
+                onModalClose();
+            } else {
+                throw new Error('Could not upload category preview image');
+            }
+        } catch (error: any) {
+            dialog.message(error.message);
+        }
+    }
+
+    async function uploadChanges(category: Category): Promise<void> {
+        try {
+            const data = {
+                name: category.name,
+                id: category.id,
+                description: description,
+                color: color,
+                extension: category.extension,
+            };
+            await editCategory(data, 'samples');
+            const temp = categories.map((x: any) => x);
+            temp[currentIt.current] = data;
+            dispatch({
+                type: 'sample/categories',
+                payload: temp,
+            });
+            dialog.message('Category edited successfully!');
+            onModalClose();
+        } catch (error: any) {
+            dialog.message(error.message);
+        }
     }
 
     async function onAddCategory(): Promise<void> {
         let counter = 0;
 
-        if (artworkRef.current.getInputValidation() === false) {
-            counter++;
+        if (type === 'Add') {
+            if (artworkRef.current.getInputValidation() === false) {
+                counter++;
+            }
         }
         if (name === '') {
             setNameInvalid('This field is mandatory');
@@ -88,37 +156,10 @@ const SampleCategories: React.FC = () => {
         }
 
         if (counter === 0) {
-            try {
-                const data = {
-                    name: name,
-                    id: type === 'Add' ? uuid() : categories[currentIt.current].id,
-                    color: color,
-                    description: description,
-                };
-                if (type === 'Add') {
-                    await addCategory(data, 'samples');
-                    const temp = categories.map((x: any) => x);
-                    temp.push(data);
-                    dispatch({
-                        type: 'sample/categories',
-                        payload: temp,
-                    });
-                    dialog.message('Category added successfully!');
-                    onModalClose();
-                } else if (type === 'Edit') {
-                    await editCategory(data, 'samples');
-                    const temp = categories.map((x: any) => x);
-                    temp[currentIt.current] = data;
-                    dispatch({
-                        type: 'sample/categories',
-                        payload: temp,
-                    });
-                    dialog.message('Category edited successfully!');
-                    onModalClose();
-                }
-            } catch (error: any) {
-                onModalClose();
-                dialog.message(error.message);
+            if (type === 'Add') {
+                await addNewCategory();
+            } else if (type === 'Edit') {
+                await uploadChanges(categories[currentIt.current]);
             }
         }
     }
@@ -146,6 +187,7 @@ const SampleCategories: React.FC = () => {
                     <table className="table" id="categories-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>
@@ -159,6 +201,7 @@ const SampleCategories: React.FC = () => {
                                 categories.map((row: any, i: number) => {
                                     return (
                                         <tr key={`${i}`} id={`${i}`}>
+                                            <td>{i + 1}</td>
                                             <td>
                                                 <p>{row.name}</p>
                                             </td>
@@ -211,6 +254,7 @@ const SampleCategories: React.FC = () => {
                             type={modalType}
                             className="category-image"
                             message="Please select an image for category"
+                            img={categoryImg}
                         />
                     </div>
                     <div className="categories-modal-form">
@@ -240,7 +284,7 @@ const SampleCategories: React.FC = () => {
                                     className="color-picker"
                                     color={color}
                                     onChange={onColorChange}
-                                    width={'200px'}
+                                    width={'160px'}
                                 />
                             )}
                         </div>
@@ -276,4 +320,4 @@ const SampleCategories: React.FC = () => {
     );
 };
 
-export default SampleCategories;
+export default PresetCategories;

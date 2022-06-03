@@ -136,8 +136,10 @@ const AlbumCategories: React.FC = () => {
     async function onAddCategory(): Promise<void> {
         let counter = 0;
 
-        if (artworkRef.current.getInputValidation() === false) {
-            counter++;
+        if (type === 'Add') {
+            if (artworkRef.current.getInputValidation() === false) {
+                counter++;
+            }
         }
         if (name === '') {
             setNameInvalid('This field is mandatory');
