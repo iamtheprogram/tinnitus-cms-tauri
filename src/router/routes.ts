@@ -8,5 +8,13 @@ export const routes = {
     ALBUM_REVIEWS: '/album/reviews/:id',
     ALBUM_CATEGORIES: '/album/categories',
     SAMPLE_CATEGORIES: '/generator/sample/categories',
+    SAMPLE_CREATE: '/generator/sample/create',
+    SAMPLE_LIST: '/generator/sample/list',
+    SAMPLE_VIEW: '/generator/sample/view/:id',
+    SAMPLE_EDIT: '/generator/sample/edit/:id',
     PRESET_CATEGORIES: '/generator/preset/categories',
+    PRESET_CREATE: '/generator/preset/create',
+    PRESET_LIST: '/generator/preset/list',
+    PRESET_VIEW: '/generator/preset/view/:id',
+    PRESET_EDIT: '/generator/preset/edit/:id',
 };
