@@ -11,6 +11,7 @@ import AlbumCategories from '@pages/albumcategories/albumcategories';
 import AlbumList from '@pages/albumlist/albumlist';
 import SampleCategories from '@pages/samplecategories/samplecategories';
 import PresetCategories from '@pages/presetcategories/presetcategories';
+import SampleCreate from '@pages/samplecreate/samplecreate';
 
 const Router: React.FC = () => {
     return (
@@ -26,6 +27,7 @@ const Router: React.FC = () => {
                 <Route path={routes.ALBUM_CATEGORIES} element={<AlbumCategories />} />
                 <Route path={routes.SAMPLE_CATEGORIES} element={<SampleCategories />} />
                 <Route path={routes.PRESET_CATEGORIES} element={<PresetCategories />} />
+                <Route path={routes.SAMPLE_CREATE} element={<SampleCreate />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </HashRouter>

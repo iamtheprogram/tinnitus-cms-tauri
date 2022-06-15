@@ -17,7 +17,6 @@ import { invoke } from '@tauri-apps/api';
 import { createObjectStoragePath } from '@src/utils/helpers';
 import { Category } from '@src/types/general';
 import { routes } from '@src/router/routes';
-import { Container } from 'react-bootstrap';
 
 const AlbumCreate: React.FC = () => {
     const navigate = useNavigate();
