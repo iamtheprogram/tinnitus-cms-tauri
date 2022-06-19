@@ -3,14 +3,11 @@
 .categories-section
     display: flex
     flex-direction: column
-    width: calc(100% - 300px - 40px)
-    padding: 20px
+    width: calc(100% - 300px - 80px)
+    padding: 20px 40px 20px 40px
     margin-left: 320px
     overflow: auto
     font-family: sans-serif
-
-    .categories-header
-        color: black
 
     .table-section
         position: relative
@@ -77,6 +74,12 @@
     position: absolute
     bottom: -20px
     left: 100px
+
+.categories-title
+    color: black
+    margin: 0px
+    margin-bottom: 20px
+    border-bottom: 1px solid colors.$background
 
 @keyframes row-highlight
     0%
