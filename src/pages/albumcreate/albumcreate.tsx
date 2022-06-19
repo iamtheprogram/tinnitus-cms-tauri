@@ -144,6 +144,7 @@ const AlbumCreate: React.FC = () => {
         if (categories.length > 0) {
             return (
                 <div className="upload-section" ref={content}>
+                    <h3 className="upload-album-title">Album upload</h3>
                     {/* Album details */}
                     <div className="upload-album">
                         {/* Artwork */}
@@ -166,6 +167,7 @@ const AlbumCreate: React.FC = () => {
         } else {
             return (
                 <div className="section-no-content">
+                    <h3 className="upload-album-title">Album upload</h3>
                     <p>There are no categories available. Click below to add a category</p>
                     <button className="goto-categories-btn" onClick={(): void => navigate(routes.ALBUM_CATEGORIES)}>
                         Create

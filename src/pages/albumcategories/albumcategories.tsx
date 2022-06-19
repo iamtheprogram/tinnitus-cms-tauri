@@ -182,7 +182,7 @@ const AlbumCategories: React.FC = () => {
         <div className="page" id="page-upload-edit">
             <Sidebar />
             <div className="categories-section">
-                <h2 className="categories-header">Album categories</h2>
+                <h3 className="categories-title">Album categories</h3>
                 <div className="table-section">
                     <table className="table" id="categories-table">
                         <thead>
