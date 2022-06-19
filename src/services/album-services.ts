@@ -70,26 +70,6 @@ export async function editAlbumData(id: string, info: AlbumFormData, tableData: 
     }
 }
 
-export async function uploadNotification(id: string, notification: string): Promise<void> {
-    try {
-        //Send notification to all users
-        await axios.post(
-            'https://us-central1-tinnitus-50627.cloudfunctions.net/sendNotification',
-            {},
-            {
-                params: {
-                    title: 'New album added',
-                    body: notification,
-                    // eslint-disable-next-line max-len
-                    icon: 'https://firebasestorage.googleapis.com/v0/b/tinnitus-50627.appspot.com/o/logo.png?alt=media&token=b7fe80c7-2b6f-4bd8-8c57-637a5e404591',
-                },
-            },
-        );
-    } catch (error) {
-        throw error;
-    }
-}
-
 export async function deleteAlbum(
     id: string,
     album: { id: string; files: string[] },
