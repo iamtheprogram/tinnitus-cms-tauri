@@ -2,14 +2,18 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { SampleFormData } from '@src/types/sample';
 import { useSelector } from 'react-redux';
 import { Category } from '@src/types/general';
-import { getDurationFormat, parseTags } from '@utils/helpers';
+import { createObjectStoragePath, getDurationFormat, parseTags } from '@utils/helpers';
 import { db } from '@config/firebase';
-import { query, collection, where, getDocs } from 'firebase/firestore';
+import { query, collection, where, getDocs, doc } from 'firebase/firestore';
 import { AlbumFormData } from 'types/album';
 import { InputGroup, FormControl } from 'react-bootstrap';
 import Dropdown from '@components/dropdown/dropdown';
 import { invoke } from '@tauri-apps/api';
 import Artwork from '@components/artwork/artwork';
+import { CombinedStates } from '@store/reducers/custom';
+import { deleteSample, uploadSampleInfo } from '@services/sample-services';
+import ProgressbarUpload from '@components/progressbar/progressbar-upload';
+import axios from 'axios';
 
 type FormProps = {
     type: string;
@@ -17,7 +21,8 @@ type FormProps = {
 };
 
 const SampleForm = forwardRef((props: FormProps, ref?: any) => {
-    const categories = useSelector<any>((state) => state.sampleReducer.categories) as Category[];
+    const categories = useSelector<CombinedStates>((state) => state.sampleReducer.categories) as Category[];
+    const preauthreq = useSelector<CombinedStates>((state: CombinedStates) => state.ociReducer.config.prereq) as string;
     const [name, setName] = useState('');
     const [nameinvalid, setNameInvalid] = useState('');
     const [description, setDescription] = useState('');
@@ -30,6 +35,8 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
     const [fileInvalid, setFileInvalid] = useState('');
     const extension = useRef<string>();
     const artworkRef = useRef<any>(null);
+    const progressbarRef = useRef<any>(null);
+    const cancelSource = useRef(axios.CancelToken.source());
 
     useEffect(() => {
         if (props.data !== undefined && props.type === 'edit') {
@@ -144,13 +151,37 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
         }
     }
 
-    async function onUploadClick(): Promise<void> {
+    async function validateInputs(): Promise<boolean> {
         let counter = 0;
         const artworkValidation = await artworkRef.current.getInputValidation();
 
         if (name === '') {
             setNameInvalid('This field is mandatory');
             counter++;
+        } else {
+            //Different behaviour depending on the type
+            if (props.type === 'edit') {
+                //Check if new provided name is different from the old one
+                if (name !== props.data!.name) {
+                    const q = query(collection(db, 'samples'), where('name', '==', name));
+                    const querySnapshot = await getDocs(q);
+                    if (querySnapshot.docs.length > 0) {
+                        setNameInvalid('A sample with this name already exists');
+                        counter++;
+                    } else {
+                        setNameInvalid('');
+                    }
+                }
+            } else if (props.type === 'create') {
+                const q = query(collection(db, 'samples'), where('name', '==', name));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.docs.length > 0) {
+                    setNameInvalid('A sample with this name already exists');
+                    counter++;
+                } else {
+                    setNameInvalid('');
+                }
+            }
         }
         if (description === '') {
             setDescInvalid('This field is mandatory');
@@ -165,8 +196,94 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
         }
 
         if (counter === 0) {
-            
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    async function onUploadClick(): Promise<void> {
+        if (await validateInputs()) {
+            const docRef = doc(collection(db, 'samples'));
+            try {
+                let progress = 10;
+                //Initialize progress bar and start uploading
+                progressbarRef.current.enable(true);
+                updateProgress(progress, 'info', 'Uploading sample...');
+                //Upload sample audio
+                let urlPath = createObjectStoragePath(preauthreq, [
+                    'samples',
+                    docRef.id,
+                    `${name}.${extension.current}`,
+                ]);
+                const result = (await invoke('upload_file', {
+                    name: name,
+                    path: urlPath,
+                    file: file.current,
+                })) as any;
+                if (result[0]) {
+                    updateProgress((progress += 50), 'success', `Sample ${name} uploaded successfully`);
+                } else {
+                    throw new Error(result[1]);
+                }
+                //Upload artwork
+                const preview = artworkRef.current.getData();
+                urlPath = createObjectStoragePath(preauthreq, [
+                    'samples',
+                    docRef.id,
+                    `preview.${preview.split('.').pop()}`,
+                ]);
+                const previewResult = (await invoke('upload_file', {
+                    name: name,
+                    path: urlPath,
+                    file: preview,
+                })) as any;
+                if (previewResult[0]) {
+                    updateProgress((progress += 20), 'success', `Preview for sample ${name} uploaded successfully`);
+                } else {
+                    throw new Error(previewResult[1]);
+                }
+                //Register sample in db
+                const formData = {
+                    name: name,
+                    description: description,
+                    tags: parseTags('array', tags),
+                    extension: extension.current,
+                    length: length,
+                    category: category,
+                };
+                const response = await uploadSampleInfo(docRef.id, formData);
+                updateProgress(100, 'success', response);
+                progressbarRef.current.logMessage('info', 'All sample data uploaded successfully!');
+                clearStates();
+            } catch (error: any) {
+                deleteSample(docRef.id);
+                progressbarRef.current.operationFailed(error.message);
+                //Create a new cancel token
+                cancelSource.current = axios.CancelToken.source();
+            }
+        }
+    }
+
+    function onUploadCancelled(): void {
+        cancelSource.current.cancel('User cancelled upload');
+    }
+
+    function clearStates(): void {
+        artworkRef.current.clearInternalStates();
+        file.current = '';
+        extension.current = '';
+        setName('');
+        setDescription('');
+        setTags('');
+        setLength('');
+        setNotification('');
+        setCategory(categories[0].name);
+    }
+
+    function updateProgress(progress: number, type: string, message: string): void {
+        progressbarRef.current.setProgress(progress);
+        progressbarRef.current.logMessage(type, message);
     }
 
     return (
@@ -253,6 +370,7 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
                     </button>
                 </div>
             </div>
+            <ProgressbarUpload ref={progressbarRef} abort={onUploadCancelled} />
         </div>
     );
 });

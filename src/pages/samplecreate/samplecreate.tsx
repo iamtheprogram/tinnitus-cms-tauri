@@ -4,7 +4,6 @@ import Sidebar from '@components/sidebar/sidebar';
 import { useNavigate } from 'react-router-dom';
 import { CombinedStates } from '@store/reducers/custom';
 import { Category } from '@src/types/general';
-import Artwork from '@components/artwork/artwork';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { routes } from '@src/router/routes';
@@ -14,16 +13,13 @@ import SampleForm from '@components/sampleform/sampleform';
 
 const SampleCreate: React.FC = () => {
     const navigate = useNavigate();
-    const preauthreq = useSelector<CombinedStates>((state: CombinedStates) => state.ociReducer.config.prereq) as string;
     const categories = useSelector<CombinedStates>(
         (state: CombinedStates) => state.sampleReducer.categories,
     ) as Category[];
     const auth = useSelector<CombinedStates>((state: CombinedStates) => state.generalReducer.auth) as any;
-    const artworkRef = useRef<any>(null);
     const formRef = useRef<any>(null);
     const content = useRef<any>(null);
     const progressbarRef = useRef<any>(null);
-    const cancelSource = useRef(axios.CancelToken.source());
 
     useEffect(() => {
         if (auth) {
@@ -32,10 +28,6 @@ const SampleCreate: React.FC = () => {
             navigate(routes.LOGIN);
         }
     }, [getAuth(app).currentUser]);
-
-    function onUploadCancelled(): void {
-        cancelSource.current.cancel('User cancelled upload');
-    }
 
     function displayContent(): JSX.Element {
         if (categories.length > 0) {
@@ -62,7 +54,6 @@ const SampleCreate: React.FC = () => {
         <div className="page" id="page-upload-create">
             <Sidebar />
             {displayContent()}
-            <ProgressbarUpload ref={progressbarRef} abort={onUploadCancelled} />
         </div>
     );
 };
