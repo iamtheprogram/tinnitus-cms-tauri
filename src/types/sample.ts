@@ -7,9 +7,6 @@ export type SampleFormData = {
     length: string;
     category: string;
     notification?: string;
-    likes?: number;
-    favorites?: number;
-    views?: number;
 };
 
 export type SampleInfo = {

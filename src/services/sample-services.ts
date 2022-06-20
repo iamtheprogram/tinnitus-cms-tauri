@@ -19,9 +19,9 @@ export async function getSamples(): Promise<SampleInfo[]> {
     }
 }
 
-export async function uploadSampleInfo(info: SampleFormData): Promise<string> {
+export async function uploadSampleInfo(id: string, info: SampleFormData): Promise<string> {
     try {
-        const sampleDocRef = doc(collection(db, 'albums'));
+        const sampleDocRef = doc(db, 'samples', id);
         await setDoc(sampleDocRef, {
             name: info.name,
             upload_date: new Date(),

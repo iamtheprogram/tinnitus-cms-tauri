@@ -70,7 +70,7 @@ const AlbumCreate: React.FC = () => {
 
             try {
                 let progress = 10;
-                //Iniitialize progress bar and start uploading
+                //Initialize progress bar and start uploading
                 progressbarRef.current.enable(true);
                 updateProgress(progress, 'info', 'Uploading album...');
                 //Upload album songs to OCI storage
@@ -89,7 +89,6 @@ const AlbumCreate: React.FC = () => {
                         songToUpload.album,
                         `${songToUpload.name}.${songToUpload.extension}`,
                     ]);
-                    console.log(urlPath);
                     const res = (await invoke('upload_file', {
                         name: song.name,
                         path: urlPath,
