@@ -1,5 +1,5 @@
 use crate::oci::provider::STORE;
-use crate::{utils::http_utils::HttpService};
+use crate::utils::http_utils::HttpService;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 #[allow(unused)]
@@ -60,10 +60,11 @@ impl ObjectStorage {
         //Create http client to send request
         let client = Client::new();
         let response = client.get(http_service.uri.to_string()).send().await?;
-        // let response = client.execute(request).await?;
-        let body = response.text().await?;
-
-        Ok("OK".to_string())
+        // let body = response.text().await?;
+        match response.error_for_status() {
+            Err(e) => Err(Box::new(e)),
+            Ok(_) => Ok("OK".to_string()),
+        }
     }
 
     pub async fn put_object(
@@ -77,9 +78,10 @@ impl ObjectStorage {
         //Create http client to send request
         let client = Client::new();
         let response = client.put(endpoint).body(data).send().await?;
-        println!("{}", response.status());
-        println!("{}", response.text().await?);
-        Ok("OK".to_string())
+        match response.error_for_status() {
+            Err(e) => Err(Box::new(e)),
+            Ok(_) => Ok("OK".to_string()),
+        }
     }
 
     pub async fn put_object_multipart(
@@ -163,7 +165,6 @@ impl ObjectStorage {
     ) -> Result<(), Box<dyn std::error::Error>> {
         todo!()
     }
-
 }
 
 // #[allow(unused)]
