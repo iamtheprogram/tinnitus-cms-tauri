@@ -25,7 +25,6 @@ export async function uploadSampleInfo(id: string, info: SampleFormData): Promis
         await setDoc(sampleDocRef, {
             name: info.name,
             upload_date: new Date(),
-            extension: info.extension,
             category: info.category,
             description: info.description,
             tags: info.tags,

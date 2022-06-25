@@ -32,7 +32,6 @@ export async function uploadAlbumInfo(id: string, info: AlbumFormData, tableData
         await setDoc(albumDocRef, {
             name: info.name,
             upload_date: new Date(),
-            extension: info.extension,
             category: info.category,
             description: info.description,
             tags: info.tags,

@@ -77,17 +77,16 @@ const AlbumCreate: React.FC = () => {
                 const tableData: SongData[] = tableRef.current.getData();
                 const step = Math.floor(80 / tableData.length);
                 for (const song of tableData) {
-                    filesUploaded.current.push(`${song.name}.${song.extension}`);
+                    filesUploaded.current.push(`${song.name}.wav`);
                     const songToUpload = {
                         album: docRef.id,
                         name: song.name,
-                        extension: song.extension,
                         filePath: song.file,
                     };
                     const urlPath = createObjectStoragePath(preauthreq, [
                         'albums',
                         songToUpload.album,
-                        `${songToUpload.name}.${songToUpload.extension}`,
+                        `${songToUpload.name}.wav`,
                     ]);
                     const res = (await invoke('upload_file', {
                         name: song.name,
@@ -104,14 +103,9 @@ const AlbumCreate: React.FC = () => {
                 const artwork = artworkRef.current.getData() as string;
                 const artworkToUpload = {
                     album: docRef.id,
-                    extension: artwork.split('.').pop(),
                     filePath: artwork,
                 };
-                const urlPath = createObjectStoragePath(preauthreq, [
-                    'albums',
-                    artworkToUpload.album,
-                    `artwork.${artworkToUpload.extension}`,
-                ]);
+                const urlPath = createObjectStoragePath(preauthreq, ['albums', artworkToUpload.album, `artwork.jepg`]);
                 let res = (await invoke('upload_file', {
                     name: 'cover art',
                     path: urlPath,
@@ -124,7 +118,6 @@ const AlbumCreate: React.FC = () => {
                 }
                 //Register album in database
                 const albumData = formRef.current.getData();
-                albumData.extension = artwork.split('.').pop();
                 res = await uploadAlbumInfo(docRef.id, albumData, tableData);
                 updateProgress(100, 'success', res);
                 progressbarRef.current.logMessage('info', 'All album data uploaded successfully!');
@@ -166,7 +159,6 @@ const AlbumCreate: React.FC = () => {
         } else {
             return (
                 <div className="section-no-content">
-                    <h3 className="upload-album-title">Album upload</h3>
                     <p>There are no categories available. Click below to add a category</p>
                     <button className="goto-categories-btn" onClick={(): void => navigate(routes.ALBUM_CATEGORIES)}>
                         Create

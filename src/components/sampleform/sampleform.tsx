@@ -33,7 +33,6 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
     const [length, setLength] = useState('');
     const file = useRef<string>('');
     const [fileInvalid, setFileInvalid] = useState('');
-    const extension = useRef<string>();
     const artworkRef = useRef<any>(null);
     const progressbarRef = useRef<any>(null);
     const cancelSource = useRef(axios.CancelToken.source());
@@ -53,7 +52,6 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
             return {
                 name: name,
                 description: description,
-                extension: '',
                 tags: parseTags('array', tags),
                 length: length,
                 notification: notification,
@@ -143,7 +141,6 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
         if (dialog[0] !== undefined) {
             const sampleData = dialog[1][0];
             file.current = sampleData.file;
-            extension.current = sampleData.extension;
             setName(sampleData.name);
             setLength(getDurationFormat(sampleData.duration));
             setNameInvalid('');
@@ -211,11 +208,7 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
                 progressbarRef.current.enable(true);
                 updateProgress(progress, 'info', 'Uploading sample...');
                 //Upload sample audio
-                let urlPath = createObjectStoragePath(preauthreq, [
-                    'samples',
-                    docRef.id,
-                    `${name}.${extension.current}`,
-                ]);
+                let urlPath = createObjectStoragePath(preauthreq, ['samples', docRef.id, `${name}.wav`]);
                 const result = (await invoke('upload_file', {
                     name: name,
                     path: urlPath,
@@ -228,11 +221,7 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
                 }
                 //Upload artwork
                 const preview = artworkRef.current.getData();
-                urlPath = createObjectStoragePath(preauthreq, [
-                    'samples',
-                    docRef.id,
-                    `preview.${preview.split('.').pop()}`,
-                ]);
+                urlPath = createObjectStoragePath(preauthreq, ['samples', docRef.id, `preview.jpeg`]);
                 const previewResult = (await invoke('upload_file', {
                     name: name,
                     path: urlPath,
@@ -248,7 +237,6 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
                     name: name,
                     description: description,
                     tags: parseTags('array', tags),
-                    extension: extension.current,
                     length: length,
                     category: category,
                 };
@@ -272,7 +260,6 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
     function clearStates(): void {
         artworkRef.current.clearInternalStates();
         file.current = '';
-        extension.current = '';
         setName('');
         setDescription('');
         setTags('');

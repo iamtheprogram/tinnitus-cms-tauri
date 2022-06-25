@@ -39,9 +39,9 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
                     //Make an array with all filenames under the album
                     const filesToDelete = [];
                     for (const song of props.item.songs) {
-                        filesToDelete.push(`${props.itemId}/${song.name}.${song.extension}`);
+                        filesToDelete.push(`${props.itemId}/${song.name}.wav`);
                     }
-                    filesToDelete.push(`${props.itemId}/artwork.${props.item.extension}`);
+                    filesToDelete.push(`${props.itemId}/artwork.jpeg`);
                     //Delete album from storage and database
                     await deleteAlbum(props.itemId, {
                         id: props.itemId,

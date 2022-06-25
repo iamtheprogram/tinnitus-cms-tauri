@@ -19,7 +19,6 @@ const SampleList: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
     const searchbarRef = useRef<any>(null);
     const [samples, setSamples] = React.useState<SampleInfo[]>([]);
-    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (auth) {
@@ -48,8 +47,8 @@ const SampleList: React.FC = () => {
         if (samples.length === 0) {
             return (
                 <div className="section-no-content">
-                    <p>You have no albums uploaded. Click below to add your first album</p>
-                    <button className="btn-create-album" onClick={(): void => navigate('/sample/create/')}>
+                    <p>You have no samples uploaded. Click below to add your first sample</p>
+                    <button className="btn-create-album" onClick={(): void => navigate('/generator/sample/create/')}>
                         Create
                     </button>
                 </div>

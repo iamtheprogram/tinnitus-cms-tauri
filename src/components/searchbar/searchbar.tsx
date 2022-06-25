@@ -56,11 +56,7 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                     //Take all data now to avoid doing an additional request
                     for (const doc of docs) {
                         const data = doc.data();
-                        const arworkUrl = createObjectStoragePath(preauthreq, [
-                            'albums',
-                            doc.id,
-                            `artwork.${data.extension}`,
-                        ]);
+                        const arworkUrl = createObjectStoragePath(preauthreq, ['albums', doc.id, `artwork.jpeg`]);
                         albums.push({
                             id: doc.id,
                             name: data.name,

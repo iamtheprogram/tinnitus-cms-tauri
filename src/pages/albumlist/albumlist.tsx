@@ -38,7 +38,7 @@ const AlbumList: React.FC = () => {
             albums.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             //Add cover art paths
             albums.forEach((album) => {
-                album.artwork = createObjectStoragePath(preauthreq, ['albums', album.id, `artwork.${album.extension}`]);
+                album.artwork = createObjectStoragePath(preauthreq, ['albums', album.id, `artwork.jpeg`]);
             });
             setAlbums(albums);
             //Loading is done

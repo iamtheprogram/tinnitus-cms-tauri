@@ -64,7 +64,7 @@ const AlbumCategories: React.FC = () => {
             'albums',
             'categories',
             categories[it].id,
-            'preview.' + categories[it].extension,
+            'preview.jpeg',
         ]);
         setCategoryImg(preview);
         setModalType('edit');
@@ -79,7 +79,6 @@ const AlbumCategories: React.FC = () => {
                 id: uuid(),
                 description: description,
                 color: color,
-                extension: file.split('.').pop() as string,
             };
             const urlPath = createObjectStoragePath(preauthreq, [
                 'albums',
@@ -117,7 +116,6 @@ const AlbumCategories: React.FC = () => {
                 id: category.id,
                 description: description,
                 color: color,
-                extension: category.extension,
             };
             await editCategory(data, 'albums');
             const temp = categories.map((x: any) => x);

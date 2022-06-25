@@ -56,7 +56,7 @@ const AlbumView: React.FC = () => {
             const docRef = doc(collection(db, 'albums'), id);
             const docRes = await getDoc(docRef);
             const data = docRes.data()!;
-            data.artwork = createObjectStoragePath(preauthreq, ['albums', id, `artwork.${data.extension}`]);
+            data.artwork = createObjectStoragePath(preauthreq, ['albums', id, `artwork.jpeg`]);
             data.upload_date = data.upload_date.toDate().toDateString();
             setAlbumData(data);
             //Loading is done
@@ -69,9 +69,7 @@ const AlbumView: React.FC = () => {
 
     async function getSongUrl(song: SongData): Promise<void> {
         try {
-            playerRef.current.setSong(
-                createObjectStoragePath(preauthreq, ['albums', id!, `${song.name}.${song.extension}`]),
-            );
+            playerRef.current.setSong(createObjectStoragePath(preauthreq, ['albums', id!, `${song.name}.wav`]));
         } catch (error) {
             console.log(error);
         }

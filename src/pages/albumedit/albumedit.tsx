@@ -43,15 +43,10 @@ const AlbumEdit: React.FC = () => {
             appendLoading();
             const docRef = await getDoc(doc(db, 'albums', id as string));
             albumData.current = docRef.data() as AlbumInfo;
-            albumData.current.artwork = createObjectStoragePath(preauthreq, [
-                'albums',
-                id!,
-                `artwork.${albumData.current.extension}`,
-            ]);
+            albumData.current.artwork = createObjectStoragePath(preauthreq, ['albums', id!, `artwork.jpeg`]);
             formData.current = {
                 name: albumData.current.name,
                 description: albumData.current.description,
-                extension: albumData.current.extension,
                 tags: albumData.current.tags,
                 length: albumData.current.length,
                 category: albumData.current.category,

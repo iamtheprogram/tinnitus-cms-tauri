@@ -179,7 +179,6 @@ export const Table = forwardRef((props: TableProps, ref: any) => {
             for (const song of dialog[1]) {
                 temp.push({
                     file: song.file,
-                    extension: song.extension,
                     name: song.name,
                     pos: position++,
                     length: getDurationFormat(song.duration),

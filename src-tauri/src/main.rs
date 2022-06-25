@@ -76,7 +76,7 @@ async fn get_artwork() -> (bool, String, String) {
 
     let dialog_result = dialog
         .set_title("Select Artwork")
-        .add_filter("Images", &["png", "jpg", "jpeg", "bmp"])
+        .add_filter("Images", &["jpeg"])
         .pick_file();
 
     if dialog_result.is_some() {
