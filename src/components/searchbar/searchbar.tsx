@@ -1,31 +1,29 @@
-import React, { createRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { Icons } from '@utils/icons';
-import { dialogStyles, tableStyles } from '@src/styles/styles';
+import { dialogStyles } from '@src/styles/styles';
 import Modal from 'react-modal';
 import { MessageBox } from '@src/components/messagebox/messagebox';
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '@src/config/firebase';
 import { useNavigate } from 'react-router-dom';
-import Reslist from '../reslist/reslist';
 import { useSelector } from 'react-redux';
 import { CombinedStates } from '@store/reducers/custom';
 import { createObjectStoragePath } from '@src/utils/helpers';
 
 type SearchProps = {
     type: string;
+    pathToSearch: string;
+    navigate: string;
 };
 
 const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
     const navigate = useNavigate();
     const [searchVal, setSearchVal] = useState('');
-    const [tableOpen, setTableOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [message, setMessage] = useState('');
-    const [tableElements, setTableElements] = useState<any>([]);
     const [selected, setSelected] = useState({ name: '' });
     const [searchedAlbums, setSearchedAlbums] = useState<any[]>([]);
-    const reslistRef = createRef<any>();
     const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
@@ -49,7 +47,7 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                 const temp = searchVal[0].toUpperCase() + searchVal.slice(1);
                 const albums = [];
                 //Search for album starting with the given string
-                const albumsRef = collection(db, 'albums');
+                const albumsRef = collection(db, props.pathToSearch);
                 const q = query(albumsRef, where('name', '>=', temp), limit(7));
                 const q1 = query(q, where('name', '<=', temp + '\uf8ff'), limit(7));
                 const querySnapshot = await getDocs(q1);
@@ -98,55 +96,6 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
         }
     }
 
-    // async function getListOfResources(): Promise<void> {
-    //     const albumsRef = collection(db, 'albums');
-    //     const docs = await getDocs(albumsRef);
-    //     const temp = [];
-    //     //Get all albums documents
-    //     for (const doc of docs.docs) {
-    //         const data = doc.data();
-    //         temp.push({
-    //             id: doc.id,
-    //             name: data.name,
-    //             artwork: `${prereq}${doc.id}/artwork.${data.extension}`,
-    //             upload_date: data.upload_date.toDate().toDateString(),
-    //             upload_sort: data.upload_date.toDate(),
-    //         });
-    //     }
-    //     //Sort elements by date
-    //     temp.sort(compareByDateDesc);
-    //     //Provide data to basic resource table
-    //     setTableElements(temp);
-    //     setTableOpen(true);
-    // }
-
-    function compareByDateDesc(a: any, b: any): number {
-        if (a.upload_sort < b.upload_sort) {
-            return 1;
-        }
-        if (a.upload_sort > b.upload_sort) {
-            return -1;
-        }
-        return 0;
-    }
-
-    function closeListView(): void {
-        setTableOpen(false);
-    }
-
-    function cancelList(): void {
-        setTableOpen(false);
-    }
-
-    function okList(): void {
-        //Get selected item from resource table
-        const item = reslistRef.current.getSelectedItem();
-        if (item !== undefined) {
-            navigate(`/album/view/${item.id}`);
-        }
-        setTableOpen(false);
-    }
-
     function onItemClick(name: string): void {
         setSearchVal(name);
         if (searchedAlbums.length > 0) {
@@ -155,7 +104,7 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
             setSelected(selectedItem);
             document.getElementById('searchbar-results')!.style.display = 'none';
             setSearchVal('');
-            navigate(`/album/view/${selectedItem.id}`);
+            navigate(`${props.navigate}${selectedItem.id}`);
         }
     }
 
@@ -213,22 +162,8 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
             <Button className="SearchButton" onClick={onSearchBtnClick}>
                 <img src={Icons['MagnifierIcon']} className="SearchIcon"></img>
             </Button>
-            {/* <Button className="SearchButton" style={{ marginLeft: '5px' }} onClick={getListOfResources}>
-                <img src={Icons['ListIcon']} className="SearchIcon"></img>
-            </Button> */}
             <Modal style={dialogStyles} isOpen={dialogOpen} ariaHideApp={false}>
                 <MessageBox setIsOpen={setDialogOpen} message={message} />
-            </Modal>
-            <Modal style={tableStyles} isOpen={tableOpen} ariaHideApp={false}>
-                <Reslist ref={reslistRef} entries={tableElements} onSelectFromList={onItemClick} />
-                <p className="modal-title">Albums</p>
-                <img src={Icons['CancelIcon']} className="cancel-icon" onClick={closeListView} />
-                <Button className="ListOk" onClick={okList}>
-                    OK
-                </Button>
-                <Button className="ListCancel" onClick={cancelList}>
-                    Cancel
-                </Button>
             </Modal>
         </InputGroup>
     );

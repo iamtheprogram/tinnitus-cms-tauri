@@ -84,7 +84,7 @@ const AlbumView: React.FC = () => {
                     <Sidebar />
                     <div className="section-album" ref={container}>
                         <div className="SearchBarDiv">
-                            <SearchBar type="album" ref={searchbarRef} />
+                            <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                         </div>
                         <Container>
                             <Toolbar itemId={id as string} item={albumData} />

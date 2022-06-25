@@ -63,7 +63,7 @@ const AlbumList: React.FC = () => {
             return (
                 <div className="section-album">
                     <div className="SearchBarDiv">
-                        <SearchBar type="album" ref={searchbarRef} />
+                        <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                     </div>
                     <Container>
                         <div className="section-album-content">
