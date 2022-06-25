@@ -131,8 +131,8 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                 // }}
             >
                 <FormControl
-                    id="searchbar-albums"
-                    placeholder={'Album name...'}
+                    id="searchbar-items"
+                    placeholder={`Search ${props.type}...`}
                     autoComplete="off"
                     autoCapitalize="on"
                     autoCorrect="off"
@@ -152,9 +152,9 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
                             onClick={(): void => onItemClick(album.name)}
                             id={album.name}
                         >
-                            <img src={album.artwork} />
-                            <p className="album-name">{album.name}</p>
-                            <p className="album-upload-date">{album.upload_date}</p>
+                            {props.type === 'album' && <img src={album.artwork} />}
+                            <p className="item-name">{album.name}</p>
+                            <p className="item-upload-date">{album.upload_date}</p>
                         </div>
                     ))}
                 </div>

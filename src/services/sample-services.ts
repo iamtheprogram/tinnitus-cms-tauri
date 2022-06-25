@@ -32,6 +32,7 @@ export async function uploadSampleInfo(id: string, info: SampleFormData): Promis
             length: info.length,
             likes: 0,
             favorites: 0,
+            reviews: 0,
             views: 0,
         });
         return 'Sample registered in database';

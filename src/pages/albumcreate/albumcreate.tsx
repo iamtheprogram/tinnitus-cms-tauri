@@ -142,8 +142,8 @@ const AlbumCreate: React.FC = () => {
     function displayContent(): JSX.Element {
         if (categories.length > 0) {
             return (
-                <div className="upload-section" ref={content}>
-                    <h3 className="upload-album-title">Album upload</h3>
+                <div className="page-content" ref={content}>
+                    <h3 className="page-title">Album upload</h3>
                     {/* Album details */}
                     <div className="upload-album">
                         {/* Artwork */}

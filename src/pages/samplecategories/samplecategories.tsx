@@ -181,9 +181,9 @@ const PresetCategories: React.FC = () => {
     return (
         <div className="page" id="page-upload-edit">
             <Sidebar />
-            <div className="categories-section">
-                <h3 className="categories-title">Sample categories</h3>
-                <div className="table-section">
+            <div className="page-content">
+                <h3 className="page-title">Sample categories</h3>
+                <div className="categories-section">
                     <table className="table" id="categories-table">
                         <thead>
                             <tr>

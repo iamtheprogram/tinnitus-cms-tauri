@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
                     <div className="sidebar-submenu" id="sidebar-submenu-generator">
                         <ul>
                             <li>
-                                <p>View samples</p>
+                                <p onClick={(): void => navigate(routes.SAMPLE_LIST)}>View samples</p>
                                 <p>View presets</p>
                                 <p onClick={(): void => navigate(routes.SAMPLE_CREATE)}>Upload sample</p>
                                 <p>Upload preset</p>
