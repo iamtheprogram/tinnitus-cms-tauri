@@ -18,6 +18,7 @@ import { doc, getDoc, collection } from 'firebase/firestore';
 import Player from '@components/player/player';
 import { useLoading } from '@pages/loading/loading';
 import { createObjectStoragePath } from '@src/utils/helpers';
+import { dialog } from '@tauri-apps/api';
 
 const AlbumView: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
@@ -63,7 +64,7 @@ const AlbumView: React.FC = () => {
             setDataFetched(true);
             removeLoading();
         } catch (error) {
-            console.log(error);
+            //! Undefined behaviour on error handling
         }
     }
 
@@ -71,7 +72,7 @@ const AlbumView: React.FC = () => {
         try {
             playerRef.current.setSong(createObjectStoragePath(preauthreq, ['albums', id!, `${song.name}.wav`]));
         } catch (error) {
-            console.log(error);
+            dialog.message('Error fetching audio file');
         }
     }
 
@@ -97,8 +98,8 @@ const AlbumView: React.FC = () => {
                             <Table
                                 type="view"
                                 headers={[
-                                    'Name',
                                     'Position',
+                                    'Name',
                                     'Length',
                                     'Category',
                                     <img src={Icons.Views} />,

@@ -54,8 +54,8 @@ const AlbumEdit: React.FC = () => {
             //Done fetching data
             setLoaded(true);
             removeLoading();
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            // dialog.message(error.message);
         }
     }
 

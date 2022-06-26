@@ -105,7 +105,7 @@ const AlbumCreate: React.FC = () => {
                     album: docRef.id,
                     filePath: artwork,
                 };
-                const urlPath = createObjectStoragePath(preauthreq, ['albums', artworkToUpload.album, `artwork.jepg`]);
+                const urlPath = createObjectStoragePath(preauthreq, ['albums', artworkToUpload.album, `artwork.jpeg`]);
                 let res = (await invoke('upload_file', {
                     name: 'cover art',
                     path: urlPath,

@@ -115,6 +115,5 @@ export function createObjectStoragePath(preauthreq: string, segments: string[]):
     }
     retVal += segments[segments.length - 1];
 
-    console.log(retVal);
     return retVal;
 }

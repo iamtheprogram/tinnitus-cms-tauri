@@ -104,7 +104,6 @@ const Login: React.FC = () => {
             //Storeconfiguration data and misc
             await fetchCategories();
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
