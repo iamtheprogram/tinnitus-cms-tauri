@@ -1,11 +1,9 @@
 import React, { useRef, useEffect } from 'react';
-import ProgressbarUpload from '@components/progressbar/progressbar-upload';
 import Sidebar from '@components/sidebar/sidebar';
 import { useNavigate } from 'react-router-dom';
 import { CombinedStates } from '@store/reducers/custom';
 import { Category } from '@src/types/general';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import { routes } from '@src/router/routes';
 import { getAuth } from 'firebase/auth';
 import { app } from '@src/config/firebase';
@@ -19,7 +17,6 @@ const SampleCreate: React.FC = () => {
     const auth = useSelector<CombinedStates>((state: CombinedStates) => state.generalReducer.auth) as any;
     const formRef = useRef<any>(null);
     const content = useRef<any>(null);
-    const progressbarRef = useRef<any>(null);
 
     useEffect(() => {
         if (auth) {
@@ -32,7 +29,7 @@ const SampleCreate: React.FC = () => {
     function displayContent(): JSX.Element {
         if (categories.length > 0) {
             return (
-                <div className="upload-section" ref={content}>
+                <div className="page-content" ref={content}>
                     <h3 className="upload-sample-title">Sample upload</h3>
                     <SampleForm type={'create'} ref={formRef} />
                 </div>

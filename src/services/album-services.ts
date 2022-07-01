@@ -69,16 +69,13 @@ export async function editAlbumData(id: string, info: AlbumFormData, tableData: 
     }
 }
 
-export async function deleteAlbum(
-    id: string,
-    album: { id: string; files: string[] },
-): Promise<{ result: boolean; message: string }> {
+export async function deleteAlbum(id: string): Promise<{ result: boolean; message: string }> {
     try {
         //Delete everyting related to this album
         await deleteDoc(doc(db, 'albums', id));
         //Temporary store in db the id of deleted album
         await updateDoc(doc(db, 'misc', 'albums'), {
-            deleted_albums: arrayUnion(album.id),
+            deleted_albums: arrayUnion(id),
         });
         //! Does not work with pre-authenticated requests
         // const res = (await invoke('delete_album', { album: album.id, files: album.files })) as any;

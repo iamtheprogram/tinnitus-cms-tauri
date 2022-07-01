@@ -113,7 +113,7 @@ const SearchBar = forwardRef((props: SearchProps, ref?: any) => {
             if (selectedItem !== undefined) {
                 setSelected(selectedItem);
                 setSearchVal('');
-                navigate(`/album/view/${selectedItem.id}`);
+                navigate(`${props.navigate}${selectedItem.id}`);
             }
         }
     }
