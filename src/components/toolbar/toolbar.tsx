@@ -10,7 +10,12 @@ import { dialog } from '@tauri-apps/api';
 type ToolbarProps = {
     container?: string;
     itemId: string;
-    item: any;
+    upload: string;
+    edit: string;
+    delete: string;
+    reviews: string;
+    categories: string;
+    return: string;
 };
 
 const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
@@ -22,11 +27,19 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
     }));
 
     function onReviewClick(): void {
-        navigate(`/album/reviews/${props.itemId}`);
+        navigate(props.reviews);
     }
 
     function onEditClick(): void {
-        navigate(`/album/edit/${props.itemId}`);
+        navigate(props.edit);
+    }
+
+    function onCategoriesClick(): void {
+        navigate(props.categories);
+    }
+
+    function onUploadClick(): void {
+        navigate(props.upload);
     }
 
     async function onRequestDeleteClick(): Promise<void> {
@@ -35,18 +48,9 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
             try {
                 //Activate loading screen
                 appendLoading();
-                if (props.item !== undefined && props.itemId !== undefined) {
-                    //Make an array with all filenames under the album
-                    const filesToDelete = [];
-                    for (const song of props.item.songs) {
-                        filesToDelete.push(`${props.itemId}/${song.name}.wav`);
-                    }
-                    filesToDelete.push(`${props.itemId}/artwork.jpeg`);
+                if (props.itemId !== undefined) {
                     //Delete album from storage and database
-                    await deleteAlbum(props.itemId, {
-                        id: props.itemId,
-                        files: filesToDelete,
-                    });
+                    await deleteAlbum(props.itemId);
                     removeLoading();
                     navigate(routes.ALBUM_LIST);
                 }
@@ -58,14 +62,10 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
         }
     }
 
-    function onCategoriesClick(): void {
-        navigate('/album/categories');
-    }
-
     return (
         <div className={props.container + ' ToolbarContainer '}>
             <ReactTooltip place="top" type="dark" effect="float" delayShow={500} />
-            <div className="toolbar-action" onClick={(): void => navigate(routes.ALBUM_CREATE)}>
+            <div className="toolbar-action" onClick={onUploadClick}>
                 <img src={ToolbarIcons.UploadIcon} className="ActionIcon" />
                 <p>Upload</p>
             </div>

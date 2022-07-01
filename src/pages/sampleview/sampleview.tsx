@@ -14,6 +14,7 @@ import Sidebar from '@components/sidebar/sidebar';
 import Toolbar from '@components/toolbar/toolbar';
 import { Container } from 'react-bootstrap';
 import SampleInfoView from '@components/sampleinfo/sampleinfo';
+import { routes } from '@src/router/routes';
 
 const SampleView: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
@@ -82,7 +83,15 @@ const SampleView: React.FC = () => {
                             />
                         </div>
                         <Container>
-                            <Toolbar itemId={id as string} item={sampleData} />
+                            <Toolbar
+                                itemId={id as string}
+                                upload={routes.SAMPLE_CREATE}
+                                edit={`/generator/sample/edit/${id}`}
+                                reviews={`/generator/sample/reviews/${id}`}
+                                categories={routes.SAMPLE_CATEGORIES}
+                                return={routes.SAMPLE_LIST}
+                                delete="sample"
+                            />
                             <div className="section-album-content">
                                 <div>
                                     <Artwork type="view" className="sample-preview-image" img={sampleData.artwork} />
