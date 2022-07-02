@@ -105,6 +105,9 @@ const SamplesTable: React.FC<SampleTableProps> = (props: SampleTableProps) => {
                     <th>Created</th>
                     <th>Duration</th>
                     <th>
+                        <img src={Icons.Views} />
+                    </th>
+                    <th>
                         <img src={Icons.Likes} />
                     </th>
                     <th>
@@ -129,6 +132,9 @@ const SamplesTable: React.FC<SampleTableProps> = (props: SampleTableProps) => {
                                 </td>
                                 <td>
                                     <p>{row.length}</p>
+                                </td>
+                                <td>
+                                    <p>{row.views}</p>
                                 </td>
                                 <td>
                                     <p>{row.likes}</p>

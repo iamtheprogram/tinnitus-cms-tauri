@@ -19,6 +19,7 @@ import Player from '@components/player/player';
 import { useLoading } from '@pages/loading/loading';
 import { createObjectStoragePath } from '@src/utils/helpers';
 import { dialog } from '@tauri-apps/api';
+import { routes } from '@src/router/routes';
 
 const AlbumView: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
@@ -87,7 +88,15 @@ const AlbumView: React.FC = () => {
                             <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                         </div>
                         <Container>
-                            <Toolbar itemId={id as string} item={albumData} />
+                            <Toolbar
+                                itemId={id as string}
+                                upload={routes.ALBUM_CREATE}
+                                edit={`/album/edit/${id}`}
+                                reviews={`/album/reviews/${id}`}
+                                categories={routes.ALBUM_CATEGORIES}
+                                return={routes.SAMPLE_LIST}
+                                delete="album"
+                            />
                             <div className="section-album-content">
                                 <div>
                                     <Artwork type="view" img={albumData.artwork} />
