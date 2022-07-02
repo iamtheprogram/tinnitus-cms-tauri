@@ -2,10 +2,10 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToolbarIcons } from '@utils/icons';
 import ReactTooltip from 'react-tooltip';
-import { routes } from '@src/router/routes';
 import { deleteAlbum } from '@src/services/album-services';
 import { useLoading } from '@pages/loading/loading';
 import { dialog } from '@tauri-apps/api';
+import { deleteSample } from '@services/sample-services';
 
 type ToolbarProps = {
     container?: string;
@@ -47,12 +47,26 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
         if (clicked) {
             try {
                 //Activate loading screen
-                appendLoading();
                 if (props.itemId !== undefined) {
-                    //Delete album from storage and database
-                    await deleteAlbum(props.itemId);
+                    appendLoading();
+                    //Delete resource from storage and database
+                    switch (props.delete) {
+                        case 'album': {
+                            await deleteAlbum(props.itemId);
+                            break;
+                        }
+                        case 'sample': {
+                            await deleteSample(props.itemId);
+                            break;
+                        }
+                        case 'preset': {
+                            // TODO: Add service to delete preset item
+                            // await deletePreset(props.itemId);
+                            break;
+                        }
+                    }
                     removeLoading();
-                    navigate(routes.ALBUM_LIST);
+                    navigate(props.return);
                 }
             } catch (error: any) {
                 //Set message and notify user about occured error
