@@ -40,13 +40,14 @@ export async function uploadSampleInfo(id: string, info: SampleFormData): Promis
     }
 }
 
-export async function editSampleData(info: SampleFormData): Promise<string> {
+export async function editSampleData(id: string, info: SampleFormData): Promise<string> {
     try {
-        const sampleDocRef = doc(collection(db, 'samples'));
+        const sampleDocRef = doc(db, 'samples', id);
         await setDoc(
             sampleDocRef,
             {
                 name: info.name,
+                category: info.category,
                 description: info.description,
                 tags: info.tags,
             },

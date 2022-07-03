@@ -30,7 +30,7 @@ const SampleCreate: React.FC = () => {
         if (categories.length > 0) {
             return (
                 <div className="page-content" ref={content}>
-                    <h3 className="upload-sample-title">Sample upload</h3>
+                    <h3 className="page-title">Sample upload</h3>
                     <SampleForm type={'create'} ref={formRef} />
                 </div>
             );

@@ -1,10 +1,10 @@
 export type SampleFormData = {
     name: string;
-    file?: string;
-    description: string;
-    tags?: string[];
-    length: string;
     category: string;
+    description: string;
+    file?: string;
+    tags?: string[];
+    length?: string;
     notification?: string;
 };
 
