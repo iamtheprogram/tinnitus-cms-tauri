@@ -8,16 +8,17 @@ import { query, collection, where, getDocs, doc } from 'firebase/firestore';
 import { AlbumFormData } from 'types/album';
 import { InputGroup, FormControl } from 'react-bootstrap';
 import Dropdown from '@components/dropdown/dropdown';
-import { invoke } from '@tauri-apps/api';
+import { dialog, invoke } from '@tauri-apps/api';
 import Artwork from '@components/artwork/artwork';
 import { CombinedStates } from '@store/reducers/custom';
-import { deleteSample, uploadSampleInfo } from '@services/sample-services';
+import { deleteSample, editSampleData, uploadSampleInfo } from '@services/sample-services';
 import ProgressbarUpload from '@components/progressbar/progressbar-upload';
 import axios from 'axios';
 
 type FormProps = {
     type: string;
     data?: SampleFormData;
+    id?: string;
 };
 
 const SampleForm = forwardRef((props: FormProps, ref?: any) => {
@@ -42,7 +43,7 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
             setName(props.data.name);
             setDescription(props.data.description);
             setTags(parseTags('string', props.data.tags));
-            setLength(props.data.length);
+            setLength(props.data.length as string);
             setCategory(props.data.category);
         }
     }, []);
@@ -145,6 +146,43 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
             setLength(getDurationFormat(sampleData.duration));
             setNameInvalid('');
             setFileInvalid('');
+        }
+    }
+
+    function onUploadSaveClick(): void {
+        if (props.type === 'create') {
+            onUploadClick();
+        } else if (props.type === 'edit') {
+            onSaveClick();
+        }
+    }
+
+    async function onSaveClick(): Promise<void> {
+        let counter = 0;
+
+        if (name === '') {
+            setNameInvalid('This field is mandatory');
+            counter++;
+        }
+
+        if (description === '') {
+            setDescInvalid('This field is mandatory');
+            counter++;
+        }
+
+        if (counter === 0) {
+            const formData = {
+                name: name,
+                description: description,
+                tags: parseTags('array', tags),
+                category: category,
+            };
+            try {
+                await editSampleData(props.id!, formData);
+                dialog.message('Sample updated successfully');
+            } catch (error: any) {
+                dialog.message(error.message);
+            }
         }
     }
 
@@ -278,9 +316,10 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
             <div className="coverart-div">
                 <Artwork
                     ref={artworkRef}
-                    type="create"
+                    type={props.type}
                     className="sample-preview-image"
                     message="Please select a preview image for info"
+                    img={createObjectStoragePath(preauthreq, ['samples', props.id as string, `preview.jpeg`])}
                 />
             </div>
             <div className="inputs-div">
@@ -348,12 +387,14 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
                     <p className="album-total-duration">Duration: {length}</p>
                 </div>
                 <div className="form-btns">
-                    <button className="browse-btn-sample" onClick={onBrowseClick}>
-                        Browse
-                    </button>
+                    {props.type === 'create' ? (
+                        <button className="browse-btn-sample" onClick={onBrowseClick}>
+                            Browse
+                        </button>
+                    ) : null}
                     <p className="invalid-input-sample">{fileInvalid}</p>
-                    <button className="upload-btn-sample" onClick={onUploadClick}>
-                        Upload
+                    <button className="upload-btn-sample" onClick={onUploadSaveClick}>
+                        {props.type === 'create' ? 'Upload' : 'Save'}
                     </button>
                 </div>
             </div>
