@@ -68,7 +68,7 @@ const SampleList: React.FC = () => {
                     <Container>
                         <div className="section-album-content">
                             <div className="albums-table">
-                                <SamplesTable albums={samples} />
+                                <SamplesTable samples={samples} />
                             </div>
                         </div>
                     </Container>
@@ -86,7 +86,7 @@ const SampleList: React.FC = () => {
 };
 
 type SampleTableProps = {
-    albums: SampleInfo[];
+    samples: SampleInfo[];
 };
 
 const SamplesTable: React.FC<SampleTableProps> = (props: SampleTableProps) => {
@@ -119,8 +119,8 @@ const SamplesTable: React.FC<SampleTableProps> = (props: SampleTableProps) => {
                 </tr>
             </thead>
             <tbody>
-                {props.albums !== undefined &&
-                    props.albums.map((row: SampleInfo, i: number) => {
+                {props.samples !== undefined &&
+                    props.samples.map((row: SampleInfo, i: number) => {
                         return (
                             <tr key={`${i}`} id={`${i}`} onClick={(): void => onAlbumClick(row.id)}>
                                 <td>{i + 1}</td>
