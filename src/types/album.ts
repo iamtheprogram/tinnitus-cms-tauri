@@ -1,6 +1,5 @@
 export type SongData = {
     file?: string;
-    extension?: string;
     name: string;
     pos: string | number;
     length: string;
@@ -13,7 +12,6 @@ export type SongData = {
 export type AlbumFormData = {
     name: string;
     description: string;
-    extension?: string;
     tags?: string[];
     length: string;
     category: string;
@@ -23,7 +21,6 @@ export type AlbumFormData = {
 export type AlbumInfo = {
     id: string;
     name: string;
-    extension: string;
     description: string;
     tags: string[];
     length: string;
@@ -42,11 +39,4 @@ export type ReviewData = {
     email: string;
     comment: string;
     date: Date;
-};
-
-export type AlbumCategory = {
-    name: string;
-    id: string;
-    description: string;
-    color: string;
 };

@@ -5,6 +5,8 @@ import { invoke } from '@tauri-apps/api/tauri';
 type ArtworkProps = {
     type: string;
     img?: any;
+    className?: string;
+    message?: string;
 };
 
 const Artwork = forwardRef((props: ArtworkProps, ref: any) => {
@@ -15,7 +17,7 @@ const Artwork = forwardRef((props: ArtworkProps, ref: any) => {
     useImperativeHandle(ref, () => ({
         getInputValidation: (): boolean => {
             if (thumbnail === null) {
-                setThumbnailInvalid('Album cover art is mandatory');
+                setThumbnailInvalid('Image not selected');
                 return false;
             } else {
                 setThumbnailInvalid('');
@@ -46,21 +48,27 @@ const Artwork = forwardRef((props: ArtworkProps, ref: any) => {
         if (thumbnail) {
             return <img src={thumbnail} />;
         } else {
-            return <p>Please select a cover art for album</p>;
+            return (
+                <p className="no-img-txt">
+                    {props.message !== undefined ? props.message : 'Please select a cover art for album'}
+                </p>
+            );
         }
     }
 
     function display(): JSX.Element {
         if (props.type === 'view' || props.type === 'edit') {
             return (
-                <div className="upload-album-artwork">
-                    <img src={props.img} />
+                <div className="upload-album-artwork-div">
+                    <div className={'upload-album-artwork' + ' ' + props.className}>
+                        <img src={props.img} />
+                    </div>
                 </div>
             );
         } else if (props.type === 'edit' || props.type === 'create') {
             return (
                 <div className="upload-album-artwork-div">
-                    <div className="upload-album-artwork">
+                    <div className={'upload-album-artwork' + ' ' + props.className}>
                         <div className="plus-body" onClick={onPlusClick}>
                             <img src={Icons.Plus} className="plus" />
                         </div>

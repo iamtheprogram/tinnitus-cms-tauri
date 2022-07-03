@@ -1,7 +1,7 @@
 import { db } from '@src/config/firebase';
-import { AlbumFormData, SongData, AlbumCategory, AlbumInfo } from '@src/types/album';
+import { AlbumFormData, SongData, AlbumInfo } from '@src/types/album';
 import axios from 'axios';
-import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion, collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 
 export async function getAlbums(): Promise<AlbumInfo[]> {
     try {
@@ -32,7 +32,6 @@ export async function uploadAlbumInfo(id: string, info: AlbumFormData, tableData
         await setDoc(albumDocRef, {
             name: info.name,
             upload_date: new Date(),
-            extension: info.extension,
             category: info.category,
             description: info.description,
             tags: info.tags,
@@ -70,36 +69,13 @@ export async function editAlbumData(id: string, info: AlbumFormData, tableData: 
     }
 }
 
-export async function uploadNotification(id: string, notification: string): Promise<void> {
-    try {
-        //Send notification to all users
-        await axios.post(
-            'https://us-central1-tinnitus-50627.cloudfunctions.net/sendNotification',
-            {},
-            {
-                params: {
-                    title: 'New album added',
-                    body: notification,
-                    // eslint-disable-next-line max-len
-                    icon: 'https://firebasestorage.googleapis.com/v0/b/tinnitus-50627.appspot.com/o/logo.png?alt=media&token=b7fe80c7-2b6f-4bd8-8c57-637a5e404591',
-                },
-            },
-        );
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function deleteAlbum(
-    id: string,
-    album: { id: string; files: string[] },
-): Promise<{ result: boolean; message: string }> {
+export async function deleteAlbum(id: string): Promise<{ result: boolean; message: string }> {
     try {
         //Delete everyting related to this album
         await deleteDoc(doc(db, 'albums', id));
         //Temporary store in db the id of deleted album
         await updateDoc(doc(db, 'misc', 'albums'), {
-            deleted: arrayUnion(album.id),
+            deleted_albums: arrayUnion(id),
         });
         //! Does not work with pre-authenticated requests
         // const res = (await invoke('delete_album', { album: album.id, files: album.files })) as any;
@@ -109,50 +85,6 @@ export async function deleteAlbum(
         //     return { result: true, message: 'Album deleted' };
         // }
         return { result: true, message: 'Album deleted' };
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function addAlbumCategory(category: AlbumCategory): Promise<void> {
-    try {
-        await updateDoc(doc(db, 'misc', 'albums'), {
-            categories: arrayUnion(category),
-        });
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function editAlbumCategory(category: AlbumCategory): Promise<void> {
-    try {
-        const albums = await getDoc(doc(db, 'misc', 'albums'));
-        const categories = albums.data()!.categories;
-        for (let i = 0; i < categories.length; i++) {
-            if (categories[i].id === category.id) {
-                categories[i] = category;
-            }
-        }
-        await updateDoc(doc(db, 'misc', 'albums'), {
-            categories: categories,
-        });
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function deleteAlbumCategory(category: AlbumCategory): Promise<void> {
-    try {
-        const albums = await getDoc(doc(db, 'misc', 'albums'));
-        const categories = albums.data()!.categories;
-        for (let i = 0; i < categories.length; i++) {
-            if (categories[i].id === category.id) {
-                categories.splice(i, 1);
-            }
-        }
-        await updateDoc(doc(db, 'misc', 'albums'), {
-            categories: categories,
-        });
     } catch (error) {
         throw error;
     }

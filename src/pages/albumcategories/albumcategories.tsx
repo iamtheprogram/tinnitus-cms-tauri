@@ -1,27 +1,23 @@
 import Sidebar from '@components/sidebar/sidebar';
 import React, { useRef, useState } from 'react';
 import { Icons, ToolbarIcons } from '@src/utils/icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CombinedStates } from '@store/reducers/custom';
 import Modal from 'react-modal';
 import { categoryStyles } from '@src/styles/styles';
 import { InputGroup, FormControl } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
-import { dialog } from '@tauri-apps/api';
-import { useDispatch } from 'react-redux';
-import { addAlbumCategory, deleteAlbumCategory, editAlbumCategory } from '@services/album-services';
-
-type AlbumCategory = {
-    name: string;
-    id: string;
-    color: string;
-    description: string;
-};
+import { dialog, invoke } from '@tauri-apps/api';
+import { addCategory, editCategory, deleteCategory } from '@services/general-services';
+import Artwork from '@components/artwork/artwork';
+import { Category } from '@src/types/general';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
 const AlbumCategories: React.FC = () => {
     const dispatch = useDispatch();
-    const categories = useSelector<CombinedStates>((state) => state.generalReducer.categories) as AlbumCategory[];
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const categories = useSelector<CombinedStates>((state) => state.albumReducer.categories) as Category[];
     const [addCategoryModal, setAddCategoryModal] = useState(false);
     const [name, setName] = useState('');
     const [nameInvalid, setNameInvalid] = useState('');
@@ -32,10 +28,14 @@ const AlbumCategories: React.FC = () => {
     const [type, setType] = useState('Add');
     const currentIt = useRef(0);
     const [inputDisabled, setInputDisabled] = useState(false);
+    const [modalType, setModalType] = useState('create');
+    const artworkRef = useRef<any>(null);
+    const [categoryImg, setCategoryImg] = useState('');
 
     function onPlusClick(): void {
         setInputDisabled(false);
         setType('Add');
+        setModalType('create');
         setAddCategoryModal(true);
     }
 
@@ -60,12 +60,85 @@ const AlbumCategories: React.FC = () => {
         currentIt.current = it;
         setInputDisabled(true);
         setType('Edit');
+        const preview = createObjectStoragePath(preauthreq, [
+            'albums',
+            'categories',
+            categories[it].id,
+            'preview.jpeg',
+        ]);
+        setCategoryImg(preview);
+        setModalType('edit');
         setAddCategoryModal(true);
+    }
+
+    async function addNewCategory(): Promise<void> {
+        try {
+            const file = artworkRef.current.getData() as string;
+            const data = {
+                name: name,
+                id: uuid(),
+                description: description,
+                color: color,
+            };
+            const urlPath = createObjectStoragePath(preauthreq, [
+                'albums',
+                'categories',
+                data.id,
+                `preview.${file.split('.').pop()}`,
+            ]);
+            const result = (await invoke('upload_file', {
+                name: 'cover art',
+                path: urlPath,
+                file: file,
+            })) as any;
+            if (result[0]) {
+                await addCategory(data, 'albums');
+                const temp = categories.map((x: any) => x);
+                temp.push(data);
+                dispatch({
+                    type: 'album/categories',
+                    payload: temp,
+                });
+                dialog.message('Category added successfully!');
+                onModalClose();
+            } else {
+                throw new Error('Could not upload category preview image');
+            }
+        } catch (error: any) {
+            dialog.message(error.message);
+        }
+    }
+
+    async function uploadChanges(category: Category): Promise<void> {
+        try {
+            const data = {
+                name: category.name,
+                id: category.id,
+                description: description,
+                color: color,
+            };
+            await editCategory(data, 'albums');
+            const temp = categories.map((x: any) => x);
+            temp[currentIt.current] = data;
+            dispatch({
+                type: 'album/categories',
+                payload: temp,
+            });
+            dialog.message('Category edited successfully!');
+            onModalClose();
+        } catch (error: any) {
+            dialog.message(error.message);
+        }
     }
 
     async function onAddCategory(): Promise<void> {
         let counter = 0;
 
+        if (type === 'Add') {
+            if (artworkRef.current.getInputValidation() === false) {
+                counter++;
+            }
+        }
         if (name === '') {
             setNameInvalid('This field is mandatory');
             counter++;
@@ -81,48 +154,21 @@ const AlbumCategories: React.FC = () => {
         }
 
         if (counter === 0) {
-            try {
-                const data = {
-                    name: name,
-                    id: type === 'Add' ? uuid() : categories[currentIt.current].id,
-                    color: color,
-                    description: description,
-                };
-                if (type === 'Add') {
-                    await addAlbumCategory(data);
-                    const temp = categories.map((x: any) => x);
-                    temp.push(data);
-                    dispatch({
-                        type: 'general/categories',
-                        payload: temp,
-                    });
-                    dialog.message('Category added successfully!');
-                    onModalClose();
-                } else if (type === 'Edit') {
-                    await editAlbumCategory(data);
-                    const temp = categories.map((x: any) => x);
-                    temp[currentIt.current] = data;
-                    dispatch({
-                        type: 'general/categories',
-                        payload: temp,
-                    });
-                    dialog.message('Category edited successfully!');
-                    onModalClose();
-                }
-            } catch (error: any) {
-                onModalClose();
-                dialog.message(error.message);
+            if (type === 'Add') {
+                await addNewCategory();
+            } else if (type === 'Edit') {
+                await uploadChanges(categories[currentIt.current]);
             }
         }
     }
 
     async function onCategoryDelete(it: number): Promise<void> {
         try {
-            await deleteAlbumCategory(categories[it]);
+            await deleteCategory(categories[it], 'albums');
             const temp = categories.map((x: any) => x);
             temp.splice(it, 1);
             dispatch({
-                type: 'general/categories',
+                type: 'album/categories',
                 payload: temp,
             });
         } catch (error: any) {
@@ -133,12 +179,13 @@ const AlbumCategories: React.FC = () => {
     return (
         <div className="page" id="page-upload-edit">
             <Sidebar />
-            <div className="categories-section">
-                <h2 className="categories-header">Album categories</h2>
-                <div className="table-section">
+            <div className="page-content">
+                <h3 className="page-title">Album categories</h3>
+                <div className="categories-section">
                     <table className="table" id="categories-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>
@@ -152,6 +199,7 @@ const AlbumCategories: React.FC = () => {
                                 categories.map((row: any, i: number) => {
                                     return (
                                         <tr key={`${i}`} id={`${i}`}>
+                                            <td>{i + 1}</td>
                                             <td>
                                                 <p>{row.name}</p>
                                             </td>
@@ -197,51 +245,62 @@ const AlbumCategories: React.FC = () => {
             >
                 <p className="modal-title">Album categories</p>
                 <img src={Icons['CancelIcon']} className="cancel-icon" onClick={onModalClose} />
-                <div className="categories-modal-form">
-                    <InputGroup hasValidation className="input-group input-group-area">
-                        <InputGroup.Text className="label">Name</InputGroup.Text>
-                        <FormControl
-                            className="input"
-                            disabled={inputDisabled}
-                            required
-                            value={name}
-                            onChange={(event: any): void => {
-                                setName(event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1));
-                                setNameInvalid('');
-                            }}
+                <div className="categories-wrapper">
+                    <div className="category-image-div">
+                        <Artwork
+                            ref={artworkRef}
+                            type={modalType}
+                            className="category-image"
+                            message="Please select an image for category"
+                            img={categoryImg}
                         />
-                        <p className="invalid-input invalid-name">{nameInvalid}</p>
-                    </InputGroup>
-                    <div className="color-group">
-                        <InputGroup.Text className="label">Color</InputGroup.Text>
-                        <div
-                            className="color-picker-btn"
-                            onClick={(): void => setColorPicker(!colorPicker)}
-                            style={{ background: color }}
-                        />
-                        {colorPicker && (
-                            <SketchPicker
-                                className="color-picker"
-                                color={color}
-                                onChange={onColorChange}
-                                width={'160px'}
-                            />
-                        )}
                     </div>
-                    <InputGroup hasValidation className="input-group input-group-area">
-                        <InputGroup.Text className="label">Description</InputGroup.Text>
-                        <FormControl
-                            className="input-description"
-                            required
-                            as="textarea"
-                            value={description}
-                            onChange={(event): void => {
-                                setDescription(event.target.value);
-                                setDescInvalid('');
-                            }}
-                        />
-                        <p className="invalid-input invalid-desc">{descInvalid}</p>
-                    </InputGroup>
+                    <div className="categories-modal-form">
+                        <InputGroup hasValidation className="input-group input-group-area">
+                            <InputGroup.Text className="label">Name</InputGroup.Text>
+                            <FormControl
+                                className="input"
+                                disabled={inputDisabled}
+                                required
+                                value={name}
+                                onChange={(event: any): void => {
+                                    setName(event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1));
+                                    setNameInvalid('');
+                                }}
+                            />
+                            <p className="invalid-input invalid-name">{nameInvalid}</p>
+                        </InputGroup>
+                        <div className="color-group">
+                            <InputGroup.Text className="label">Color</InputGroup.Text>
+                            <div
+                                className="color-picker-btn"
+                                onClick={(): void => setColorPicker(!colorPicker)}
+                                style={{ background: color }}
+                            />
+                            {colorPicker && (
+                                <SketchPicker
+                                    className="color-picker"
+                                    color={color}
+                                    onChange={onColorChange}
+                                    width={'160px'}
+                                />
+                            )}
+                        </div>
+                        <InputGroup hasValidation className="input-group input-group-area">
+                            <InputGroup.Text className="label">Description</InputGroup.Text>
+                            <FormControl
+                                className="input-description"
+                                required
+                                as="textarea"
+                                value={description}
+                                onChange={(event): void => {
+                                    setDescription(event.target.value);
+                                    setDescInvalid('');
+                                }}
+                            />
+                            <p className="invalid-input invalid-desc">{descInvalid}</p>
+                        </InputGroup>
+                    </div>
                     <button
                         className="category-add-btn"
                         onClick={(): void => {

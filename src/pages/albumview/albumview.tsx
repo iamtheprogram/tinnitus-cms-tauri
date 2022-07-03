@@ -17,6 +17,9 @@ import { Icons } from '@src/utils/icons';
 import { doc, getDoc, collection } from 'firebase/firestore';
 import Player from '@components/player/player';
 import { useLoading } from '@pages/loading/loading';
+import { createObjectStoragePath } from '@src/utils/helpers';
+import { dialog } from '@tauri-apps/api';
+import { routes } from '@src/router/routes';
 
 const AlbumView: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
@@ -28,7 +31,7 @@ const AlbumView: React.FC = () => {
     const searchbarRef = createRef<any>();
     const playerRef = createRef<any>();
     const container = useRef(null);
-    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (auth) {
@@ -55,22 +58,22 @@ const AlbumView: React.FC = () => {
             const docRef = doc(collection(db, 'albums'), id);
             const docRes = await getDoc(docRef);
             const data = docRes.data()!;
-            data.artwork = `${prereq}${id}/artwork.${data.extension}`;
+            data.artwork = createObjectStoragePath(preauthreq, ['albums', id, `artwork.jpeg`]);
             data.upload_date = data.upload_date.toDate().toDateString();
             setAlbumData(data);
             //Loading is done
             setDataFetched(true);
             removeLoading();
         } catch (error) {
-            console.log(error);
+            //! Undefined behaviour on error handling
         }
     }
 
     async function getSongUrl(song: SongData): Promise<void> {
         try {
-            playerRef.current.setSong(`${prereq}${id}/${song.name}.${song.extension}`);
+            playerRef.current.setSong(createObjectStoragePath(preauthreq, ['albums', id!, `${song.name}.wav`]));
         } catch (error) {
-            console.log(error);
+            dialog.message('Error fetching audio file');
         }
     }
 
@@ -79,12 +82,21 @@ const AlbumView: React.FC = () => {
             return (
                 <div className="page" id="page-album-view">
                     <Sidebar />
-                    <div className="section-album" ref={container}>
+                    <div className="page-content" ref={container}>
+                        <h3 className="page-title">Album information</h3>
                         <div className="SearchBarDiv">
-                            <SearchBar type="album" ref={searchbarRef} />
+                            <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                         </div>
                         <Container>
-                            <Toolbar itemId={id as string} item={albumData} />
+                            <Toolbar
+                                itemId={id as string}
+                                upload={routes.ALBUM_CREATE}
+                                edit={`/album/edit/${id}`}
+                                reviews={`/album/reviews/${id}`}
+                                categories={routes.ALBUM_CATEGORIES}
+                                return={routes.SAMPLE_LIST}
+                                delete="album"
+                            />
                             <div className="section-album-content">
                                 <div>
                                     <Artwork type="view" img={albumData.artwork} />
@@ -95,8 +107,8 @@ const AlbumView: React.FC = () => {
                             <Table
                                 type="view"
                                 headers={[
-                                    'Name',
                                     'Position',
+                                    'Name',
                                     'Length',
                                     'Category',
                                     <img src={Icons.Views} />,

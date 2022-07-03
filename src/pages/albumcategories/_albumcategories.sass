@@ -1,44 +1,32 @@
 @use '../../styles/colors'
 
 .categories-section
-    display: flex
-    flex-direction: column
-    width: calc(100% - 300px - 40px)
-    padding: 20px
-    margin-left: 320px
-    overflow: auto
-    font-family: sans-serif
+    position: relative
+    padding: 10px
+    width: calc(100% - 20px)
 
-    .categories-header
-        color: black
+    .plus-body
+        position: absolute
+        right: -5px
+        bottom: -4px
+        width: 32px
+        height: 32px
+        cursor: pointer
 
-    .table-section
-        position: relative
-        padding: 10px
-        width: calc(100% - 20px)
+    .plus
+        width: 32px
+        height: 32px
 
-        .plus-body
-            position: absolute
-            right: -5px
-            bottom: -4px
-            width: 32px
-            height: 32px
-            cursor: pointer
+    .input-plus
+        display: none
 
-        .plus
-            width: 32px
-            height: 32px
-
-        .input-plus
-            display: none
-
-        .table
-            width: 100%
-            color: white
-            background: colors.$table
-            border-spacing: 0
-            border: 1px solid colors.$border
-            margin-top: 50px
+    .table
+        width: 100%
+        color: white
+        background: colors.$table
+        border-spacing: 0
+        border: 1px solid colors.$border
+        margin-top: 50px
 
         td, th
             margin: 0
@@ -89,12 +77,19 @@
 .table-loading-anim
     animation: loading-rotate 2s linear infinite
 
+.categories-wrapper
+    display: flex
+    width: 100%
+    margin-top: 1rem
+
 .categories-modal-form
     display: flex
     flex-direction: column
-    width: 97%
-    margin-top: 30px
+    width: 50%
     padding: 10px
+    border: 1px solid colors.$border
+    border-radius: 6px
+    margin-top: 7px
 
     .input-group
         display: flex
@@ -129,7 +124,7 @@
         align-items: normal
 
     .invalid-input
-        font-size: 13px
+        font-size: 14px
         color: red
         margin: 0px
         margin-top: 5px
@@ -177,15 +172,25 @@
     background: colors.$btn
     color: white
     font-size: 12px
-    margin-left: 110px
+    margin-left: 456px
     border-radius: 7px
     bottom: 14px
 
 .category-close-btn
     @extend .category-add-btn
-    margin-left: 200px
+    margin-left: 540px
 
 .form-control:focus
     outline: 0
     -webkit-box-shadow: 0px 1px 13px 5px rgba(0,255,255,0.48)
     box-shadow: 0px 1px 13px 5px rgba(0,255,255,0.48)
+
+.category-image-div
+    width: 50%
+    height: 270px
+    margin-right: 10px
+
+.category-image
+    width: 100% !important
+    height: 270px !important
+    margin: 0px !important

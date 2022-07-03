@@ -1,5 +1,3 @@
-import { DefaultRequestSigner, HttpRequest } from 'oci-common';
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class Err {
     code: number;
@@ -110,29 +108,12 @@ export function parseTags(type: string, params: any): any {
     }
 }
 
-// const userID = 'Add User OCID here';
-// (async () => {
-//     // 1. Create Request Signing instance
-//     const signer = new DefaultRequestSigner(provider);
+export function createObjectStoragePath(preauthreq: string, segments: string[]): string {
+    let retVal = preauthreq;
+    for (let i = 0; i < segments.length - 1; i++) {
+        retVal += segments[i] + '/';
+    }
+    retVal += segments[segments.length - 1];
 
-//     // 2. Create HttpRequest to be signed
-//     const httpRequest: HttpRequest = {
-//         uri: `https://identity.us-phoenix-1.oraclecloud.com/20160918/users/${userID}`,
-//         headers: new Headers(),
-//         method: 'GET',
-//     };
-
-//     // 3. sign request
-//     await signer.signHttpRequest(httpRequest);
-
-//     // 4. Make the call
-//     const response = await fetch(
-//         new Request(httpRequest.uri, {
-//             method: httpRequest.method,
-//             headers: httpRequest.headers,
-//             body: httpRequest.body,
-//         }),
-//     );
-//     // 5. Print response
-//     console.log(await response.json());
-// })();
+    return retVal;
+}

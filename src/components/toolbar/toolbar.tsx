@@ -2,15 +2,20 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToolbarIcons } from '@utils/icons';
 import ReactTooltip from 'react-tooltip';
-import { routes } from '@src/router/routes';
 import { deleteAlbum } from '@src/services/album-services';
 import { useLoading } from '@pages/loading/loading';
 import { dialog } from '@tauri-apps/api';
+import { deleteSample } from '@services/sample-services';
 
 type ToolbarProps = {
     container?: string;
     itemId: string;
-    item: any;
+    upload: string;
+    edit: string;
+    delete: string;
+    reviews: string;
+    categories: string;
+    return: string;
 };
 
 const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
@@ -22,11 +27,19 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
     }));
 
     function onReviewClick(): void {
-        navigate(`/album/reviews/${props.itemId}`);
+        navigate(props.reviews);
     }
 
     function onEditClick(): void {
-        navigate(`/album/edit/${props.itemId}`);
+        navigate(props.edit);
+    }
+
+    function onCategoriesClick(): void {
+        navigate(props.categories);
+    }
+
+    function onUploadClick(): void {
+        navigate(props.upload);
     }
 
     async function onRequestDeleteClick(): Promise<void> {
@@ -34,21 +47,26 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
         if (clicked) {
             try {
                 //Activate loading screen
-                appendLoading();
-                if (props.item !== undefined && props.itemId !== undefined) {
-                    //Make an array with all filenames under the album
-                    const filesToDelete = [];
-                    for (const song of props.item.songs) {
-                        filesToDelete.push(`${props.itemId}/${song.name}.${song.extension}`);
+                if (props.itemId !== undefined) {
+                    appendLoading();
+                    //Delete resource from storage and database
+                    switch (props.delete) {
+                        case 'album': {
+                            await deleteAlbum(props.itemId);
+                            break;
+                        }
+                        case 'sample': {
+                            await deleteSample(props.itemId);
+                            break;
+                        }
+                        case 'preset': {
+                            // TODO: Add service to delete preset item
+                            // await deletePreset(props.itemId);
+                            break;
+                        }
                     }
-                    filesToDelete.push(`${props.itemId}/artwork.${props.item.extension}`);
-                    //Delete album from storage and database
-                    await deleteAlbum(props.itemId, {
-                        id: props.itemId,
-                        files: filesToDelete,
-                    });
                     removeLoading();
-                    navigate('/album/view/0');
+                    navigate(props.return);
                 }
             } catch (error: any) {
                 //Set message and notify user about occured error
@@ -58,14 +76,10 @@ const Toolbar = forwardRef((props: ToolbarProps, ref?: any) => {
         }
     }
 
-    function onCategoriesClick(): void {
-        navigate('/album/categories');
-    }
-
     return (
         <div className={props.container + ' ToolbarContainer '}>
             <ReactTooltip place="top" type="dark" effect="float" delayShow={500} />
-            <div className="toolbar-action" onClick={(): void => navigate(routes.ALBUM_CREATE)}>
+            <div className="toolbar-action" onClick={onUploadClick}>
                 <img src={ToolbarIcons.UploadIcon} className="ActionIcon" />
                 <p>Upload</p>
             </div>

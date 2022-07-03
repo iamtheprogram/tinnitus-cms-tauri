@@ -11,6 +11,8 @@ import Sidebar from '@components/sidebar/sidebar';
 import { AlbumInfo } from '@src/types/album';
 import { getAlbums } from '@services/album-services';
 import { Container } from 'react-bootstrap';
+import { Icons } from '@src/utils/icons';
+import { createObjectStoragePath } from '@src/utils/helpers';
 
 const AlbumList: React.FC = () => {
     const auth = useSelector<CombinedStates>((state) => state.generalReducer.auth) as any;
@@ -18,7 +20,7 @@ const AlbumList: React.FC = () => {
     const { appendLoading, removeLoading } = useLoading();
     const searchbarRef = useRef<any>(null);
     const [albums, setAlbums] = React.useState<AlbumInfo[]>([]);
-    const prereq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
+    const preauthreq = useSelector<CombinedStates>((state) => state.ociReducer.config.prereq) as string;
 
     useEffect(() => {
         if (auth) {
@@ -36,7 +38,7 @@ const AlbumList: React.FC = () => {
             albums.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             //Add cover art paths
             albums.forEach((album) => {
-                album.artwork = `${prereq}${album.id}/artwork.${album.extension}`;
+                album.artwork = createObjectStoragePath(preauthreq, ['albums', album.id, `artwork.jpeg`]);
             });
             setAlbums(albums);
             //Loading is done
@@ -50,20 +52,19 @@ const AlbumList: React.FC = () => {
     function displayAlbums(): JSX.Element {
         if (albums.length === 0) {
             return (
-                <Container>
-                    <div className="section-no-content">
-                        <p>You have no albums uploaded. Click below to add your first album</p>
-                        <button className="btn-create-album" onClick={(): void => navigate('/album/create')}>
-                            Create
-                        </button>
-                    </div>
-                </Container>
+                <div className="section-no-content">
+                    <p>You have no albums uploaded. Click below to add your first album</p>
+                    <button className="btn-create-album" onClick={(): void => navigate('/album/create')}>
+                        Create
+                    </button>
+                </div>
             );
         } else {
             return (
-                <>
+                <div className="page-content">
+                    <h3 className="page-title">Albums</h3>
                     <div className="SearchBarDiv">
-                        <SearchBar type="album" ref={searchbarRef} />
+                        <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                     </div>
                     <Container>
                         <div className="section-album-content">
@@ -72,7 +73,7 @@ const AlbumList: React.FC = () => {
                             </div>
                         </div>
                     </Container>
-                </>
+                </div>
             );
         }
     }
@@ -80,7 +81,7 @@ const AlbumList: React.FC = () => {
     return (
         <div className="page">
             <Sidebar />
-            <div className="section-album">{displayAlbums()}</div>
+            {displayAlbums()}
         </div>
     );
 };
@@ -106,8 +107,15 @@ const AlbumsTable: React.FC<AlbumTableProps> = (props: AlbumTableProps) => {
                     <th>Created</th>
                     <th>Songs</th>
                     <th>Duration</th>
-                    <th>Likes</th>
-                    <th>Reviews</th>
+                    <th>
+                        <img src={Icons.Likes} />
+                    </th>
+                    <th>
+                        <img src={Icons.Favorites} />
+                    </th>
+                    <th>
+                        <img src={Icons.Reviews} />
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -133,6 +141,9 @@ const AlbumsTable: React.FC<AlbumTableProps> = (props: AlbumTableProps) => {
                                 </td>
                                 <td>
                                     <p>{row.likes}</p>
+                                </td>
+                                <td>
+                                    <p>{row.favorites}</p>
                                 </td>
                                 <td>
                                     <p>{row.reviews}</p>

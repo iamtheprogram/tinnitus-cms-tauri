@@ -3,30 +3,25 @@
     windows_subsystem = "windows"
 )]
 
-#[path = "oci/albums.rs"]
-mod albums_utils;
-#[path = "utils/http.rs"]
-mod http_utils;
-#[path = "oci/object.rs"]
-mod oci_obj_storage;
-#[path = "oci/provider.rs"]
-mod oci_provider;
+//Libraries
+use hound::WavReader;
 use std::{
     fs::{self, File},
     io::BufReader,
     path::Path,
 };
-
-use albums_utils::albums_utils::{AlbumsService, SongData};
-use hound::WavReader;
-use oci_obj_storage::oci_obj_storage::OciObjectStorageServices;
-// use albums_utils::albums_utils::AlbumsService;
-use oci_provider::oci_provider::{init_provider, OciProvider};
 use tauri::{
     api::{dialog::blocking::*, shell},
-    AboutMetadata, Manager, MenuEntry, Context, utils::assets::EmbeddedAssets,
+    utils::assets::EmbeddedAssets,
+    AboutMetadata, Context, Manager, MenuEntry,
 };
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+
+//Project specific modules
+mod oci;
+mod utils;
+use oci::object_storage::*;
+use oci::provider::*;
 
 #[tauri::command]
 fn set_oci_credentials(
@@ -61,7 +56,7 @@ async fn get_album_object(
     object_path: String,
     object_name: String,
 ) -> Result<String, String> {
-    let album_service = AlbumsService::new();
+    let album_service = ObjectStorage::new();
     let result = album_service
         .get_object(&bucket, &object_path, &object_name)
         .await;
@@ -81,7 +76,7 @@ async fn get_artwork() -> (bool, String, String) {
 
     let dialog_result = dialog
         .set_title("Select Artwork")
-        .add_filter("Images", &["png", "jpg", "jpeg", "bmp"])
+        .add_filter("Images", &["jpeg"])
         .pick_file();
 
     if dialog_result.is_some() {
@@ -135,11 +130,11 @@ async fn get_audio_files() -> (bool, Vec<SongData>) {
 }
 
 #[tauri::command]
-async fn upload_audio_file(name: String, path: String, file: String) -> (bool, String) {
+async fn upload_file(name: String, path: String, file: String) -> (bool, String) {
     let read_data = fs::read(Path::new(file.as_str())).unwrap();
     // let data = base64::encode(&read_data);
-    let oci_album_service = AlbumsService::new();
-    let response: Result<String, Box<dyn std::error::Error + Send + Sync>>;
+    let oci_album_service = ObjectStorage::new();
+    // let response: Result<String, Box<dyn std::error::Error + Send + Sync>>;
 
     // TODO: Feature to come in next release
     //Upload with multipart if greater than 100MB
@@ -153,8 +148,8 @@ async fn upload_audio_file(name: String, path: String, file: String) -> (bool, S
     //         .await;
     // }
 
-    response = oci_album_service
-        .put_object(&"tinnitus".to_string(), &path, &name, read_data)
+    let response = oci_album_service
+        .put_object("tinnitus", &path, &name, read_data)
         .await;
 
     match response {
@@ -165,7 +160,7 @@ async fn upload_audio_file(name: String, path: String, file: String) -> (bool, S
 
 #[tauri::command]
 async fn delete_album(album: String, files: Vec<String>) -> (bool, String) {
-    let oci_album_service = AlbumsService::new();
+    let oci_album_service = ObjectStorage::new();
     let mut response: Result<(), Box<dyn std::error::Error + Send + Sync>> = Ok(());
 
     for file in files {
@@ -219,10 +214,10 @@ fn create_menu(ctx: &Context<EmbeddedAssets>) -> Menu {
         )),
         // You should always have a Help menu on macOS because it will automatically
         // show a menu search field
-        MenuEntry::Submenu(Submenu::new(
-            "Help",
-            Menu::with_items([CustomMenuItem::new("Learn More", "Learn More").into()]),
-        )),
+        // MenuEntry::Submenu(Submenu::new(
+        //     "Help",
+        //     Menu::with_items([CustomMenuItem::new("Learn More", "Learn More").into()]),
+        // )),
     ]);
 }
 
@@ -235,19 +230,16 @@ fn main() {
             get_album_object,
             get_artwork,
             get_audio_files,
-            upload_audio_file,
+            upload_file,
             delete_album,
         ])
         .menu(menu)
         .on_menu_event(|event| {
             let event_name = event.menu_item_id();
             event.window().emit("menu", event_name).unwrap();
-            match event_name {
-                "Learn More" => {
-                    let link = "https://github.com/probablykasper/mr-tagger".to_string();
-                    shell::open(&event.window().shell_scope(), link, None).unwrap();
-                }
-                _ => {}
+            if event_name == "Learn More" {
+                let link = "https://github.com/probablykasper/mr-tagger".to_string();
+                shell::open(&event.window().shell_scope(), link, None).unwrap();
             }
         })
         .run(ctx)

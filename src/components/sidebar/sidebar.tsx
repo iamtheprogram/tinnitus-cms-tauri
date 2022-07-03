@@ -43,8 +43,8 @@ const Sidebar: React.FC = () => {
                         <ul>
                             <li>
                                 <p onClick={(): void => navigate(routes.ALBUM_LIST)}>View albums</p>
-                                <p onClick={(): void => navigate('/album/create')}>Upload album</p>
-                                <p onClick={(): void => navigate('/album/categories')}>Categories</p>
+                                <p onClick={(): void => navigate(routes.ALBUM_CREATE)}>Upload album</p>
+                                <p onClick={(): void => navigate(routes.ALBUM_CATEGORIES)}>Categories</p>
                             </li>
                         </ul>
                     </div>
@@ -62,11 +62,12 @@ const Sidebar: React.FC = () => {
                     <div className="sidebar-submenu" id="sidebar-submenu-generator">
                         <ul>
                             <li>
-                                <p>View samples</p>
-                                <p>View presets</p>
-                                <p>Upload sample</p>
-                                <p>Upload preset</p>
-                                <p>Categories</p>
+                                <p onClick={(): void => navigate(routes.SAMPLE_LIST)}>View samples</p>
+                                <p onClick={(): void => navigate(routes.PRESET_LIST)}>View presets</p>
+                                <p onClick={(): void => navigate(routes.SAMPLE_CREATE)}>Upload sample</p>
+                                <p onClick={(): void => navigate(routes.PRESET_CREATE)}>Upload preset</p>
+                                <p onClick={(): void => navigate(routes.SAMPLE_CATEGORIES)}>Categories samples</p>
+                                <p onClick={(): void => navigate(routes.PRESET_CATEGORIES)}>Categories presets</p>
                             </li>
                         </ul>
                     </div>
@@ -75,17 +76,18 @@ const Sidebar: React.FC = () => {
                     <img src={Icons.StatisticsIcon} />
                     <p>Statistics and reports</p>
                 </div>
-                <div
+                <a
                     className="sidebar-menu-item"
-                    onClick={(): Window => window.open('https://www.youtube.com/channel/UCIygYFvZg8xH3S05mS7xzNg')!}
+                    href="https://www.youtube.com/channel/UCIygYFvZg8xH3S05mS7xzNg"
+                    target="_blank"
                 >
                     <img src={Icons.ChannelIcon} />
-                    <p>YouTube channel</p>
-                </div>
-                <div className="sidebar-menu-item" onClick={(): Window => window.open('https://www.earsbuzzing.com')!}>
+                    <p style={{ color: '#00ffff' }}>YouTube channel</p>
+                </a>
+                <a className="sidebar-menu-item" href="https://www.earsbuzzing.com" target="_blank">
                     <img src={Icons.EarsbuzzingSite} />
-                    <p>Ears Buzzing site</p>
-                </div>
+                    <p style={{ color: '#00ffff' }}>Ears Buzzing site</p>
+                </a>
                 <div className="sidebar-menu-item" /**onClick={(): void => navigate('/tutorial')}**/>
                     <img src={Icons.Tutorial} />
                     <p>Tutorial</p>

@@ -2,7 +2,7 @@ import React from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from '@src/App';
-import reduxPersist from './store/reducers/persist';
+import reduxPersist from './store/index';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { useLoading } from '@pages/loading/loading';

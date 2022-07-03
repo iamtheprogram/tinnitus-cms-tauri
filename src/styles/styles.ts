@@ -61,8 +61,8 @@ export const progressStyles = {
 
 export const categoryStyles = {
     content: {
-        width: '280px',
-        height: '370px',
+        width: '620px',
+        height: '390px',
         display: 'inline-block',
         justifyContent: 'right',
         alignItems: 'center',
@@ -76,6 +76,7 @@ export const categoryStyles = {
         borderRadius: '5px',
         border: '1px solid aqua',
         overflow: 'hidden',
+        paddingLeft: '10px',
     },
 };
 

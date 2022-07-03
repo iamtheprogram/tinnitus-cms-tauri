@@ -101,15 +101,34 @@ const Login: React.FC = () => {
                     prereq: ociConfig.oci_prereq,
                 },
             });
-            //Store albums configuration data and misc
-            docSnap = await getDoc(doc(db, 'misc', 'albums'));
-            const albumsConfig = docSnap.data()!;
+            //Storeconfiguration data and misc
+            await fetchCategories();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async function fetchCategories(): Promise<void> {
+        try {
+            let docSnap = await getDoc(doc(db, 'misc', 'albums'));
+            let data = docSnap.data()!;
             dispatch({
-                type: 'general/categories',
-                payload: albumsConfig.categories,
+                type: 'album/categories',
+                payload: data.categories,
+            });
+            docSnap = await getDoc(doc(db, 'misc', 'samples'));
+            data = docSnap.data()!;
+            dispatch({
+                type: 'sample/categories',
+                payload: data.categories,
+            });
+            docSnap = await getDoc(doc(db, 'misc', 'presets'));
+            data = docSnap.data()!;
+            dispatch({
+                type: 'preset/categories',
+                payload: data.categories,
             });
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

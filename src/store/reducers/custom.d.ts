@@ -1,3 +1,5 @@
+import { Category } from '@src/types/general';
+
 export type ResdataState = {
     selected: string;
     info: { name: string; value: unknown }[];
@@ -9,12 +11,18 @@ export type ResdataState = {
 
 export type GeneralState = {
     auth: any;
-    categories: Array<{
-        name: string;
-        id: string;
-        description: string;
-        color: string;
-    }>;
+};
+
+export type AlbumState = {
+    categories: Category[];
+};
+
+export type SampleState = {
+    categories: Category[];
+};
+
+export type PresetState = {
+    categories: Category[];
 };
 
 export type OciState = {
@@ -26,6 +34,9 @@ export type CombinedStates = {
     resdataReducer: ResdataState;
     progressReducer: ProgState;
     generalReducer: GeneralState;
+    albumReducer: AlbumState;
+    sampleReducer: SampleState;
+    presetReducer: PresetState;
 };
 
 export type action = {
