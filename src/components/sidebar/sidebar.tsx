@@ -63,7 +63,7 @@ const Sidebar: React.FC = () => {
                         <ul>
                             <li>
                                 <p onClick={(): void => navigate(routes.SAMPLE_LIST)}>View samples</p>
-                                <p>View presets</p>
+                                <p onClick={(): void => navigate(routes.PRESET_LIST)}>View presets</p>
                                 <p onClick={(): void => navigate(routes.SAMPLE_CREATE)}>Upload sample</p>
                                 <p onClick={(): void => navigate(routes.PRESET_CREATE)}>Upload preset</p>
                                 <p onClick={(): void => navigate(routes.SAMPLE_CATEGORIES)}>Categories samples</p>
