@@ -17,6 +17,7 @@ import SampleView from '@pages/sampleview/sampleview';
 import SampleEdit from '@pages/sampleedit/sampleedit';
 import PresetCreate from '@pages/presetcreate/presetcreate';
 import PresetList from '@pages/presetlist/presetlist';
+import PresetView from '@pages/presetview/presetview';
 
 const Router: React.FC = () => {
     return (
@@ -38,6 +39,7 @@ const Router: React.FC = () => {
                 <Route path={routes.SAMPLE_EDIT} element={<SampleEdit />} />
                 <Route path={routes.PRESET_CREATE} element={<PresetCreate />} />
                 <Route path={routes.PRESET_LIST} element={<PresetList />} />
+                <Route path={routes.PRESET_VIEW} element={<PresetView />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </HashRouter>
