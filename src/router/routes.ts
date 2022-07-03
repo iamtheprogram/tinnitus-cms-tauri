@@ -12,9 +12,11 @@ export const routes = {
     SAMPLE_LIST: '/generator/sample/list',
     SAMPLE_VIEW: '/generator/sample/view/:id',
     SAMPLE_EDIT: '/generator/sample/edit/:id',
+    SAMPLE_REVIEWS: '/generator/sample/reviews/:id',
     PRESET_CATEGORIES: '/generator/preset/categories',
     PRESET_CREATE: '/generator/preset/create',
     PRESET_LIST: '/generator/preset/list',
     PRESET_VIEW: '/generator/preset/view/:id',
     PRESET_EDIT: '/generator/preset/edit/:id',
+    PRESET_REVIEWS: '/generator/preset/reviews/:id',
 };
