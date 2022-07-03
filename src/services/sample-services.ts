@@ -73,7 +73,7 @@ export async function deleteSample(id: string): Promise<string> {
     }
 }
 
-export async function getAlbumReviews(id: string, date: Date): Promise<any[]> {
+export async function getSampleReviews(id: string, date: Date): Promise<any[]> {
     try {
         return [];
     } catch (error) {

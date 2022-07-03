@@ -5,7 +5,6 @@ import { Category } from '@src/types/general';
 import { createObjectStoragePath, getDurationFormat, parseTags } from '@utils/helpers';
 import { db } from '@config/firebase';
 import { query, collection, where, getDocs, doc } from 'firebase/firestore';
-import { AlbumFormData } from 'types/album';
 import { InputGroup, FormControl } from 'react-bootstrap';
 import Dropdown from '@components/dropdown/dropdown';
 import { dialog, invoke } from '@tauri-apps/api';
@@ -49,7 +48,7 @@ const SampleForm = forwardRef((props: FormProps, ref?: any) => {
     }, []);
 
     useImperativeHandle(ref, () => ({
-        getData: (): AlbumFormData => {
+        getData: (): SampleFormData => {
             return {
                 name: name,
                 description: description,

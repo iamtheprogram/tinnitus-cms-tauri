@@ -37,7 +37,6 @@ const SampleCreate: React.FC = () => {
         } else {
             return (
                 <div className="section-no-content">
-                    <h3 className="upload-sample-title">Sample upload</h3>
                     <p>There are no categories available. Click below to add a category</p>
                     <button className="goto-categories-btn" onClick={(): void => navigate(routes.SAMPLE_CATEGORIES)}>
                         Create
