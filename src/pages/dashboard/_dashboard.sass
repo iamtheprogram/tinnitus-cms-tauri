@@ -1,0 +1,71 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+
+.dashboard-cards
+    display: flex
+    width: 70%
+    color: black
+    margin-bottom: 30px
+
+    .card
+        width: 500px
+        background: colors.$card
+        color: white
+        border: 1px solid black
+        border-radius: 10px
+        box-shadow: custom.$boxshadow
+
+        .card-body
+            padding: 20px
+
+    img
+        width: 300px
+        height: 180px
+
+    .goto-btn
+        text-align: center
+        width: 120px
+        height: 40px
+        border: 1px solid colors.$border
+        background: colors.$btn
+        color: white
+        font-size: 14px
+        border-radius: 7px
+        margin-left: 15%
+        margin-top: 10px
+
+.dashboard-sales
+    display: flex
+    padding: 10px
+    align-items: center
+    width: 97%
+    height: 30%
+    border-radius: 10px
+    // border: 1px solid colors.$card
+    overflow-y: auto
+    background: colors.$card
+    box-shadow: custom.$boxshadow
+
+    .sales-pie
+        background: colors.$card
+        border-radius: 50%
+        height: 80%
+        width: 220px
+        margin-left: 10px
+
+    .sales-apple-card
+        width: 300px !important
+        margin-left: 80px
+        background: #F5F5F7 !important
+        box-shadow: none !important
+        border: none
+        color: black !important
+
+    .sales-android-card
+        width: 300px !important
+        margin-left: 20px
+        margin-right: 20px
+        background: #48FF48 !important
+        box-shadow: none !important
+        border: none
+        color: black !important
