@@ -37,6 +37,7 @@ import Previous from '@src/icons/previous.png';
 import Next from '@src/icons/next.png';
 import Categories from '@src/icons/categories.png';
 import Palette from '@src/icons/palette.png';
+import Dashboard from '@src/icons/dashboard.png';
 
 export const Icons = {
     HomeIcon: Home,
@@ -70,6 +71,7 @@ export const Icons = {
     Previous: Previous,
     Next: Next,
     Palette: Palette,
+    Dashboard: Dashboard,
 };
 
 export const ToolbarIcons = {
