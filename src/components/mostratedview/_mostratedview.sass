@@ -1,0 +1,64 @@
+@use '../../styles/colors'
+@use '../../styles/custom'
+    
+.mostrated-div
+    display: flex
+    flex-direction: column
+    width: 100%
+    padding: 10px
+    border-radius: 10px
+    background: colors.$card
+    box-shadow: custom.$boxshadow
+    color: black
+
+.mostrated-toolbar
+    display: flex
+    align-items: center
+    padding: 10px
+    width: 100%
+    height: 50px
+    margin-bottom: 10px
+
+.mostrated-table-div
+    display: flex
+    width: 100%
+    height: 100%
+    overflow: auto
+    margin-top: 10px
+
+.mostrated-table
+    width: 100%
+    th
+        font-size: 18px
+        font-weight: 600
+
+    td
+        padding: 10px
+        border: 1px solid colors.$border
+        border-radius: 5px
+        background: colors.$card
+        color: white
+        text-align: center
+        font-size: 16px
+
+    tr
+        border: 1px solid black
+        border-radius: 5px
+        background: colors.$card
+        color: white
+        text-align: center
+        margin: 0
+
+
+.toolbar-section-div
+    display: flex
+    align-items: center
+    justify-content: center
+    border: 1px solid colors.$border
+    border-radius: 10px
+    background: colors.$card
+    padding: 3px
+    color: white
+
+.toolbar-div-margin
+    margin-left: 5px
