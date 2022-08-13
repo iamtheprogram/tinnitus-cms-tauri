@@ -15,19 +15,22 @@ export default defineConfig({
         react(),
         ViteFonts({
             google: {
-              families: ['Source Sans Pro', {
-                /**
-                 * Family name (required)
-                 */
-                name: 'Roboto',
-    
-                /**
-                 * Family styles
-                 */
-                styles: 'ital,wght@0,400;1,200',
-            }],
+                families: [
+                    'Source Sans Pro',
+                    {
+                        /**
+                         * Family name (required)
+                         */
+                        name: 'Roboto',
+
+                        /**
+                         * Family styles
+                         */
+                        styles: 'ital,wght@0,400;1,200',
+                    },
+                ],
             },
-          }),
+        }),
     ],
     base: './',
     build: {
