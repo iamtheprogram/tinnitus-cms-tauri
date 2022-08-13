@@ -10,6 +10,7 @@ import { dialog } from '@tauri-apps/api';
 import { Card } from 'react-bootstrap';
 import { PieChart } from 'react-minimal-pie-chart';
 import { useLoading } from '@pages/loading/loading';
+import MostRatedView from '@components/mostratedview/mostratedview';
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -41,6 +42,10 @@ const Dashboard: React.FC = () => {
         }
     }
 
+    // async function fetchUsersData(): Promise<> {
+
+    // }
+
     function calculateSalesDistribution(): any {
         //TODO: Fetch AppStore sales;
         //TODO: Fetch GooglePlay sales;
@@ -55,7 +60,7 @@ const Dashboard: React.FC = () => {
     function displayPage(): JSX.Element {
         if (loaded) {
             return (
-                <div className="page" id="page-upload-edit">
+                <div className="page" id="page-upload-edit" style={{ overflowY: 'auto' }}>
                     <Sidebar />
                     <div className="page-content">
                         <h2 className="page-title">Dashboard</h2>
@@ -117,6 +122,71 @@ const Dashboard: React.FC = () => {
                                 </Card>
                             </div>
                         </div>
+                        <h3 style={{ color: 'black' }}>Users & Activity</h3>
+                        <div className="dashboard-usr-div">
+                            <div className="dasboard-users">
+                                <div className="dashboard-user-table">
+                                    <UsersTable
+                                        headers={['Key', 'Value', 'Description']}
+                                        rows={[
+                                            {
+                                                key: 'Users',
+                                                value: 7000,
+                                                desc: 'Total number of users who created an account',
+                                            },
+                                            {
+                                                key: 'Users Email',
+                                                value: 2000,
+                                                desc: 'Total number of users registered via email',
+                                            },
+                                            {
+                                                key: 'Users Apple',
+                                                value: 2000,
+                                                desc: 'Total number of users registered with "Apple Sign In"',
+                                            },
+                                            {
+                                                key: 'Users Google',
+                                                value: 3000,
+                                                desc: 'Total number of users registered with "Google Sign In"',
+                                            },
+                                        ]}
+                                    />
+                                </div>
+                            </div>
+                            <div className="dashboard-user-activity">
+                                <div className="dashboard-user-table">
+                                    <UsersTable
+                                        headers={['Key', 'Value', 'Description']}
+                                        rows={[
+                                            {
+                                                key: 'Views',
+                                                value: 123436905,
+                                                desc: 'Total number of reviews',
+                                            },
+                                            {
+                                                key: 'Likes',
+                                                value: 43667,
+                                                desc: 'Total number of reviews',
+                                            },
+                                            {
+                                                key: 'Favourites',
+                                                value: 3587,
+                                                desc: 'Total number of reviews',
+                                            },
+                                            {
+                                                key: 'Reviews',
+                                                value: 678452,
+                                                desc: 'Total number of reviews',
+                                            },
+                                        ]}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <h3 style={{ color: 'black' }}>Most rated</h3>
+                        <div className="dashboard-most-rated">
+                            <MostRatedView />
+                        </div>
                     </div>
                 </div>
             );
@@ -128,4 +198,70 @@ const Dashboard: React.FC = () => {
     return displayPage();
 };
 
+interface UsersTableProps {
+    headers: string[];
+    rows: { key: string; value: number; desc: string }[];
+}
+
+const UsersTable: React.FC<UsersTableProps> = (props: UsersTableProps) => {
+    return (
+        <table>
+            <thead>
+                <tr>
+                    {props.headers.map((header) => (
+                        <th>{header}</th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {props.rows.map((row) => (
+                    <tr>
+                        <td>{row.key}</td>
+                        <td>{row.value}</td>
+                        <td className="desc-td">{row.desc}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
+
 export default Dashboard;
+
+/** <tr>
+                    <td>Users</td>
+                    <td>5000</td>
+                    <td className="desc-td">Total number of users who created an account</td>
+                </tr>
+                <tr>
+                    <td>Users_Email</td>
+                    <td>3000</td>
+                    <td className="desc-td">Total number of users registered via email</td>
+                </tr>
+                <tr>
+                    <td>Users_Apple</td>
+                    <td>800</td>
+                    <td className="desc-td">Total number of users registered with "Apple Sign In"</td>
+                </tr>
+                <tr>
+                    <td>Users_Google</td>
+                    <td>2200</td>
+                    <td className="desc-td">Total number of users registered with "Google Sign In"</td>
+                </tr>
+                <tr>
+                    <td>Users_Current</td>
+                    <td>4800</td>
+                    <td className="desc-td">Total number of active users</td>
+                </tr>
+                <tr>
+                    <td>Users_Subscribed_Total</td>
+                    <td>2000</td>
+                    <td className="desc-td">
+                        Total number of users who subscribed since the launch of the application
+                    </td>
+                </tr>
+                <tr>
+                    <td>Users_Subscribed_Current</td>
+                    <td>4000</td>
+                    <td className="desc-td">Total number of active subscribers</td>
+                </tr> */
