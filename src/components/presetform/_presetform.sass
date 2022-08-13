@@ -1,4 +1,5 @@
 @use '../../styles/colors'
+@use '../../styles/custom'
 
 .preset-form
     display: flex
@@ -7,8 +8,7 @@
     height: 100%
     padding: 1rem
     border-radius: 10px
-    box-shadow: 3px 3px 30px #4a96e2 !important
-    -webkit-box-shadow: 3px 3px 30px #4a96e2 !important
+    box-shadow: custom.$boxshadow
 
 .preset-preview-image
     width: 400px !important
@@ -46,7 +46,7 @@
     display: flex
     flex-direction: column
     height: 78%
-    border: 1px solid grey
+    border: 1px solid #cdcdcd
     padding: 10px
     border-radius: 10px
     background: #eaeaea
@@ -61,6 +61,9 @@
             width: 100%
             height: 20px
             font-size: 15px
+            border-radius: 5px
+            border: 0px
+            padding: 5px
 
         .input-description
             max-width: 97%
@@ -71,6 +74,9 @@
             overflow: auto
             font-family: 'calibri'
             font-size: 17px
+            border-radius: 5px
+            border: 0px
+            padding: 5px
 
         .input-tag
             max-width: 97%
@@ -91,6 +97,9 @@
             overflow: auto
             font-family: 'calibri'
             font-size: 17px
+            border-radius: 5px
+            border: 0px
+            padding: 5px
 
         .invalid-name
             margin-left: 10px
