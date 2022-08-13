@@ -36,15 +36,15 @@
 
 .dashboard-sales
     display: flex
-    padding: 10px
+    padding: 20px
     align-items: center
-    width: 97%
-    height: 30%
+    width: 96%
+    min-height: 250px
     border-radius: 10px
-    // border: 1px solid colors.$card
-    overflow-y: auto
     background: colors.$card
     box-shadow: custom.$boxshadow
+    overflow-y: auto
+    margin-bottom: 30px
 
     .sales-pie
         background: colors.$card
@@ -69,3 +69,60 @@
         box-shadow: none !important
         border: none
         color: black !important
+
+.dashboard-usr-div
+    width: 100%
+    display: flex
+    margin-bottom: 30px
+
+.dasboard-users
+    display: flex
+    padding: 10px
+    width: 47%
+    border-radius: 10px
+    background: colors.$card
+    box-shadow: custom.$boxshadow
+
+.dashboard-user-table
+    width: 100%
+    th
+        font-size: 18px
+        font-weight: 600
+
+    td
+        padding: 10px
+        border: 1px solid colors.$border
+        border-radius: 5px
+        background: colors.$card
+        color: white
+        text-align: center
+        font-size: 16px
+
+    tr
+        border: 1px solid black
+        border-radius: 5px
+        background: colors.$card
+        color: white
+        text-align: center
+        margin: 0
+
+    .desc-td
+        text-align: left !important
+
+.dashboard-user-activity
+    display: flex
+    padding: 10px
+    width: 47%
+    border-radius: 10px
+    background: colors.$card
+    box-shadow: custom.$boxshadow
+    margin-left: 20px
+
+.dashboard-most-rated
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 97%
+    border-radius: 10px
+    background: colors.$card
+    box-shadow: custom.$boxshadow
