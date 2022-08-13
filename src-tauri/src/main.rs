@@ -15,7 +15,7 @@ use tauri::{
     utils::assets::EmbeddedAssets,
     AboutMetadata, Context, Manager, MenuEntry,
 };
-use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+use tauri::{Menu, MenuItem, Submenu};
 
 //Project specific modules
 mod oci;
@@ -135,7 +135,6 @@ async fn upload_file(name: String, path: String, file: String) -> (bool, String)
     // let data = base64::encode(&read_data);
     let oci_album_service = ObjectStorage::new();
     // let response: Result<String, Box<dyn std::error::Error + Send + Sync>>;
-
     // TODO: Feature to come in next release
     //Upload with multipart if greater than 100MB
     // if read_data.len() > 104857600 {
