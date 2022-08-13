@@ -19,4 +19,5 @@ export const routes = {
     PRESET_VIEW: '/generator/preset/view/:id',
     PRESET_EDIT: '/generator/preset/edit/:id',
     PRESET_REVIEWS: '/generator/preset/reviews/:id',
+    DASHBOARD: '/dashboard',
 };
