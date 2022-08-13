@@ -48,7 +48,7 @@ const PresetEdit: React.FC = () => {
                 <div className="page">
                     <Sidebar />
                     <div className="page-content">
-                        <h3 className="page-title">Preset edit</h3>
+                        <h2 className="page-title">Preset edit</h2>
                         <PresetForm type={'edit'} data={presetData.current} id={id} />
                     </div>
                 </div>

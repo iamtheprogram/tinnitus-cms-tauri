@@ -83,7 +83,7 @@ const AlbumEdit: React.FC = () => {
                 <div className="page" id="page-upload-edit">
                     <Sidebar />
                     <div className="page-content" ref={content}>
-                        <h3 className="page-title">Album edit view</h3>
+                        <h2 className="page-title">Album edit view</h2>
                         {/* Album details */}
                         <div className="upload-album">
                             {/* Artwork */}

@@ -124,7 +124,7 @@ const AlbumCreate: React.FC = () => {
                 //Clear all states to avoid uploading the same album again
                 clearChildrenStates();
             } catch (error: any) {
-                deleteAlbum(docRef.id, { id: docRef.id, files: filesUploaded.current });
+                deleteAlbum(docRef.id);
                 progressbarRef.current.operationFailed(error.message);
                 //Create a new cancel token
                 cancelSource.current = axios.CancelToken.source();
@@ -136,7 +136,7 @@ const AlbumCreate: React.FC = () => {
         if (categories.length > 0) {
             return (
                 <div className="page-content" ref={content}>
-                    <h3 className="page-title">Album upload</h3>
+                    <h2 className="page-title">Album upload</h2>
                     {/* Album details */}
                     <div className="upload-album">
                         {/* Artwork */}

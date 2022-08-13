@@ -73,7 +73,7 @@ const PresetView: React.FC = () => {
                 <div className="page" id="page-album-view">
                     <Sidebar />
                     <div className="page-content" ref={container}>
-                        <h3 className="page-title">Preset information</h3>
+                        <h2 className="page-title">Preset information</h2>
                         <div className="SearchBarDiv">
                             <SearchBar
                                 type="preset"

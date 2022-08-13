@@ -62,7 +62,7 @@ const AlbumList: React.FC = () => {
         } else {
             return (
                 <div className="page-content">
-                    <h3 className="page-title">Albums</h3>
+                    <h2 className="page-title">Albums</h2>
                     <div className="SearchBarDiv">
                         <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                     </div>

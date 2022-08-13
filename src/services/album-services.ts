@@ -1,6 +1,5 @@
 import { db } from '@src/config/firebase';
 import { AlbumFormData, SongData, AlbumInfo } from '@src/types/album';
-import axios from 'axios';
 import { arrayUnion, collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 
 export async function getAlbums(): Promise<AlbumInfo[]> {

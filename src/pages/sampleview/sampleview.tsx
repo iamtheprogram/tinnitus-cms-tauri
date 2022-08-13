@@ -73,7 +73,7 @@ const SampleView: React.FC = () => {
                 <div className="page" id="page-album-view">
                     <Sidebar />
                     <div className="page-content" ref={container}>
-                        <h3 className="page-title">Sample information</h3>
+                        <h2 className="page-title">Sample information</h2>
                         <div className="SearchBarDiv">
                             <SearchBar
                                 type="sample"

@@ -56,7 +56,7 @@ const PresetList: React.FC = () => {
         } else {
             return (
                 <div className="section-album">
-                    <h3 className="page-title">Presets</h3>
+                    <h2 className="page-title">Presets</h2>
                     <div className="SearchBarDiv">
                         <SearchBar
                             type="preset"

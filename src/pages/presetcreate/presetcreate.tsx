@@ -30,7 +30,7 @@ const PresetCreate: React.FC = () => {
         if (categories.length > 0) {
             return (
                 <div className="page-content" ref={content}>
-                    <h3 className="page-title">Preset upload</h3>
+                    <h2 className="page-title">Preset upload</h2>
                     <PresetForm type={'create'} ref={formRef} />
                 </div>
             );

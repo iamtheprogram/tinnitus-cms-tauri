@@ -180,7 +180,7 @@ const PresetCategories: React.FC = () => {
         <div className="page" id="page-upload-edit">
             <Sidebar />
             <div className="page-content">
-                <h3 className="page-title">Sample categories</h3>
+                <h2 className="page-title">Sample categories</h2>
                 <div className="categories-section">
                     <table className="table" id="categories-table">
                         <thead>

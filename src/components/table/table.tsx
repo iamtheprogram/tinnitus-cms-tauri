@@ -265,9 +265,7 @@ export const Table = forwardRef((props: TableProps, ref: any) => {
                                 <td>{row.pos}</td>
                                 {displayName(props.type, i, row.name)}
                                 <td>{row.length}</td>
-                                <td id={`row-category-${i}`} className="category">
-                                    {displayCategory(props.type, i, row.category)}
-                                </td>
+                                <td id={`row-category-${i}`}>{displayCategory(props.type, i, row.category)}</td>
                                 {props.type === 'view' ? <td> {row.views}</td> : null}
                                 {props.type === 'view' ? <td> {row.likes}</td> : null}
                                 {props.type === 'view' ? <td> {row.favorites}</td> : null}

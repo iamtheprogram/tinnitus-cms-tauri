@@ -83,7 +83,7 @@ const AlbumView: React.FC = () => {
                 <div className="page" id="page-album-view">
                     <Sidebar />
                     <div className="page-content" ref={container}>
-                        <h3 className="page-title">Album information</h3>
+                        <h2 className="page-title">Album information</h2>
                         <div className="SearchBarDiv">
                             <SearchBar type="album" pathToSearch="albums" navigate="/album/view/" ref={searchbarRef} />
                         </div>

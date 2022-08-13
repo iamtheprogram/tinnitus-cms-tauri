@@ -48,7 +48,7 @@ const SampleEdit: React.FC = () => {
                 <div className="page">
                     <Sidebar />
                     <div className="page-content">
-                        <h3 className="page-title">Sample edit</h3>
+                        <h2 className="page-title">Sample edit</h2>
                         <SampleForm type={'edit'} data={sampleData.current} id={id} />
                     </div>
                 </div>

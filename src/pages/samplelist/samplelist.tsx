@@ -56,7 +56,7 @@ const SampleList: React.FC = () => {
         } else {
             return (
                 <div className="section-album">
-                    <h3 className="page-title">Samples</h3>
+                    <h2 className="page-title">Samples</h2>
                     <div className="SearchBarDiv">
                         <SearchBar
                             type="sample"
