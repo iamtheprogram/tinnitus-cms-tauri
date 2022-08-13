@@ -30,6 +30,12 @@ const Sidebar: React.FC = () => {
             </div>
             <div className="sidebar-menu-content">
                 <div>
+                    <div className="sidebar-menu-item" onClick={(): void => navigate(routes.DASHBOARD)}>
+                        <img src={Icons.Dashboard} />
+                        <p>Dashboard</p>
+                    </div>
+                </div>
+                <div>
                     <div
                         className="sidebar-menu-item"
                         onClick={(): void => {
@@ -88,10 +94,6 @@ const Sidebar: React.FC = () => {
                     <img src={Icons.EarsbuzzingSite} />
                     <p style={{ color: '#00ffff' }}>Ears Buzzing site</p>
                 </a>
-                <div className="sidebar-menu-item" /**onClick={(): void => navigate('/tutorial')}**/>
-                    <img src={Icons.Tutorial} />
-                    <p>Tutorial</p>
-                </div>
             </div>
             <p className="sidebar-copyright">Copyright © 2022 Tinnitus Sounds</p>
         </div>

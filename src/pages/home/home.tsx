@@ -33,13 +33,18 @@ const Home: React.FC = () => {
             </div>
             <div className={'GridActions GridMove'}>
                 <ButtonGroup vertical className="ButtonGroup">
+                    <Button className="GridButton GridButtonText" onClick={(): void => goToRoute(routes.DASHBOARD)}>
+                        <img src={Icons['Dashboard']} className="ButtonIcon" />
+                        Dashboard
+                    </Button>
                     <Button className="GridButton GridButtonText" onClick={(): void => goToRoute(routes.ALBUM_LIST)}>
                         <img src={Icons['AudioIcon']} className="ButtonIcon" />
                         Albums
                     </Button>
                     <Button
                         // eslint-disable-next-line max-len
-                        className="GridButton GridButtonText" /**onClick={(): void => goToRoute(routes.GENERATOR_VIEW)}**/
+                        className="GridButton GridButtonText"
+                        onClick={(): void => goToRoute(routes.SAMPLE_LIST)}
                     >
                         <img src={Icons['GeneratorIcon']} className="ButtonIcon" />
                         Generator
@@ -61,10 +66,6 @@ const Home: React.FC = () => {
                     >
                         <img src={Icons['EarsbuzzingSite']} className="ButtonIcon" />
                         Ears Buzzing site
-                    </Button>
-                    <Button className="GridButton GridButtonText">
-                        <img src={Icons['Tutorial']} className="ButtonIcon" />
-                        Tutorial
                     </Button>
                 </ButtonGroup>
             </div>
